@@ -64,6 +64,10 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+Vue.prototype.ossImageUrl = (url: string) => {
+  return url + "?x-oss-process=style/ys";
+};
+
 new Vue({
   router,
   store,

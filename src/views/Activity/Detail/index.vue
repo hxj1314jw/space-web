@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="width: 100%; position: absolute; top: 0; bottom: 0; overflow-y: auto; -webkit-overflow-scrolling: touch">
-      <van-image style="margin: 0; padding: 0" width="100%" height="230" fit="cover" :src="activityForm.image" />
+      <van-image style="margin: 0; padding: 0" width="100%" height="230" fit="cover" :src="ossImageUrl(activityForm.image)" />
       <van-cell-group>
         <van-cell style="padding: 15px; margin: 0;">
           <h3 style="margin: 0;">
@@ -24,8 +24,8 @@
 
       <van-cell-group style="margin-top: 10px; ">
         <van-cell style="padding: 10px 15px; margin: 0;">
-          <van-image v-if="activityForm.userType === '1'" style="float: left" round width="5rem" height="5rem" :src="activityForm.avatar" />
-          <van-image v-else style="float: left" round width="5rem" height="5rem" :src="activityForm.orgLogo" />
+          <van-image v-if="activityForm.userType === '1'" style="float: left" round width="5rem" height="5rem" :src="ossImageUrl(activityForm.avatar)" />
+          <van-image v-else style="float: left" round width="5rem" height="5rem" :src="ossImageUrl(activityForm.orgLogo)" />
           <span class="publish-name">
             <span v-if="activityForm.userType === '1'" style="font-size: large;">{{activityForm.publisherName}}</span>
             <span v-else style="font-size: large;">{{activityForm.orgName}}</span><br>

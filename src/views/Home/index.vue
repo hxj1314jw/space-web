@@ -42,7 +42,7 @@
           <template v-for="(activity, index) of activityList">
             <van-card :key="index" :tag="activity.activityName" style="padding: 8px;" @click.prevent="toActivityDetail(activity.id)">
               <div slot="thumb" style="width: 35vw">
-                <van-image width="100%" height="5rem" radius="1" fit="cover" :src="activity.image" class="box-shadow"/>
+                <van-image width="100%" height="5rem" radius="1" fit="cover" :src="ossImageUrl(activity.image)" class="box-shadow"/>
               </div>
               <div slot="title">
                 <span style="float: right; width: 80%; font-weight: bold">
@@ -76,10 +76,10 @@
         <div style="width: 100vw; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; margin: 10px 0;">
           <template v-for="(tag, index) in tagList">
             <span v-if="index === 0" :key="index" style="margin-left: 16px; margin-right: 5px;">
-              <van-image width="7rem" height="10rem" radius="3" fit="cover" :src="tag.image" class="box-shadow" @click="onSearchActivityType(tag.id)"/>
+              <van-image width="7rem" height="10rem" radius="3" fit="cover" :src="ossImageUrl(tag.image)" class="box-shadow" @click="onSearchActivityType(tag.id)"/>
             </span>
             <span v-else :key="index" style="margin: 0 5px;">
-              <van-image width="7rem" height="10rem" radius="3" fit="cover" :src="tag.image" class="box-shadow" @click="onSearchActivityType(tag.id)"/>
+              <van-image width="7rem" height="10rem" radius="3" fit="cover" :src="ossImageUrl(tag.image)" class="box-shadow" @click="onSearchActivityType(tag.id)"/>
             </span>
           </template>
         </div>
@@ -102,7 +102,7 @@
         <van-row justify="space-around" gutter="10" style="padding-bottom: 10px;">
           <template v-for="(product, index) in productList">
             <van-col :key="index" span="12" @click="toSpaceDetail(product.id)">
-              <van-image width="100%" height="7rem" radius="3" fit="cover" :src="product.bannerImage" class="product-img box-shadow"/>
+              <van-image width="100%" height="7rem" radius="3" fit="cover" :src="ossImageUrl(product.bannerImage)" class="product-img box-shadow"/>
               <div style="padding: 0 3px;">
                 <span class="product-name">{{ product.productName }}</span>
                 <span>
@@ -128,10 +128,10 @@
         <div style="width: 100vw; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; margin: 10px 0;">
           <template v-for="(project, index) in projectList">
             <span v-if="index === 0" :key="index" style="margin-left: 16px; margin-right: 5px;">
-              <van-image width="80%" height="10rem" radius="5" fit="cover" :src="project.banner" class="box-shadow" @click="toProjectDetail(project.url)"/>
+              <van-image width="80%" height="10rem" radius="5" fit="cover" :src="ossImageUrl(project.banner)" class="box-shadow" @click="toProjectDetail(project.url)"/>
             </span>
             <span v-else :key="index" style="margin: 0 5px;">
-              <van-image width="80%" height="10rem" radius="5" fit="cover" :src="project.banner" class="box-shadow" @click="toProjectDetail(project.url)"/>
+              <van-image width="80%" height="10rem" radius="5" fit="cover" :src="ossImageUrl(project.banner)" class="box-shadow" @click="toProjectDetail(project.url)"/>
             </span>
           </template>
         </div>
@@ -293,9 +293,6 @@
     -webkit-filter: grayscale(50%);
     filter: grayscale(50%);
     margin-top: 10px;
-  }
-  .van-image {
-    background-color: black;
   }
   .product-name {
     font-weight: bold;

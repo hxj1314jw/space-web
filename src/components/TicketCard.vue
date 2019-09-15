@@ -16,7 +16,7 @@
 
     <van-card style="background-color: white; margin-top: 0" @click.prevent="toDetail(ticketForm.orderId, ticketForm.activityId, ticketForm.status)">
       <div slot="thumb" style="width: 35vw">
-        <van-image width="100%" height="5rem" radius="1" fit="cover" :src="ticketForm.image" class="box-shadow"/>
+        <van-image width="100%" height="5rem" radius="1" fit="cover" :src="ossImageUrl(ticketForm.image)" class="box-shadow"/>
       </div>
       <div slot="title">
         <span style="float: right; width: 80%; font-weight: bold">

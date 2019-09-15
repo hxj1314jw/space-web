@@ -2,7 +2,7 @@
   <div>
     <van-cell style="padding: 0px; margin: 0; position: relative;">
       <van-uploader style="float: left; margin: 10px; margin-left: 15px; margin-bottom: 0;" :before-read="beforeRead" :after-read="afterRead" :preview-image="true">
-        <van-image round width="5rem" height="5rem" :src="userForm.avatar" fit="cover"/>
+        <van-image round width="5rem" height="5rem" :src="ossImageUrl(userForm.avatar)" fit="cover"/>
       </van-uploader>
       <span class="user-name">
         {{userForm.name}}<br>

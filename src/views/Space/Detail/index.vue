@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="width: 100%; position: absolute; top: 0; bottom: 0; overflow-y: auto; -webkit-overflow-scrolling: touch">
-      <van-image style="margin: 0; padding: 0" width="100%" height="230" fit="cover" :src="spaceForm.bannerImage" />
+      <van-image style="margin: 0; padding: 0" width="100%" height="230" fit="cover" :src="ossImageUrl(spaceForm.bannerImage)" />
       <van-cell-group>
         <van-cell style="padding: 15px; margin: 0;">
           <div class="product-name">
@@ -58,7 +58,7 @@
               <van-grid-item :key="index" :column-num="5" style="margin-top: -7px;">
                 <template slot="icon">
                   <div style="border-radius: 50%; border: 1px solid; border-color: #cdcdcd; width: 40px; height: 40px;">
-                    <van-image style="margin-top: 10px; margin-left: 10px;" fit="contain" width="20px" height="20px" :src="device.url" />
+                    <van-image style="margin-top: 10px; margin-left: 10px;" fit="contain" width="20px" height="20px" :src="ossImageUrl(device.url)" />
                   </div>
                 </template>
                 <template slot="text">

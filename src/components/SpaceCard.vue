@@ -1,6 +1,6 @@
 <template>
   <van-cell @click="toSpaceDetail(spaceForm.id)" style="margin-top: 20px; padding: 0; width: 100vw;">
-    <van-image fit="cover" width="100%" height="15rem" :src="spaceForm.bannerImage"/>
+    <van-image fit="cover" width="100%" height="15rem" :src="ossImageUrl(spaceForm.bannerImage)"/>
     <div style="padding: 10px; padding-top: 5px;">
       <div class="product-name">
         <van-tag v-if="spaceForm.hotStatus" color="#fff7e8" text-color="#ffb11a">优选</van-tag>

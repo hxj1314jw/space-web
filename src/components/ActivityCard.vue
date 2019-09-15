@@ -1,7 +1,7 @@
 <template>
   <van-card :tag="activityForm.activityName" style="background-color: white; margin-top: 10px;" @click.prevent="toActivityDetail(activityForm.id)">
     <div slot="thumb" style="width: 35vw">
-      <van-image width="100%" height="5rem" radius="1" fit="cover" :src="activityForm.image" class="box-shadow"/>
+      <van-image width="100%" height="5rem" radius="1" fit="cover" :src="ossImageUrl(activityForm.image)" class="box-shadow"/>
     </div>
     <div slot="title">
       <span style="float: right; width: 80%; font-weight: bold">
