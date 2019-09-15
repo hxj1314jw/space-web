@@ -12,10 +12,10 @@
           clearable
           label="手机"
           placeholder="请输入手机号"
-          type="tel"
+          type="number"
           :error-message="phoneErrMsg"
         />
-        <van-field v-model="code" label="验证码" placeholder="请输入验证码" required autocomplete :error-message="codeErrMsg">
+        <van-field v-model="code" label="验证码" placeholder="请输入验证码" required autocomplete :error-message="codeErrMsg" type="number" maxlength="6">
           <van-button slot="button" plain size="small" type="primary" :disabled="disabled" @click="getCode()">
             发送验证码 <span v-if="disabled === true">({{second}}s)</span>
           </van-button>
