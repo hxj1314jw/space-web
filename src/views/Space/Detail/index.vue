@@ -178,7 +178,11 @@ export default class SpaceDetail extends Vue {
   }
 
   private toSpaceReserve() {
-    this.$router.push(`/space/reserve/${this.$route.params.id}`);
+    switch (this.spaceForm.type) {
+      case '1':
+        this.$router.push(`/space/reserve/work/${this.$route.params.id}`);
+        break;
+    }
   }
 }
 </script>

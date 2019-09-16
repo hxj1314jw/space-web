@@ -99,15 +99,15 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { getOrganization, addSpaceReserve } from '@/api/space';
 
-import { Step, Steps, Cell, CellGroup, Field, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker } from 'vant';
-Vue.use(Step).use(Steps).use(Cell).use(CellGroup).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Field);
+import { Step, Steps, Cell, CellGroup, Field, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker, Toast } from 'vant';
+Vue.use(Step).use(Steps).use(Cell).use(CellGroup).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Field).use(Toast);
 
 @Component({
   components: {}
 })
 export default class SpaceReserve extends Vue {
   public orgList: any = [];
-  public radio: string = '';
+  public radio: string = '1';
   public endTimeErrMsg: string = '';
   public reserveTimeErrMsg: string = '';
   public name: string = this.$store.state.user.name;
@@ -152,7 +152,7 @@ export default class SpaceReserve extends Vue {
 
     private onReserveTimeFocusOut() {
     if (this.reserveTime.getTime() <= this.today.getTime()) {
-      this.reserveTimeErrMsg = "参访时间不能小于或等于当前时间";
+      this.reserveTimeErrMsg = "参访时间不能早于或等于当前时间";
       return false;
     } else {
       this.reserveTimeErrMsg = "";
@@ -169,10 +169,16 @@ export default class SpaceReserve extends Vue {
   }
 
   private async fetchOrg() {
+    Toast.loading({
+      mask: true,
+      forbidClick: true,
+      message: '加载中...'
+    });
     const res = await getOrganization({
       audit: 2
     });
     this.orgList = res.data.data;
+    Toast.clear();
   }
 
   private async reserve() {
@@ -205,7 +211,8 @@ export default class SpaceReserve extends Vue {
         });
       }
     } else {
-      this.validate();
+      this.onEndTimeFocusOut();
+      this.onReserveTimeFocusOut();
     }
   }
 

@@ -3,7 +3,7 @@
     <vue-event-calendar class="calendar-list" :events="events" @day-changed="dayChanged" @month-changed="monthChanged"/>
     <div v-if="currentEvents.length > 0">
       <template v-for="(event, index) in currentEvents">
-          <ActivityCard :key="index" :activityForm="event.desc"/>
+        <ActivityCard :key="index" :activityForm="event.desc"/>
       </template>
     </div>
     <div v-else style="text-align: center; margin-top: 15px;">
@@ -27,7 +27,9 @@
     data() {
       return {
         events: [],
-        currentEvents: []
+        currentEvents: [],
+        year: '',
+        month: ''
       };
     },
 
@@ -44,7 +46,9 @@
         });
         const res = await getActivityList({
           page: 1,
-          size: 10
+          size: 10,
+          year: this.year,
+          month: this.month
         });
         for (const activity of res.data.data.rows) {
           const duration = (moment(activity.endTime).valueOf() - moment(activity.beginTime).valueOf()) / (24 * 60 * 60 * 1000);
@@ -62,7 +66,8 @@
                 tags: activity.tags,
                 price: activity.price,
                 image: activity.image,
-                hotStatus: activity.hotStatus
+                hotStatus: activity.hotStatus,
+                status: activity.status
               }
             });
           }
@@ -86,16 +91,29 @@
       },
 
       monthChanged(month) {
-        console.log(month);
+        this.events = [];
+        this.currentEvents = [];
+        const currentMonth = month.replace(/[^0-9]/ig, '');
+        const date = moment(currentMonth + '01');
+        this.year = date.format('YYYY');
+        this.month = date.format('M');
+        this.fetch();
       },
 
       toActivityDetail(is) {
         this.$router.push(`/activity/detail/${id}`);
+      },
+
+      getCurrentMonth() {
+        const date = Date.parse(new Date());
+        this.year = moment(date).format('YYYY');
+        this.month = moment(date).format('M');
       }
     },
     created() {
       const today = new Date();
       this.$EventCalendar.toDate(moment(today).format('YYYY/MM/DD'));
+      this.getCurrentMonth();
       this.fetch();
     }
   };
