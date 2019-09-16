@@ -27,3 +27,17 @@ export const deleteCollectSpace = (params: any) =>
     method: 'get',
     params
   });
+
+export const getOrganization = (params: any) =>
+  request({
+    url: '/org/userList',
+    method: 'get',
+    params
+  });
+
+export const addSpaceReserve = (data: any) =>
+  request({
+    url: '/reserve/add',
+    method: 'post',
+    data
+  });

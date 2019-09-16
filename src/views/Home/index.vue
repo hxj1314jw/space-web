@@ -14,7 +14,7 @@
     <div style="height: 230px">
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(banner, index) in bannerList" :key="index">
-          <img @click="getCurrentPage(banner.id, banner.itemType)" v-lazy="banner.imageUrl" width="100%" height="230px;" style="object-fit: cover;"/>
+          <img @click="getCurrentPage(banner.id, banner.itemType)" v-lazy="ossImageUrl(banner.imageUrl)" width="100%" height="230px;" style="object-fit: cover;"/>
         </van-swipe-item>
       </van-swipe>
     </div>

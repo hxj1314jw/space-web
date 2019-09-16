@@ -79,7 +79,7 @@
         <van-icon v-if="isCollect" name="star" color="#ffb11a" size="25" class="center"/>
         <van-icon v-else name="star-o" size="25" class="center"/>
       </van-button>
-      <van-button type="primary" style="width: 60vw; margin: 0; padding: 0; height: 100%;">
+      <van-button type="primary" @click="toSpaceReserve()" style="width: 60vw; margin: 0; padding: 0; height: 100%;">
         <span class="center van-icon">立即预定</span>
       </van-button>
     </div>
@@ -175,6 +175,10 @@ export default class SpaceDetail extends Vue {
       });
     }
     this.isCollect = !this.isCollect;
+  }
+
+  private toSpaceReserve() {
+    this.$router.push(`/space/reserve/${this.$route.params.id}`);
   }
 }
 </script>
