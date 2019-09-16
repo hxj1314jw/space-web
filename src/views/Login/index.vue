@@ -69,14 +69,14 @@ export default class Login extends Vue {
 
   @Watch("phone")
   private onPhoneChanged(newVal: boolean, oldVal: boolean) {
-      this.onPhoneFocusOut();
-      this.validate();
+    this.onPhoneFocusOut();
+    this.validate();
   }
 
   @Watch("code")
   private onCodeChanged(newVal: boolean, oldVal: boolean) {
-      this.onCodeFocusOut();
-      this.validate();
+    this.onCodeFocusOut();
+    this.validate();
   }
 
   private onClickLeft() {

@@ -237,7 +237,7 @@ export default class SpaceReserve extends Vue {
   background-color: #F3F3F3;
 }
 .van-field--disabled .van-field__control {
-  color: rgb(100, 100, 100);
+  color: rgb(70, 70, 70);
 }
 .ticket-circle {
   width: 20px;

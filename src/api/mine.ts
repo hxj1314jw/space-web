@@ -61,3 +61,10 @@ export const cancelReserve = (params: any) =>
     method: 'get',
     params
   });
+
+export const addOrder = (data: any) =>
+  request({
+    url: '/order/add',
+    method: 'post',
+    data
+  });
