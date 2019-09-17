@@ -151,12 +151,10 @@
       <div style="margin: 0; padding: 0; margin-top: -14px; color: #999999" class="org-desc" v-html="orgForm.remark"/>
     </van-cell> -->
 
-    <van-cell style="margin-top: 10px; padding: 10px; height: 90px;" to="/home/introduce">
-      <div style="border-radius: 3px">
-        <img width="100%" src="../../assets/about.png" height="70px" style="border-radius: 3px; object-fit: cover;"/>
-      </div>
+    <!-- <van-cell style="margin-top: 10px; padding: 0px; height: 90px;" to="/home/introduce">
+      <img width="100%" src="../../assets/about.png" height="90px" style="object-fit: cover;"/>
       <span class="about-title">关于我们</span>
-    </van-cell>
+    </van-cell> -->
   </div>
 </template>
 
@@ -349,12 +347,12 @@
     -webkit-box-orient: vertical
   }
   .about-title {
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 175%;
+    font-size: 200%;
     color: white;
   }
 </style>
