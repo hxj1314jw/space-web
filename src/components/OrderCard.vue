@@ -5,7 +5,7 @@
         <div style="width: 60vw">订单号: {{ orderForm.orderNumber }}</div>
       </template>
       <template slot="default">
-        <span v-if="orderForm.subStatus === '1'" class="order-status" style="color: #23B36E; margin-right: 10px;">分期订单</span>
+        <span v-if="orderForm.subStatus === '1'" class="order-status" style="color: #23B36E; margin-right: 10px;">分期</span>
         <span style="color: #F76C6C">
           <span v-if="orderForm.orderStates === '1'">待支付</span>
           <span v-if="orderForm.orderStates === '2'">待使用</span>

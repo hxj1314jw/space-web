@@ -89,3 +89,10 @@ export const getSubOrderList = (params: any) =>
     method: 'get',
     params
   });
+
+export const cancelSubOrder = (params: any) =>
+  request({
+    url: '/order/cancelSub',
+    method: 'get',
+    params
+  });
