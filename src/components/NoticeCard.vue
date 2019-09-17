@@ -44,8 +44,13 @@ export default class NoticeCard extends Vue {
       status: 1,
       id: this.noticeForm.id
     });
-    if (this.noticeForm.msgType === '4') {
-      this.$router.push(`/mine/ticket/detail/${id}`);
+    switch (this.noticeForm.msgType) {
+      case '1':
+        this.$router.push(`/mine/reserve/detail/${id}`);
+        break;
+      case '4':
+        this.$router.push(`/mine/ticket/detail/${id}`);
+        break;
     }
   }
 }

@@ -7,12 +7,7 @@
             <TicketCard :ticketForm="ticket" :key="index"/>
           </template>
         </div>
-        <div v-else style="text-align: center; margin-top: 90px;">
-          <img width="120px" height="94px" src="../../../assets/icon/no-data.png" />
-          <div style="margin-top: 10px;">
-            <span style="color: #999999">暂无数据</span>
-          </div>
-        </div>
+        <NoData v-else/>
       </van-tab>
       <van-tab title="待参加" name="unjoined">
         <div v-if="ticketList.length !== 0" style="margin-top: -10px;">
@@ -20,12 +15,7 @@
             <TicketCard :ticketForm="ticket" :key="index"/>
           </template>
         </div>
-        <div v-else style="text-align: center; margin-top: 90px;">
-          <img width="120px" height="94px" src="../../../assets/icon/no-data.png" />
-          <div style="margin-top: 10px;">
-            <span style="color: #999999">暂无数据</span>
-          </div>
-        </div>
+        <NoData v-else/>
       </van-tab>
       <van-tab title="待审核" name="unchecked">
         <div v-if="ticketList.length !== 0" style="margin-top: -10px;">
@@ -33,12 +23,7 @@
             <TicketCard :ticketForm="ticket" :key="index"/>
           </template>
         </div>
-        <div v-else style="text-align: center; margin-top: 90px;">
-          <img width="120px" height="94px" src="../../../assets/icon/no-data.png" />
-          <div style="margin-top: 10px;">
-            <span style="color: #999999">暂无数据</span>
-          </div>
-        </div>
+        <NoData v-else/>
       </van-tab>
       <van-tab title="待支付" name="unpaid">
         <div v-if="ticketList.length !== 0" style="margin-top: -10px;">
@@ -46,12 +31,7 @@
             <TicketCard :ticketForm="ticket" :key="index"/>
           </template>
         </div>
-        <div v-else style="text-align: center; margin-top: 90px;">
-          <img width="120px" height="94px" src="../../../assets/icon/no-data.png" />
-          <div style="margin-top: 10px;">
-            <span style="color: #999999">暂无数据</span>
-          </div>
-        </div>
+        <NoData v-else/>
       </van-tab>
     </van-tabs>
   </div>
@@ -60,12 +40,14 @@
 <script lang="ts">
   import { Component, Vue, Prop } from "vue-property-decorator";
   import { getTicketList } from '@/api/mine';
+  import NoData from '@/components/NoData.vue';
   import TicketCard from '@/components/TicketCard.vue';
   import { Tab, Tabs, List, SwipeCell, Button, Dialog } from 'vant';
   Vue.use(Tab).use(Tabs).use(List).use(SwipeCell).use(Button).use(Dialog);
 
   @Component({
     components: {
+      NoData,
       TicketCard
     }
   })

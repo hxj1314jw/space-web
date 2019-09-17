@@ -152,7 +152,10 @@
     </van-cell> -->
 
     <van-cell style="margin-top: 10px; padding: 10px; height: 90px;" to="/home/introduce">
-      <img width="100%" src="../../assets/about.png" />
+      <div style="border-radius: 3px">
+        <img width="100%" src="../../assets/about.png" height="70px" style="border-radius: 3px; object-fit: cover;"/>
+      </div>
+      <span class="about-title">关于我们</span>
     </van-cell>
   </div>
 </template>
@@ -344,5 +347,14 @@
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical
+  }
+  .about-title {
+    letter-spacing: 2px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 175%;
+    color: white;
   }
 </style>

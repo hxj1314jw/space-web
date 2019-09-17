@@ -1,14 +1,65 @@
 <template>
   <div>
-    <van-tabs v-model="activeName" color="#23B36E">
+    <van-tabs v-model="activeName" color="#23B36E"  @click="onClick">
       <van-tab title="全部" name="all">
-        <van-list v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <van-list v-if="orderList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
           <div style="margin-top: -10px;">
             <template v-for="(order, index) in orderList">
               <OrderCard :key="index" :orderForm="order"/>
             </template>
           </div>
         </van-list>
+        <NoData v-else/>
+      </van-tab>
+      <van-tab title="待支付" name="unpaid">
+        <van-list v-if="orderList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
+          <div style="margin-top: -10px;">
+            <template v-for="(order, index) in orderList">
+              <OrderCard :key="index" :orderForm="order"/>
+            </template>
+          </div>
+        </van-list>
+        <NoData v-else/>
+      </van-tab>
+      <van-tab title="待使用" name="unused">
+        <van-list v-if="orderList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
+          <div style="margin-top: -10px;">
+            <template v-for="(order, index) in orderList">
+              <OrderCard :key="index" :orderForm="order"/>
+            </template>
+          </div>
+        </van-list>
+        <NoData v-else/>
+      </van-tab>
+      <van-tab title="已完成" name="used">
+        <van-list v-if="orderList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
+          <div style="margin-top: -10px;">
+            <template v-for="(order, index) in orderList">
+              <OrderCard :key="index" :orderForm="order"/>
+            </template>
+          </div>
+        </van-list>
+        <NoData v-else/>
+      </van-tab>
+      <van-tab title="已取消" name="canceled">
+        <van-list v-if="orderList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
+          <div style="margin-top: -10px;">
+            <template v-for="(order, index) in orderList">
+              <OrderCard :key="index" :orderForm="order"/>
+            </template>
+          </div>
+        </van-list>
+        <NoData v-else/>
+      </van-tab>
+      <van-tab title="已退单" name="deleted">
+        <van-list v-if="orderList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
+          <div style="margin-top: -10px;">
+            <template v-for="(order, index) in orderList">
+              <OrderCard :key="index" :orderForm="order"/>
+            </template>
+          </div>
+        </van-list>
+        <NoData v-else/>
       </van-tab>
     </van-tabs>
   </div>
@@ -17,18 +68,20 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import OrderCard from '@/components/OrderCard.vue';
+import NoData from '@/components/NoData.vue';
 import { getOrderList } from '@/api/mine';
 import { List, Tab, Tabs } from 'vant';
 Vue.use(List).use(Tab).use(Tabs);
 
 @Component({
   components: {
+    NoData,
     OrderCard
   }
 })
 export default class MineOrder extends Vue {
   public orderList: any = [];
-  public status: string = '';
+  public states: string = '';
   public activeName: string = 'all';
   public total: number = 0;
   public page: number = 1;
@@ -50,7 +103,7 @@ export default class MineOrder extends Vue {
     const res: any = await getOrderList({
       page: this.page,
       size: this.size,
-      status: this.status
+      states: this.states
     });
     this.loading = false;
     this.total = Number(res.data.data.total);
@@ -66,6 +119,32 @@ export default class MineOrder extends Vue {
   private onLoad() {
     this.loading = true;
     this.page++;
+    this.fetchOrder();
+  }
+
+  private onClick(value: any) {
+    this.page = 1;
+    this.orderList = [];
+    switch (this.activeName) {
+      case 'all':
+        this.states = '';
+        break;
+      case 'unpaid':
+        this.states = '1';
+        break;
+      case 'unused':
+        this.states = '2';
+        break;
+      case 'used':
+        this.states = '5';
+        break;
+      case 'canceled':
+        this.states = '6';
+        break;
+      case 'deleted':
+        this.states = '7';
+        break;
+    }
     this.fetchOrder();
   }
 }

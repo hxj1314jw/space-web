@@ -82,3 +82,10 @@ export const getOrderList = (params: any) =>
     method: 'get',
     params
   });
+
+export const getSubOrderList = (params: any) =>
+  request({
+    url: '/order/subList',
+    method: 'get',
+    params
+  });

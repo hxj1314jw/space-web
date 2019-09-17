@@ -5,6 +5,7 @@
         <div style="width: 60vw">订单号: {{ orderForm.orderNumber }}</div>
       </template>
       <template slot="default">
+        <span v-if="orderForm.subStatus === '1'" class="order-status" style="color: #23B36E; margin-right: 10px;">分期订单</span>
         <span style="color: #F76C6C">
           <span v-if="orderForm.orderStates === '1'">待支付</span>
           <span v-if="orderForm.orderStates === '2'">待使用</span>
@@ -34,11 +35,7 @@
             <van-icon name="clock-o" style="line-height: inherit; margin-right: 0px;" color="#00B261"/>
             {{orderForm.purchaseBeginTime | dateFmt('YYYY.MM.DD')}}<br>
             <span style="color: #00B261; font-size: large">
-              ￥{{orderForm.amount}} / 
-              <span v-if="orderForm.chargeMethod === '1'">小时</span>
-              <span v-if="orderForm.chargeMethod === '2'">日</span>
-              <span v-if="orderForm.chargeMethod === '3'">月</span>
-              <span v-if="orderForm.chargeMethod === '4'">年</span>
+              ￥{{orderForm.amount || orderForm.price}}
             </span>
           </span>
         </div>
@@ -57,7 +54,12 @@ export default class OrderCard extends Vue {
   @Prop() public orderForm!: any;
 
   private toDetail(orderId: any) {
-    this.$router.push(`/activity/order/${orderId}`);
+    this.$router.push({
+      path: `/mine/order/detail/${orderId}`,
+      query: {
+        status: this.orderForm.subStatus
+      }
+    });
   }
 }
 </script>
