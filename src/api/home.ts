@@ -19,3 +19,9 @@ export const getProjectList = (params: any) =>
     method: 'get',
     params
   });
+
+export const getZoneInfo = () =>
+  request({
+    url: '/zone/detail',
+    method: 'get'
+  });

@@ -19,11 +19,11 @@
       </van-swipe>
     </div>
 
-    <van-grid>
+    <van-grid :column-num="3">
       <van-grid-item to="/home/top" icon="fire-o" text="人气榜"/>
       <van-grid-item to="/home/calendar" icon="calender-o" text="活动日历"/>
       <van-grid-item to="/home/choiceness" icon="award-o" text="空间优选"/>
-      <van-grid-item to="/home/introduce" icon="diamond-o" text="关于我们"/>
+      <!-- <van-grid-item to="/home/introduce" icon="diamond-o" text="关于我们"/> -->
     </van-grid>
 
     <van-cell style="padding-top: 10px; ">
@@ -137,12 +137,29 @@
         </div>
       </template>
     </van-cell>
+
+    <!-- <van-cell style="margin-top: 10px; padding: 10px 16px;">
+      <template slot="title">
+        <van-image style="float: left" round width="3rem" height="3rem" :src="ossImageUrl(orgLogo)" />
+        <span class="org-title">
+          <span style="font-size: large;">{{ orgForm.name }}</span><br>
+          {{ orgForm.address }}
+        </span>
+      </template>
+    </van-cell>
+    <van-cell style="padding: 10px 16px; padding-top: 5px;">
+      <div style="margin: 0; padding: 0; margin-top: -14px; color: #999999" class="org-desc" v-html="orgForm.remark"/>
+    </van-cell> -->
+
+    <van-cell style="margin-top: 10px; padding: 10px; height: 90px;" to="/home/introduce">
+      <img width="100%" src="../../assets/about.png" />
+    </van-cell>
   </div>
 </template>
 
 <script lang="ts">
   import { Component, Vue } from "vue-property-decorator";
-  import { getBannerList, getProductList, getProjectList } from '@/api/home';
+  import { getBannerList, getProductList, getProjectList, getZoneInfo } from '@/api/home';
   import { getActivityList, getActivityTypeList } from '@/api/activity';
   import moment from 'moment';
   import { Search, Swipe, SwipeItem, Lazyload, Grid, GridItem, Cell, Toast, Image, Row, Col, Divider, Card, Button, Tag, Icon } from 'vant';
@@ -154,6 +171,8 @@
 
   export default class Home extends Vue {
     public search: string = '';
+    public orgLogo: string = '';
+    public orgForm: any = {};
     public bannerList: any = [];
     public productTotalList: any = [];
     public productList: any = [];
@@ -167,6 +186,7 @@
       this.fetchActivity();
       this.fetchActivityType();
       this.fetchProject();
+      this.fetchZone();
     }
 
     private async fetchBanner() {
@@ -177,6 +197,7 @@
       });
       const res = await getBannerList();
       this.bannerList = res.data.data;
+      this.orgLogo = res.data.data[0].imageUrl;
       Toast.clear();
     }
 
@@ -187,6 +208,11 @@
       });
       this.productTotalList = res.data.data.rows;
       this.productList = this.productTotalList.slice(0, 4);
+    }
+
+    private async fetchZone() {
+      const res = await getZoneInfo();
+      this.orgForm = res.data.data;
     }
 
     private async fetchProject() {
@@ -304,6 +330,19 @@
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical
+  }
+  .org-title {
+    position: absolute;
+    top: 50%;
+    transform: translate(20px, -50%);
+  }
+  .org-desc {
+    height: 59px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical
   }
 </style>

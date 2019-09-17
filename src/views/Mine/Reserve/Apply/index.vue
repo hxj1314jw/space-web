@@ -5,7 +5,7 @@
     <van-cell-group style="margin-top: 10px">
       <van-cell title="单价" :value="'￥' + reserveForm.price" />
       <van-cell title="数量" value="x 1" />
-      <van-field label="起租日期" :value="reserveForm.retainingStartTime | dateFmt('YYYY-MM-DD')"
+      <van-field label="起租日期" :value="beginTime | dateFmt('YYYY-MM-DD')"
         @click="showBeginTime = true" :is-link="true" disabled="true" input-align="right" error-message-align="right" :error-message="beginTimeErrMsg"/>
       <van-field label="租期时长" v-model="rentNum" input-align="right" type="number" error-message-align="right" :error-message="rentNumErrMsg"/>
     </van-cell-group>
@@ -29,8 +29,8 @@
     </div>
 
      <van-popup v-model="showBeginTime" position="bottom">
-      <van-datetime-picker @confirm="showBeginTime = false;" @cancel="showBeginTime = false;"
-        v-model="reserveForm.retainingStartTime"
+      <van-datetime-picker @confirm="confirmBeginTime" @cancel="showBeginTime = false;"
+        v-model="beginTime"
         type="date"
         :min-date="today"
       />
@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { getReserveInfo, addOrder } from '@/api/mine';
+import { getReserveInfo, addOrder, editOrderAmount } from '@/api/mine';
 import ReserveCard from '@/components/ReserveCard.vue';
 import { CellGroup, Button, Toast, Dialog, Field, Popup, DatetimePicker } from 'vant';
 import moment from 'moment';
@@ -59,6 +59,7 @@ export default class ApplyOrder extends Vue {
   public isValid: boolean  = false;
   public rentNum: number = 1;
   public today: Date = new Date();
+  public beginTime: Date = new Date();
 
   public created() {
     this.fetchReserve();
@@ -99,16 +100,28 @@ export default class ApplyOrder extends Vue {
     vm.$toast.clear();
   }
 
+  private confirmBeginTime(value: any) {
+    this.beginTime = value;
+    this.showBeginTime = false;
+  }
+
   private async addOrder() {
     if (this.isValid) {
       this.reserveForm.startDate = moment(this.reserveForm.retainingStartTime).valueOf();
-      this.reserveForm.retainingStartTime = moment(this.reserveForm.retainingStartTime).format('YYYY-MM-DD HH:mm:SS');
+      this.reserveForm.retainingStartTime = moment(this.beginTime).format('YYYY-MM-DD HH:mm:SS');
       this.reserveForm.rentNum = String(this.rentNum);
       this.reserveForm.amount = String(this.amount);
       this.reserveForm.amountReceived = String(this.amount);
       this.reserveForm.consumerName = this.reserveForm.userName;
       this.reserveForm.consumerPhone = this.reserveForm.userPhone;
-      const res = await addOrder(this.reserveForm);
+      this.reserveForm.zoneProductId = this.reserveForm.productId;
+      try {
+        const res = await addOrder(this.reserveForm);
+        this.beginTimeErrMsg = '';
+        this.$router.push('/mine/reserve/apply/success');
+      } catch (err) {
+        this.beginTimeErrMsg = err.response.data.message;
+      }
     }
   }
 }

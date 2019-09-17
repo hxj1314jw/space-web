@@ -13,6 +13,7 @@
     <van-dropdown-menu active-color="#00B261">
       <van-dropdown-item @change="onSearch()" v-model="type" :options="typeOption"/>
       <van-dropdown-item @change="onSearch()" v-model="price" :options="priceOption"/>
+      <van-dropdown-item @change="onSearch()" v-model="status" :options="statusOption"/>
     </van-dropdown-menu>
 
     <van-list v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
@@ -41,6 +42,7 @@
   export default class Activity extends Vue {
     public search: string = '';
     public type: string = '';
+    public status: string = '';
     public price: string = '';
     public activityList: any = [];
     public typeOption: any = [
@@ -50,6 +52,11 @@
       {text: "全部价格", value: ""},
       {text: "免费", value: "0"},
       {text: "收费", value: "1"}
+    ];
+    public statusOption: any = [
+      {text: "全部状态", value: ""},
+      {text: "正在进行", value: "0"},
+      {text: "已截止", value: "1"}
     ];
     public currentPage: number = 1;
     public total: number = 0;

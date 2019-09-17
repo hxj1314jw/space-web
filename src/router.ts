@@ -37,11 +37,17 @@ export default new Router({
 
         { path: '/mine/ticket', name: 'ticket', component: () => import('./views/Mine/Ticket/index.vue'), meta: { title: '我的票卷', login: 'true' } },
         { path: '/mine/ticket/detail/:id', name: 'ticketDetail', component: () => import('./views/Mine/Ticket/Detail/index.vue'), meta: { title: '票卷详情', login: 'true' } },
+
         { path: '/mine/collect', name: 'collect', component: () => import('./views/Mine/Collect/index.vue'), meta: { title: '我的收藏', login: 'true' } },
+
         { path: '/mine/notice', name: 'notice', component: () => import('./views/Mine/Notice/index.vue'), meta: { title: '我的通知', login: 'true' } },
+
         { path: '/mine/reserve', name: 'reserve', component: () => import('./views/Mine/Reserve/index.vue'), meta: { title: '我的预约', login: 'true' } },
         { path: '/mine/reserve/detail/:id', name: 'reserveDetail', component: () => import('./views/Mine/Reserve/Detail/index.vue'), meta: { title: '预约详情', login: 'true' } },
-        { path: '/mine/reserve/apply/:id', name: 'applyOrder', component: () => import('./views/Mine/Reserve/Apply/index.vue'), meta: { title: '申请订单', login: 'true' } }
+        { path: '/mine/reserve/apply/success', name: 'applyOrderSuccessfullly', component: () => import('./views/Mine/Reserve/Apply/Success/index.vue'), meta: { title: '申请成功', login: 'true' } },
+        { path: '/mine/reserve/apply/:id', name: 'applyOrder', component: () => import('./views/Mine/Reserve/Apply/index.vue'), meta: { title: '申请订单', login: 'true' } },
+
+        { path: '/mine/order', name: 'order', component: () => import('./views/Mine/Order/index.vue'), meta: { title: '我的订单', login: 'true' } }
       ]
     }
   ],

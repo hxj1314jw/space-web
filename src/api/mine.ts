@@ -68,3 +68,17 @@ export const addOrder = (data: any) =>
     method: 'post',
     data
   });
+
+export const editOrderAmount = (data: any) =>
+  request({
+    url: '/order/amount',
+    method: 'post',
+    data
+  });
+
+export const getOrderList = (params: any) =>
+  request({
+    url: '/order/list',
+    method: 'get',
+    params
+  });

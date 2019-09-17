@@ -7,28 +7,19 @@
         </template>
         <template slot="text">
           <div style="text-align: center; margin-top: 20px; line-height: 1.5em;">
-            <span style="color: #333333; font-size: large">报名成功</span><br>
+            <span style="color: #333333; font-size: large">申请成功</span><br>
             <span style="color: #969799; font-size: small;">
-              您已成功报名活动，进入<a href="/mine/ticket">我的票卷</a>查看票卷信息<br>
-              请安排行程准时参加活动
+              您已成功申请订单，进入<a href="/mine/ticket">我的订单</a>查看订单信息<br>
             </span>
 
             <div style="margin: 20px 0;">
               <van-button @click="toHome()" type="primary" size="small" style="margin: 0 5px; width: 80px">返回首页</van-button>
-              <van-button @click="toMineTicket()" plain type="primary" size="small" style="margin: 0 5px; width: 80px">我的票卷</van-button>
+              <van-button @click="toMineTicket()" plain type="primary" size="small" style="margin: 0 5px; width: 80px">我的订单</van-button>
             </div>
           </div>
         </template>
       </van-grid-item>
     </van-grid>
-
-    <div style="padding: 20px 16px;">
-      <span style="font-size: x-small; color: #969799;">
-        温馨提示 :<br>
-        1. 请不要将电子票随意分享给他人，以免被盗用<br>
-        2. 入场前请提前打开电子票，具体签到方式请听从主办方指示
-      </span>
-    </div>
   </div>
 </template>
 
@@ -41,13 +32,13 @@ Vue.use(Grid).use(GridItem).use(Icon).use(Button);
 @Component({
   components: {}
 })
-export default class JoinSuccessfully extends Vue {
+export default class ApplySuccessfully extends Vue {
   private toHome() {
     this.$router.push('/');
   }
 
   private toMineTicket() {
-    this.$router.push('/mine/ticket');
+    this.$router.push('/mine/order');
   }
 }
 </script>

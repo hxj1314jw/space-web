@@ -22,7 +22,9 @@
           <span>
             ￥{{ spaceForm.price }} /
             <span v-if="spaceForm.chargeMethod === '1'">小时</span>
+            <span v-if="spaceForm.chargeMethod === '2'">日</span>
             <span v-if="spaceForm.chargeMethod === '3'">月</span>
+            <span v-if="spaceForm.chargeMethod === '4'">年</span>
           </span>
         </div>
       </div>
