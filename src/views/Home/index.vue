@@ -77,10 +77,10 @@
         <div style="width: 100vw; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; margin: 10px 0;">
           <template v-for="(tag, index) in tagList">
             <span v-if="index === 0" :key="index" style="margin-left: 16px; margin-right: 5px;">
-              <van-image width="7rem" height="10rem" radius="3" fit="cover" :src="ossImageUrl(tag.image)" class="box-shadow" @click="onSearchActivityType(tag.id)"/>
+              <van-image width="7rem" height="10rem" radius="3" fit="cover" :src="ossImageUrl(tag.image)" class="box-shadow" @click="toSearchActivityType(tag.id)"/>
             </span>
             <span v-else :key="index" style="margin: 0 5px;">
-              <van-image width="7rem" height="10rem" radius="3" fit="cover" :src="ossImageUrl(tag.image)" class="box-shadow" @click="onSearchActivityType(tag.id)"/>
+              <van-image width="7rem" height="10rem" radius="3" fit="cover" :src="ossImageUrl(tag.image)" class="box-shadow" @click="toSearchActivityType(tag.id)"/>
             </span>
           </template>
         </div>
@@ -303,15 +303,8 @@
       }
     }
 
-    private onSearchActivityType(activityTypeId: string) {
-      if (activityTypeId) {
-        this.$router.push({
-          path: '/home/search',
-          query: {
-            activityTypeId
-          }
-        });
-      }
+    private toSearchActivityType(activityTypeId: string) {
+      this.$router.push(`/home/type/${activityTypeId}`);
     }
   }
 </script>

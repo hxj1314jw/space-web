@@ -50,8 +50,8 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { getUserInfo } from '@/api/user';
 import { updateAvatar, editUserInfo } from '@/api/mine';
 import moment from 'moment';
-import { Cell, CellGroup, Button, Image, Grid, GridItem, Uploader, Field, Picker, Popup, DatetimePicker } from 'vant';
-Vue.use(Cell).use(CellGroup).use(Button).use(Image).use(Grid).use(GridItem).use(Uploader).use(Field).use(Picker).use(Popup).use(DatetimePicker);
+import { Cell, CellGroup, Button, Image, Grid, GridItem, Uploader, Field, Picker, Popup, DatetimePicker, Toast } from 'vant';
+Vue.use(Cell).use(CellGroup).use(Button).use(Image).use(Grid).use(GridItem).use(Uploader).use(Field).use(Picker).use(Popup).use(DatetimePicker).use(Toast);
 
 @Component({
   components: {}
@@ -95,7 +95,13 @@ export default class MineInfo extends Vue {
   private saveInfo() {
     this.userForm.birthday = moment(this.birthday).format('YYYY-MM-DD');
     editUserInfo(this.userForm).then(() => {
-      this.fetchInfo();
+      this.fetchInfo().then(() => {
+        Toast({
+          message: '修改成功',
+          icon: 'success',
+          duration: 1000
+        });
+      });
     });
   }
 

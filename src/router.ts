@@ -23,6 +23,7 @@ export default new Router({
         { path: '/home/choiceness', name: 'choiceness', component: () => import('./views/Home/Choiceness/index.vue'), meta: { title: '空间优选' } },
         { path: '/home/introduce', name: 'introduce', component: () => import('./views/Home/Introduce/index.vue'), meta: { title: '空间介绍' } },
         { path: '/home/search', name: 'search', component: () => import('./views/Home/Search/index.vue'), meta: { title: '搜索详情' } },
+        { path: '/home/type/:id', name: 'type', component: () => import('./views/Home/Type/index.vue'), meta: { title: '精选榜单' } },
 
         { path: '/space/detail/:id', name: 'spaceDetail', component: () => import('./views/Space/Detail/index.vue'), meta: { title: '空间详情' } },
         { path: '/space/reserve/work/:id', name: 'spaceReserve', component: () => import('./views/Space/Reserve/Work/index.vue'), meta: { title: '办公预约', login: 'true' } },
