@@ -3,10 +3,13 @@
     <van-cell-group>
       <van-cell style="padding: 0px; margin: 0; position: relative;">
         <div style="position: absolute; top: 50%; transform: translate(16px, -50%);">头像</div>
-        <van-uploader style="float: right; margin: 7px; margin-bottom: 0;" :before-read="beforeRead" :after-read="afterRead" :preview-image="true">
+        <van-uploader style="float: right; margin-top: 10px; margin-right: 10px; margin-bottom: 0;" :before-read="beforeRead" :after-read="afterRead" :preview-image="true">
           <van-image round width="3rem" height="3rem" :src="ossImageUrl(userForm.avatar)" fit="cover"/>
         </van-uploader>
       </van-cell>
+    </van-cell-group>
+
+    <van-cell-group style="margin-top: 10px;">
       <van-field label="用户名" input-align="right" v-model="userForm.name" placeholder="请输入用户名" />
       <van-cell @click="showSex = true" title="性别" :value="userForm.sex" is-link/>
       <van-cell @click="showBirth = true" title="生日" :value="birthText" is-link/>
