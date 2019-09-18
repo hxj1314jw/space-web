@@ -1,13 +1,12 @@
 <template>
   <div>
     <van-cell-group>
-      <van-field label="头像">
-        <template slot="input">
-          <van-uploader style="float: right; padding: 0; margin: 0;" :before-read="beforeRead" :after-read="afterRead" :preview-image="true">
-            <van-image round width="24px" height="24px" :src="ossImageUrl(userForm.avatar)" fit="cover"/>
-          </van-uploader>
-        </template>
-      </van-field>
+      <van-cell style="padding: 0px; margin: 0; position: relative;">
+        <div style="position: absolute; top: 50%; transform: translate(16px, -50%);">头像</div>
+        <van-uploader style="float: right; margin: 7px; margin-bottom: 0;" :before-read="beforeRead" :after-read="afterRead" :preview-image="true">
+          <van-image round width="3rem" height="3rem" :src="ossImageUrl(userForm.avatar)" fit="cover"/>
+        </van-uploader>
+      </van-cell>
       <van-field label="用户名" input-align="right" v-model="userForm.name" placeholder="请输入用户名" />
       <van-cell @click="showSex = true" title="性别" :value="userForm.sex" is-link/>
       <van-cell @click="showBirth = true" title="生日" :value="birthText" is-link/>
@@ -123,12 +122,3 @@ export default class MineInfo extends Vue {
   }
 }
 </script>
-
-<style>
-.user-name {
-  position: absolute;
-  top: 50%;
-  transform: translate(15px, -40%);
-  font-size: 150%;
-}
-</style>
