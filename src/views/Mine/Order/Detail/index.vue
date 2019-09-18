@@ -1,7 +1,7 @@
 <template>
   <div>
     <SubOrderDetail v-if="status === '1'" :isAble="isAble"/>
-    <OrderDetail v-else/>
+    <OrderDetail v-else :orderForm="orderForm" :isAble="isAble"/>
   </div>
 </template>
 

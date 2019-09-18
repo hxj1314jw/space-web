@@ -110,3 +110,10 @@ export const getOrderInfo = (params: any) =>
     method: 'get',
     params
   });
+
+export const cancelOrder = (params: any) =>
+  request({
+    url: '/order/cancel',
+    method: 'get',
+    params
+  });

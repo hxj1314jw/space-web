@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="margin-top: -10px; padding-bottom: 50px;">
+    <div style="margin-top: -10px; padding-bottom: 30px;">
       <OrderCard :orderForm="orderForm"/>
 
       <van-cell-group style="margin-top: 10px;">
