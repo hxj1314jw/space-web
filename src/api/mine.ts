@@ -96,3 +96,17 @@ export const cancelSubOrder = (params: any) =>
     method: 'get',
     params
   });
+
+export const addInvoice = (data: any) =>
+  request({
+    url: '/invoice/add',
+    method: 'post',
+    data
+  });
+
+export const getOrderInfo = (params: any) =>
+  request({
+    url: '/order/info',
+    method: 'get',
+    params
+  });
