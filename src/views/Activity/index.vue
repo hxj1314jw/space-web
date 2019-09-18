@@ -56,7 +56,7 @@
     public statusOption: any = [
       {text: "全部状态", value: ""},
       {text: "正在进行", value: "0"},
-      {text: "已截止", value: "1"}
+      {text: "报名截止", value: "1"}
     ];
     public currentPage: number = 1;
     public total: number = 0;
