@@ -129,7 +129,7 @@
       </div>
 
       <div style="text-align: center">
-        <van-button @click="addInvoice()" round type="primary" style="margin: 20px 0; width: 90%;">确定</van-button>
+        <van-button @click="addInvoice()" round type="primary" style="margin: 15px 0; width: 90%;">确定</van-button>
       </div>
     </van-popup>
   </div>
