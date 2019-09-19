@@ -74,6 +74,7 @@
     private onClick(value: any) {
       switch (this.activeName) {
         case 'all':
+          this.status = '';
           break;
         case 'ing':
           this.status = '6';
