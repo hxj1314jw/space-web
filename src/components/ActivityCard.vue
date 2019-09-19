@@ -38,7 +38,18 @@ export default class ActivityCard extends Vue {
   @Prop() public hidden: any;
 
   private toActivityDetail(id: any) {
-    this.$router.push(`/activity/detail/${id}`);
+    switch (this.activityForm.status) {
+      case '10':
+        this.$router.push({
+          path: `/mine/activity/edit`,
+          query: {
+            activityId: id
+          }
+        });
+        break;
+      default:
+        this.$router.push(`/activity/detail/${id}`);
+    }
   }
 }
 </script>

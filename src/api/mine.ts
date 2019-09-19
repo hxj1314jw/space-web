@@ -117,3 +117,10 @@ export const cancelOrder = (params: any) =>
     method: 'get',
     params
   });
+
+export const getMineActivity = (params: any) =>
+  request({
+    url: '/activity/myList',
+    method: 'get',
+    params
+  });

@@ -21,7 +21,7 @@
     <van-cell-group style="margin-top: 10px;">
       <van-cell title="我的名片" to="/mine/info" is-link/>
       <van-cell title="我的订单" to="/mine/order" is-link/>
-      <van-cell title="我的活动" is-link />
+      <van-cell title="我的活动" to="/mine/activity" is-link />
       <van-cell title="我的机构" is-link />
     </van-cell-group>
 

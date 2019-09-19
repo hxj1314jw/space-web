@@ -12,7 +12,7 @@
           clearable
           label="手机"
           placeholder="请输入手机号"
-          type="number"
+          type="tel"
           :error-message="phoneErrMsg"
         />
         <van-field v-model="code" label="验证码" placeholder="请输入验证码" required autocomplete :error-message="codeErrMsg" type="number" maxlength="6">

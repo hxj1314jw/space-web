@@ -75,3 +75,10 @@ export const getActivityOrder = (params: any) =>
     method: 'get',
     params
   });
+
+export const addActivity = (data: any) =>
+  request({
+    url: '/activity/add',
+    method: 'post',
+    data
+  });
