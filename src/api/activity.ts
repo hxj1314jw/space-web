@@ -82,3 +82,17 @@ export const addActivity = (data: any) =>
     method: 'post',
     data
   });
+
+export const addActivityImage = (data: any) =>
+  request({
+    url: '/oss/pictures',
+    method: 'post',
+    data
+  });
+
+export const editActivity = (data: any) =>
+  request({
+    url: '/activity/edit',
+    method: 'post',
+    data
+  });

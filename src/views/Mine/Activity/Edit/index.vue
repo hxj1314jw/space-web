@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="width: 100%; position: absolute; top: 0; bottom: 0; overflow-y: auto; -webkit-overflow-scrolling: touch">
-      <van-uploader :before-read="beforeRead" :preview-image="true">
+      <van-uploader :before-read="beforeRead" :after-read="afterRead" :preview-image="true">
         <van-image v-if="activityForm.image" width="100%" height="230" :src="ossImageUrl(activityForm.image)" fit="cover"/>
         <img v-else src="../../../../assets/upload.png"  style="object-fit: cover; width: 100vw; height: 230px;"/>
       </van-uploader>
@@ -17,8 +17,8 @@
 
       <van-cell-group style="margin-top: 10px;">
         <van-field label="详细地址" required v-model="activityForm.address" placeholder="请输入地址" input-align="right"/>
-        <van-field label="活动分类" required v-model="activityForm.activityTypeId" placeholder="请选择活动分类" input-align="right" is-link disabled/>
-        <van-field label="标签" required v-model="activityForm.tags" placeholder="请选择标签" input-align="right" is-link disabled/>
+        <van-field @click="showType = true" label="活动分类" required v-model="activityType" placeholder="请选择活动分类" input-align="right" is-link disabled/>
+        <van-field @click="showTags = true" label="标签" required v-model="tagText" placeholder="请选择标签" input-align="right" is-link disabled/>
         <van-field label="活动详情" required v-model="activityForm.content" placeholder="请输入活动详情" input-align="right" rows="1" type="textarea" autosize/>
       </van-cell-group>
 
@@ -29,7 +29,7 @@
       <van-radio-group v-model="radio" style="padding: 10px 16px;">
         <van-radio name="1" checked-color="#00B261" icon-size="20" style="margin: 0;">
           <van-cell style="width: 80vw; border-radius: 5px">
-            <span style="font-weight: bold;">个人预约</span><br>
+            <span style="font-weight: bold;">个人创建</span><br>
             <span style="color: #999999; font-size: smaller;">
               <van-icon slot="icon" name="user-o" style="line-height: inherit; margin-right: 3px;" color="#00B261"/>
               姓名：{{ name }}
@@ -73,6 +73,10 @@
       </van-button>
     </div>
 
+    <van-popup v-model="showType" position="bottom">
+      <van-picker :columns="columns" @change="onChange" />
+    </van-popup>
+
     <van-popup v-model="showBeginTime" position="bottom">
       <van-datetime-picker cancel-button-text="重置" @confirm="confirmBeginTime" @cancel="showBeginTime = false; beginTime = moment(today).format('YYYY-MM-DD HH:mm:SS');"
         v-model="activityForm.beginTime"
@@ -82,7 +86,7 @@
     </van-popup>
 
     <van-popup v-model="showEndTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmBeginTime" @cancel="showBeginTime = false; endTime = moment(today).format('YYYY-MM-DD HH:mm:SS');"
+      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEndTime" @cancel="showEndTime = false; endTime = moment(today).format('YYYY-MM-DD HH:mm:SS');"
         v-model="activityForm.endTime"
         type="datetime"
         :min-date="today"
@@ -90,7 +94,7 @@
     </van-popup>
 
     <van-popup v-model="showEnrollBeginTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmBeginTime" @cancel="showEnrollBeginTime = false; enrollBeginTime = moment(today).format('YYYY-MM-DD HH:mm:SS');"
+      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEnrollBeginTime" @cancel="showEnrollBeginTime = false; enrollBeginTime = moment(today).format('YYYY-MM-DD HH:mm:SS');"
         v-model="activityForm.enrollBeginTime"
         type="datetime"
         :min-date="today"
@@ -98,11 +102,27 @@
     </van-popup>
 
     <van-popup v-model="showEnrollEndTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmBeginTime" @cancel="showEnrollEndTime = false; enrollEndTime = moment(today).format('YYYY-MM-DD HH:mm:SS');"
+      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEnrollEndTime" @cancel="showEnrollEndTime = false; enrollEndTime = moment(today).format('YYYY-MM-DD HH:mm:SS');"
         v-model="activityForm.enrollEndTime"
         type="datetime"
         :min-date="today"
       />
+    </van-popup>
+
+    <van-popup v-model="showTags" position="bottom" style="min-height: 50%">
+      <div style="padding: 10px 16px;">
+        <template v-for="(tag, index) in tagList">
+          <div :key="index">
+            <van-field v-model="tagList[index]" center placeholder="请输入标签">
+              <van-button @click="delTag(index)" icon="delete" slot="button" round size="mini" type="danger" />
+            </van-field>
+          </div>
+        </template>
+        <div v-if="tagList.length < 5" @click="addTag()" style="text-align: center; margin: 10px 0;">
+          <span style="color: #00B261">+新增 </span>
+          <span style="color: #999999; font-size: x-small">最多五个</span>
+        </div>
+      </div>
     </van-popup>
   </div>
 </template>
@@ -111,11 +131,11 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { UserModule } from '@/store/modules/user';
 import moment from 'moment';
-import { getActivityDetail, addActivity } from '@/api/activity';
+import { getActivityDetail, addActivity, addActivityImage, getActivityTypeList, editActivity } from '@/api/activity';
 import { getOrganization } from '@/api/space';
 
-import { Image, Toast, Uploader, CellGroup, Field, Cell, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker } from 'vant';
-Vue.use(Image).use(Toast).use(Uploader).use(CellGroup).use(Field).use(Cell).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker);
+import { Image, Toast, Uploader, CellGroup, Field, Cell, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker, Picker } from 'vant';
+Vue.use(Image).use(Toast).use(Uploader).use(CellGroup).use(Field).use(Cell).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Picker);
 
 @Component({
   components: {}
@@ -123,15 +143,22 @@ Vue.use(Image).use(Toast).use(Uploader).use(CellGroup).use(Field).use(Cell).use(
 export default class EditActivity extends Vue {
   public activityForm: any = {};
   public orgList: any = [];
+  public typeList: any = [];
+  public columns: any = [];
+  public tagList: any = [];
   public activityId: any;
   public name: string = this.$store.state.user.name;
   public phone: string = this.$store.state.user.phone;
-  public radio: string = '1';
   public showBeginTime: boolean = false;
   public showEndTime: boolean = false;
   public showEnrollBeginTime: boolean = false;
   public showEnrollEndTime: boolean = false;
+  public showType: boolean = false;
+  public showTags: boolean = false;
   public today: Date = new Date();
+  public radio: string = '1';
+  public tagText: string = '请选择标签';
+  public activityType: string = '';
   public beginTime: string = '';
   public endTime: string = '';
   public enrollBeginTime: string = '';
@@ -140,9 +167,25 @@ export default class EditActivity extends Vue {
   public created() {
     this.activityId = this.$route.query.activityId;
     this.fetchOrg();
+    this.fetchActivityType();
     if (this.activityId) {
       this.fetchActivity();
     }
+  }
+
+  @Watch("tagList")
+  private onTagListChanged(newVal: boolean, oldVal: boolean) {
+    this.tagText = this.tagList.join(',');
+  }
+
+  private addTag() {
+    if (this.tagList[this.tagList.length - 1] || this.tagList.length === 0) {
+      this.tagList.push('');
+    }
+  }
+
+  private delTag(index: number) {
+    this.tagList.splice(index, 1);
   }
 
   private fetchActivity() {
@@ -160,6 +203,15 @@ export default class EditActivity extends Vue {
       document.title = this.activityForm.name;
       Toast.clear();
     });
+  }
+
+  private async fetchActivityType() {
+    const res = await getActivityTypeList();
+    this.typeList = res.data.data;
+    for (const item of res.data.data) {
+      this.columns.push(item.name);
+    }
+    this.activityType = this.columns[0];
   }
 
   private async fetchOrg() {
@@ -183,20 +235,61 @@ export default class EditActivity extends Vue {
     }
   }
 
+  private async afterRead(file: any) {
+    const data = new FormData();
+    data.append('file', file.file);
+    const res = await addActivityImage(data);
+    this.activityForm.image = res.data.data.url;
+  }
+
+  private onChange(picker: any, value: any, index: any) {
+    this.activityType = value;
+    for (const item of this.typeList) {
+      if (item.name === value) {
+        this.activityForm.showType = item.id;
+        break;
+      }
+    }
+  }
+
   private confirmBeginTime(value: any) {
     this.beginTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
-    this.activityForm.beginTime = this.beginTime;
     this.showBeginTime = false;
   }
 
+  private confirmEndTime(value: any) {
+    this.endTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
+    this.showEndTime = false;
+  }
+
+  private confirmEnrollBeginTime(value: any) {
+    this.enrollBeginTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
+    this.showEnrollBeginTime = false;
+  }
+
+  private confirmEnrollEndTime(value: any) {
+    this.enrollEndTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
+    this.showEnrollEndTime = false;
+  }
+
   private toEditTicket() {
-    addActivity(this.activityForm);
+    this.activityForm.beginTime = moment(this.beginTime).valueOf();
+    this.activityForm.endTime = moment(this.endTime).valueOf();
+    this.activityForm.enrollBeginTime = moment(this.enrollBeginTime).valueOf();
+    this.activityForm.enrollEndTime = moment(this.enrollEndTime).valueOf();
+    this.activityForm.tags = this.tagText;
+    console.log(this.activityForm);
+    if (this.$route.query.activityId) {
+      editActivity(this.activityForm);
+    } else {
+      addActivity(this.activityForm);
+    }
   }
 }
 </script>
 
 <style>
-.van-field--disabled .van-field__control {
+.van-field__control:disabled {
   color: rgb(70, 70, 70);
 }
 .ticket-circle {
