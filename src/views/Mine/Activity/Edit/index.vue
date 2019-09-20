@@ -141,7 +141,9 @@ Vue.use(Image).use(Toast).use(Uploader).use(CellGroup).use(Field).use(Cell).use(
   components: {}
 })
 export default class EditActivity extends Vue {
-  public activityForm: any = {};
+  public activityForm: any = {
+    image: ''
+  };
   public orgList: any = [];
   public typeList: any = [];
   public columns: any = [];
@@ -244,12 +246,6 @@ export default class EditActivity extends Vue {
 
   private onChange(picker: any, value: any, index: any) {
     this.activityType = value;
-    for (const item of this.typeList) {
-      if (item.name === value) {
-        this.activityForm.showType = item.id;
-        break;
-      }
-    }
   }
 
   private confirmBeginTime(value: any) {
@@ -273,6 +269,21 @@ export default class EditActivity extends Vue {
   }
 
   private toEditTicket() {
+    for (const item of this.typeList) {
+      if (item.name === this.activityType) {
+        this.activityForm.activityTypeId = item.id;
+        break;
+      }
+    }
+    if (this.radio !== '1') {
+      this.activityForm.userType = '2';
+      this.activityForm.orgId = this.radio;
+    } else {
+      this.activityForm.userType = '1';
+    }
+    this.activityForm.addType = 2;
+    this.activityForm.publisherName = this.name;
+    this.activityForm.publisherPhone = this.phone;
     this.activityForm.beginTime = moment(this.beginTime).valueOf();
     this.activityForm.endTime = moment(this.endTime).valueOf();
     this.activityForm.enrollBeginTime = moment(this.enrollBeginTime).valueOf();

@@ -59,7 +59,10 @@ export default new Router({
         { path: '/mine/activity/ticket/edit/:id', name: 'mineActivityTicketEdit', component: () => import('./views/Mine/Activity/Ticket/Edit/index.vue'), meta: { title: '票种设置', login: 'true' } },
         { path: '/mine/activity/ticket/add/:id', name: 'mineActivityTicketAdd', component: () => import('./views/Mine/Activity/Ticket/Add/index.vue'), meta: { title: '新建票种', login: 'true' } },
         { path: '/mine/activity/ticket/form/:id', name: 'mineActivityTicketForm', component: () => import('./views/Mine/Activity/Ticket/Form/index.vue'), meta: { title: '表单设置', login: 'true' } },
-        { path: '/mine/activity/success', name: 'mineActivitySuccess', component: () => import('./views/Mine/Activity/Success/index.vue'), meta: { title: '发布成功', login: 'true' } }
+        { path: '/mine/activity/success', name: 'mineActivitySuccess', component: () => import('./views/Mine/Activity/Success/index.vue'), meta: { title: '发布成功', login: 'true' } },
+
+        { path: '/mine/organization', name: 'mineOrganization', component: () => import('./views/Mine/Organization/index.vue'), meta: { title: '我的机构', login: 'true' } },
+        { path: '/mine/organization/join', name: 'joinOrganization', component: () => import('./views/Mine/Organization/JoinOrg/index.vue'), meta: { title: '加入机构', login: 'true' } },
       ]
     }
   ],
