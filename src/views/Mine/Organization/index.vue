@@ -27,6 +27,7 @@
           <NoData v-else/>
         </van-tab>
       </van-tabs>
+      <!-- <van-icon @click="toAddOrg()" name="add" color="#00B261" size="50" style="position: fixed; bottom: 66px; right: 10px;"/> -->
     </div>
 
     <div style="position: fixed; bottom: 0; height: 50px;">
@@ -42,8 +43,8 @@
   import OrgCard from '@/components/OrgCard.vue';
   import NoData from '@/components/NoData.vue';
   import { getMyOrgList } from '@/api/organization';
-  import { Button } from 'vant';
-  Vue.use(Button);
+  import { Button, Icon } from 'vant';
+  Vue.use(Button).use(Icon);
 
   @Component({
     components: {
@@ -57,8 +58,6 @@
     public orgList: any = [];
     public activeName: string = 'mine';
     public audit: string = '2';
-
-    @Prop() public hotStatus: any;
 
     public created() {
       this.search = this.$route.query.search;
@@ -99,6 +98,10 @@
 
     private toJoinOrg() {
       this.$router.push('/mine/organization/join');
+    }
+
+    private toAddOrg() {
+      this.$router.push('/mine/organization/edit');
     }
   }
 </script>

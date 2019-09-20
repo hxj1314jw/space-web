@@ -63,6 +63,7 @@ export default new Router({
 
         { path: '/mine/organization', name: 'mineOrganization', component: () => import('./views/Mine/Organization/index.vue'), meta: { title: '我的机构', login: 'true' } },
         { path: '/mine/organization/join', name: 'joinOrganization', component: () => import('./views/Mine/Organization/JoinOrg/index.vue'), meta: { title: '加入机构', login: 'true' } },
+        { path: '/mine/organization/edit', name: 'editOrganization', component: () => import('./views/Mine/Organization/Edit/index.vue'), meta: { title: '编辑机构', login: 'true' } }
       ]
     }
   ],
