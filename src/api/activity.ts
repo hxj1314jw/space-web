@@ -55,6 +55,34 @@ export const getTicketList = (params: any) =>
     params
   });
 
+export const delTicket = (params: any) =>
+  request({
+    url: '/ticket/delete',
+    method: 'get',
+    params
+  });
+
+export const addMyTicket = (data: any) =>
+  request({
+    url: '/ticket/add',
+    method: 'post',
+    data
+  });
+
+export const editTicket = (data: any) =>
+  request({
+    url: '/ticket/edit',
+    method: 'post',
+    data
+  });
+
+export const getTicketInfo = (params: any) =>
+  request({
+    url: '/ticket/info',
+    method: 'get',
+    params
+  });
+
 export const getTicketFieldList = (params: any) =>
   request({
     url: '/form/list',
@@ -65,6 +93,13 @@ export const getTicketFieldList = (params: any) =>
 export const addTicket = (data: any) =>
   request({
     url: '/enroll/add',
+    method: 'post',
+    data
+  });
+
+export const addActivityField = (data: any) =>
+  request({
+    url: '/form/add',
     method: 'post',
     data
   });

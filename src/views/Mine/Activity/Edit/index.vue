@@ -145,7 +145,7 @@ export default class EditActivity extends Vue {
   public orgList: any = [];
   public typeList: any = [];
   public columns: any = [];
-  public tagList: any = [];
+  public tagList: any = ['活动', '办公', '聚会'];
   public activityId: any;
   public name: string = this.$store.state.user.name;
   public phone: string = this.$store.state.user.phone;
@@ -157,7 +157,7 @@ export default class EditActivity extends Vue {
   public showTags: boolean = false;
   public today: Date = new Date();
   public radio: string = '1';
-  public tagText: string = '请选择标签';
+  public tagText: string = this.tagList.join(',');
   public activityType: string = '';
   public beginTime: string = '';
   public endTime: string = '';
@@ -278,11 +278,14 @@ export default class EditActivity extends Vue {
     this.activityForm.enrollBeginTime = moment(this.enrollBeginTime).valueOf();
     this.activityForm.enrollEndTime = moment(this.enrollEndTime).valueOf();
     this.activityForm.tags = this.tagText;
-    console.log(this.activityForm);
     if (this.$route.query.activityId) {
-      editActivity(this.activityForm);
+      editActivity(this.activityForm).then(() => {
+        this.$router.push(`/mine/activity/ticket/edit/${this.$route.query.activityId}`);
+      });
     } else {
-      addActivity(this.activityForm);
+      addActivity(this.activityForm).then((res: any) => {
+        this.$router.push(`/mine/activity/ticket/edit/${res.data.data}`);
+      });
     }
   }
 }

@@ -5,7 +5,7 @@
         <van-list v-if="activityList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
           <div style="margin-top: -10px;">
             <template v-for="(activity, index) in activityList">
-              <ActivityCard :key="index" :activityForm="activity"/>
+              <ActivityCard :key="index" :activityForm="activity" :mine="true"/>
             </template>
           </div>
         </van-list>
@@ -15,7 +15,7 @@
         <van-list v-if="activityList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
           <div style="margin-top: -10px;">
             <template v-for="(activity, index) in activityList">
-              <ActivityCard :key="index" :activityForm="activity"/>
+              <ActivityCard :key="index" :activityForm="activity" :mine="true"/>
             </template>
           </div>
         </van-list>
@@ -25,7 +25,7 @@
         <van-list v-if="activityList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
           <div style="margin-top: -10px;">
             <template v-for="(activity, index) in activityList">
-              <ActivityCard :key="index" :activityForm="activity"/>
+              <ActivityCard :key="index" :activityForm="activity" :mine="true"/>
             </template>
           </div>
         </van-list>

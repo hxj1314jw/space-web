@@ -36,19 +36,18 @@ Vue.use(Card).use(Button).use(Tag).use(Icon).use(Image);
 export default class ActivityCard extends Vue {
   @Prop() public activityForm!: any;
   @Prop() public hidden: any;
+  @Prop() public mine: any;
 
   private toActivityDetail(id: any) {
-    switch (this.activityForm.status) {
-      case '10':
-        this.$router.push({
-          path: `/mine/activity/edit`,
-          query: {
-            activityId: id
-          }
-        });
-        break;
-      default:
-        this.$router.push(`/activity/detail/${id}`);
+    if (this.mine) {
+      this.$router.push({
+        path: `/mine/activity/edit`,
+        query: {
+          activityId: id
+        }
+      });
+    } else {
+      this.$router.push(`/activity/detail/${id}`);
     }
   }
 }
