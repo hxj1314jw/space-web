@@ -10,29 +10,32 @@
       <div slot="action" @click="onSearch">搜索</div>
     </van-search>
 
-    <div style="margin-top: -10px;">
+    <div v-if="orgList.length !== 0" style="margin-top: -10px;">
       <template v-for="(org, index) in orgList">
         <van-swipe-cell :key="index">
           <OrgCard :orgForm="org"/>
           <template slot="right">
-            <van-button @click="joinOrg(org.id)" square type="warning" text="加入" style="height: 100%"/>
+            <van-button @click="joinOrg(org.id)" icon="plus" square type="primary" text="加入" style="height: 100%"/>
           </template>
         </van-swipe-cell>
       </template>
     </div>
+    <NoData v-else/>
   </div>
 </template>
 
 <script lang="ts">
   import { Component, Vue, Prop } from "vue-property-decorator";
   import OrgCard from '@/components/OrgCard.vue';
+  import NoData from '@/components/NoData.vue';
   import { getOrgList, addOrgMember } from '@/api/organization';
-  import { Search, SwipeCell, Button, Toast } from 'vant';
-  Vue.use(Search).use(SwipeCell).use(Button).use(Toast);
+  import { Search, SwipeCell, Button, Toast, Icon } from 'vant';
+  Vue.use(Search).use(SwipeCell).use(Button).use(Toast).use(Icon);
 
   @Component({
     components: {
-      OrgCard
+      OrgCard,
+      NoData
     }
   })
 

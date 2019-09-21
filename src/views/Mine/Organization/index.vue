@@ -2,10 +2,16 @@
   <div>
     <div style="width: 100%; position: absolute; top: 0; bottom: 0; overflow-y: auto; -webkit-overflow-scrolling: touch">
       <van-tabs v-model="activeName" color="#23B36E" @click="onClick">
-        <van-tab title="我的组织" name="mine">
+        <van-tab title="我的机构" name="mine">
           <div v-if="orgList.length !== 0" style="margin-top: -10px;">
             <template v-for="(org, index) in orgList">
-              <OrgCard :key="index" :orgForm="org"/>
+              <van-swipe-cell :key="index">
+                <OrgCard :key="index" :orgForm="org"/>
+                <template slot="right">
+                  <van-button @click="toOrgMember(org.id)" square icon="friends-o" type="warning" text="成员" style="height: 100%"/>
+                  <van-button @click="toEditOrg(org.id)" square icon="edit" type="danger" text="编辑" style="height: 100%"/>
+                </template>
+              </van-swipe-cell>
             </template>
           </div>
           <NoData v-else/>
@@ -27,7 +33,7 @@
           <NoData v-else/>
         </van-tab>
       </van-tabs>
-      <!-- <van-icon @click="toAddOrg()" name="add" color="#00B261" size="50" style="position: fixed; bottom: 66px; right: 10px;"/> -->
+      <van-icon @click="toAddOrg()" name="add" color="#00B261" size="50" style="position: fixed; bottom: 66px; right: 10px;"/>
     </div>
 
     <div style="position: fixed; bottom: 0; height: 50px;">
@@ -43,8 +49,8 @@
   import OrgCard from '@/components/OrgCard.vue';
   import NoData from '@/components/NoData.vue';
   import { getMyOrgList } from '@/api/organization';
-  import { Button, Icon } from 'vant';
-  Vue.use(Button).use(Icon);
+  import { Button, Icon, SwipeCell, Tag } from 'vant';
+  Vue.use(Button).use(Icon).use(SwipeCell).use(Tag);
 
   @Component({
     components: {
@@ -94,6 +100,19 @@
       });
       this.orgList = res.data.data;
       vm.$toast.clear();
+    }
+
+    private toEditOrg(id: any) {
+      this.$router.push({
+        path: `/mine/organization/edit`,
+        query: {
+          orgId: id
+        }
+      });
+    }
+
+    private toOrgMember(id: any) {
+      this.$router.push(`/mine/organization/member/${id}`);
     }
 
     private toJoinOrg() {
