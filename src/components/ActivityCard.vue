@@ -40,12 +40,16 @@ export default class ActivityCard extends Vue {
 
   private toActivityDetail(id: any) {
     if (this.mine) {
-      this.$router.push({
-        path: `/mine/activity/edit`,
-        query: {
-          activityId: id
-        }
-      });
+      if (this.activityForm.status === '5' || this.activityForm.status === '10') {
+        this.$router.push({
+          path: `/mine/activity/edit`,
+          query: {
+            activityId: id
+          }
+        });
+      } else {
+        this.$router.push(`/mine/activity/ticket/data/${id}`);
+      }
     } else {
       this.$router.push(`/activity/detail/${id}`);
     }

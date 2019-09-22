@@ -131,3 +131,38 @@ export const editActivity = (data: any) =>
     method: 'post',
     data
   });
+
+export const getMyActivityTicket = (params: any) =>
+  request({
+    url: '/enroll/list',
+    method: 'get',
+    params
+  });
+
+export const editTicketAudit = (params: any) =>
+  request({
+    url: '/enroll/audit',
+    method: 'get',
+    params
+  });
+
+export const addTicketTeller = (data: any) =>
+  request({
+    url: '/sign/add',
+    method: 'post',
+    data
+  });
+
+export const getTellerList = (params: any) =>
+  request({
+    url: '/sign/list',
+    method: 'get',
+    params
+  });
+
+export const delTeller = (params: any) =>
+  request({
+    url: '/sign/delete',
+    method: 'get',
+    params
+  });

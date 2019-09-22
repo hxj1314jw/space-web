@@ -8,19 +8,19 @@
             <van-image round width="3rem" height="3rem" :src="ossImageUrl(orgForm.institutionLogo)" fit="cover"/>
           </van-uploader>
         </van-cell>
-        <van-field label="机构名称" v-model="orgForm.name" placeholder="请输入机构名称" input-align="right"/>
+        <van-field label="机构名称" v-model="orgForm.name" placeholder="请输入机构名称" input-align="right" required/>
       </van-cell-group>
 
       <van-cell-group style="margin-top: 10px;">
-        <van-field label="负责人姓名" v-model="orgForm.principal" placeholder="请输入负责人姓名" input-align="right"/>
-        <van-field label="负责人电话" v-model="orgForm.companyPhone" placeholder="请输入负责人电话" input-align="right"/>
+        <van-field label="负责人姓名" v-model="orgForm.principal" placeholder="请输入负责人姓名" input-align="right" required/>
+        <van-field label="负责人电话" v-model="orgForm.companyPhone" placeholder="请输入负责人电话" input-align="right" required/>
         <!-- <van-field label="联系人姓名" v-model="orgForm.name" placeholder="请输入联系人姓名" input-align="right"/>
         <van-field label="联系人电话" v-model="orgForm.name" placeholder="请输入联系人电话" input-align="right"/> -->
       </van-cell-group>
 
       <van-cell-group style="margin-top: 10px;">
-        <van-field label="省份" v-model="orgForm.provinces" placeholder="请输入省份" input-align="right"/>
-        <van-field label="详细地址" v-model="orgForm.address" placeholder="请输入详细地址" input-align="right"/>
+        <van-field label="省份" v-model="orgForm.provinces" placeholder="请输入省份" input-align="right" required/>
+        <van-field label="详细地址" v-model="orgForm.address" placeholder="请输入详细地址" input-align="right" required/>
       </van-cell-group>
 
       <van-cell-group style="margin-top: 10px;">

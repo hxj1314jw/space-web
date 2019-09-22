@@ -134,8 +134,8 @@ import moment from 'moment';
 import { getActivityDetail, addActivity, addActivityImage, getActivityTypeList, editActivity } from '@/api/activity';
 import { getOrganization } from '@/api/space';
 
-import { Image, Toast, Uploader, CellGroup, Field, Cell, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker, Picker } from 'vant';
-Vue.use(Image).use(Toast).use(Uploader).use(CellGroup).use(Field).use(Cell).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Picker);
+import { Image, Toast, Uploader, CellGroup, Field, Cell, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker, Picker, Notify } from 'vant';
+Vue.use(Image).use(Toast).use(Uploader).use(CellGroup).use(Field).use(Cell).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Picker).use(Notify);
 
 @Component({
   components: {}
@@ -290,12 +290,24 @@ export default class EditActivity extends Vue {
     this.activityForm.enrollEndTime = moment(this.enrollEndTime).valueOf();
     this.activityForm.tags = this.tagText;
     if (this.$route.query.activityId) {
-      editActivity(this.activityForm).then(() => {
-        this.$router.push(`/mine/activity/ticket/edit/${this.$route.query.activityId}`);
+      editActivity(this.activityForm).then((res: any) => {
+        if (res.data.code === 500) {
+          Notify({ type: 'danger', message: res.data.message });
+        } else {
+          this.$router.push(`/mine/activity/ticket/edit/${this.$route.query.activityId}`);
+        }
+      }).catch((err: any) => {
+        Notify({ type: 'danger', message: err.response.data.message });
       });
     } else {
       addActivity(this.activityForm).then((res: any) => {
-        this.$router.push(`/mine/activity/ticket/edit/${res.data.data}`);
+        if (res.data.code === 500) {
+          Notify({ type: 'danger', message: res.data.message });
+        } else {
+          this.$router.push(`/mine/activity/ticket/edit/${res.data.data}`);
+        }
+      }).catch((err: any) => {
+        Notify({ type: 'danger', message: err.response.data.message });
       });
     }
   }

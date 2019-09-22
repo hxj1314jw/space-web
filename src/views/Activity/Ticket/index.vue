@@ -17,7 +17,7 @@
                 活动时间：{{ activityForm.beginTime | dateFmt('YYYY.MM.DD') }} - {{ activityForm.endTime | dateFmt('YYYY.MM.DD') }}
               </span><br>
               <span style="color: #00B261; font-size: larger">￥{{ ticket.price }}</span>
-              <span style="color: #999999; font-size: x-small; margin-left: 10px;">剩余{{ ticket.totalCount }}张</span>
+              <span style="color: #999999; font-size: x-small; margin-left: 10px;">剩余{{ ticket.totalCount - ticket.soldCount }}张</span>
               <van-divider dashed :hairline="false" style="margin: 3px;"/>
               <span style="color: #999999; font-size: x-small;">备注：{{ ticket.remark || '无' }}</span>
             </van-cell>
