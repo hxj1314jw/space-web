@@ -22,7 +22,7 @@
       </van-tab>
       <van-tab title="空间" name="space">
         <van-list v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
-          <div style="margin-top: -20px;">
+          <div>
             <template v-for="(space, index) in spaceList">
               <SpaceCard :key="index" :spaceForm="space"/>
             </template>

@@ -30,7 +30,7 @@
         </div>
       </van-tab>
       <van-tab title="空间" name="space">
-        <div v-if="spaceList.length !== 0" style="margin-top: -20px;">
+        <div v-if="spaceList.length !== 0">
           <template v-for="(space, index) in spaceList">
             <SpaceCard :key="index" :spaceForm="space"/>
           </template>
