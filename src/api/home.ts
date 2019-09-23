@@ -25,3 +25,17 @@ export const getZoneInfo = () =>
     url: '/zone/detail',
     method: 'get'
   });
+
+export const getBrandDetail = (params: any) =>
+  request({
+    url: '/zone/brand',
+    method: 'get',
+    params
+  });
+
+export const getZoneDetail = (params: any) =>
+  request({
+    url: '/zone/detail',
+    method: 'get',
+    params
+  });
