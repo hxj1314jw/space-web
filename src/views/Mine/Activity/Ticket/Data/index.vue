@@ -30,7 +30,7 @@
       <van-tab title="免费票" name="free">
         <div v-if="ticketList.length !== 0" style="margin-top: -10px;">
           <template v-for="(ticket, index) in ticketList">
-            <van-swipe-cell>
+            <van-swipe-cell :key="index">
               <TicketUser :userForm="ticket"/>
               <template v-if="ticket.audit === 1" slot="right">
                 <van-button @click="pass(ticket.id)" icon="success" square type="primary" text="通过" style="height: 100%"/>
@@ -44,7 +44,7 @@
       <van-tab title="收费票" name="charge">
         <div v-if="ticketList.length !== 0" style="margin-top: -10px;">
           <template v-for="(ticket, index) in ticketList">
-            <van-swipe-cell>
+            <van-swipe-cell :key="index">
               <TicketUser :userForm="ticket"/>
               <template v-if="ticket.audit === 1" slot="right">
                 <van-button @click="pass(ticket.id)" icon="success" square type="primary" text="通过" style="height: 100%"/>
@@ -58,7 +58,7 @@
       <van-tab title="检票员" name="teller">
         <div>
           <template v-for="(teller, index) in tellerList">
-            <van-swipe-cell>
+            <van-swipe-cell :key="index">
               <van-cell>
                 #{{ index }} 检票员
                 <span style="color: #999999">（{{ teller.phone }}）</span>
@@ -100,6 +100,7 @@ export default class MineActivityTicketData extends Vue {
   public activityForm: any = {};
   public ticketList: any = [];
   public tellerList: any = [];
+  public activeName: string = 'free';
   public isFreeFlag: string = '0';
   public phone: string = '';
   public show: boolean = false;
