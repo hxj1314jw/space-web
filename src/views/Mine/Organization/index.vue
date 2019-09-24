@@ -3,16 +3,16 @@
     <div style="width: 100%; position: absolute; top: 0; bottom: 0; overflow-y: auto; -webkit-overflow-scrolling: touch">
       <van-tabs v-model="activeName" color="#23B36E" @click="onClick">
         <van-tab title="我的机构" name="mine">
-          <div v-if="orgList.length !== 0" style="margin-top: -10px;">
-            <template v-for="(org, index) in orgList">
-              <van-swipe-cell :key="index">
-                <OrgCard :key="index" :orgForm="org"/>
-                <template slot="right">
-                  <van-button @click="toOrgMember(org.id)" square icon="friends-o" type="warning" text="成员" style="height: 100%"/>
-                  <van-button @click="toEditOrg(org.id)" square icon="edit" type="danger" text="编辑" style="height: 100%"/>
-                </template>
-              </van-swipe-cell>
-            </template>
+          <div v-if="orgList.length !== 0">
+              <template v-for="(org, index) in orgList">
+                  <div :key="index" style="margin-top: -10px">
+                    <OrgCard :key="index" :orgForm="org"/>
+                    <div style="position: relative; bottom: 30px; float: right; right: 10px;">
+                      <van-icon @click="toOrgMember(org.id)" color="rgb(0, 178, 97)" name="friends-o" size="20px" style="margin: 0 5px;"/>
+                      <van-icon @click="toEditOrg(org.id)" color="#F76C6C" name="edit"  size="20px" style="margin: 0 5px;"/>
+                    </div>
+                  </div>
+              </template>
           </div>
           <NoData v-else/>
         </van-tab>
@@ -49,8 +49,8 @@
   import OrgCard from '@/components/OrgCard.vue';
   import NoData from '@/components/NoData.vue';
   import { getMyOrgList } from '@/api/organization';
-  import { Button, Icon, SwipeCell, Tag } from 'vant';
-  Vue.use(Button).use(Icon).use(SwipeCell).use(Tag);
+  import { Button, Icon, SwipeCell, Tag, Collapse, CollapseItem } from 'vant';
+  Vue.use(Button).use(Icon).use(SwipeCell).use(Tag).use(Collapse).use(CollapseItem);
 
   @Component({
     components: {
@@ -62,6 +62,7 @@
   export default class MineOrg extends Vue {
     public search: any;
     public orgList: any = [];
+    public activeNames: any = [];
     public activeName: string = 'mine';
     public audit: string = '2';
 
