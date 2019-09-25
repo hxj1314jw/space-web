@@ -145,5 +145,6 @@ export default class ActivityDetail extends Vue {
   }
   img {
     max-width: 100%;
+    object-fit: contain;
   }
 </style>
