@@ -24,7 +24,7 @@
           <div style="font-size: small; color: #999999; margin-top: 3px;">签到率(%)</div>
         </van-col>
         <van-col span="6" style="padding-top: 15px;">
-          <div style="font-size: X-large; color: #00B261">{{ activityForm.signNum || '0' }}</div>
+          <div style="font-size: X-large; color: #00B261">{{ ticketAmount || '0' }}</div>
           <div style="font-size: small; color: #999999; margin-top: 3px;">收益额(元)</div>
         </van-col>
       </van-row>
