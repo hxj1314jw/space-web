@@ -9,19 +9,23 @@
         </div>
       </div>
     </div>
-    <div style="position: absolute; top: 130px; left: 5%; height: 80px; width: 90%; background-color: white; border-radius: 5px; text-align: center">
+    <div style="position: absolute; top: 130px; left: 3%; height: 80px; width: 94%; background-color: white; border-radius: 5px; text-align: center">
       <van-row>
-        <van-col span="8" style="padding-top: 15px;">
+        <van-col span="6" style="padding-top: 15px;">
           <div style="font-size: X-large; color: #00B261">{{ activityForm.reportNum || '--' }}</div>
           <div style="font-size: small; color: #999999; margin-top: 3px;">报名数(人)</div>
         </van-col>
-        <van-col span="8" style="padding-top: 15px;">
+        <van-col span="6" style="padding-top: 15px;">
           <div style="font-size: X-large; color: #00B261">{{ activityForm.signNum || '--' }}</div>
           <div style="font-size: small; color: #999999; margin-top: 3px;">签到数(人)</div>
         </van-col>
-        <van-col span="8" style="padding-top: 15px;">
+        <van-col span="6" style="padding-top: 15px;">
           <div style="font-size: X-large; color: #00B261">{{ (activityForm.signNum / activityForm.reportNum * 100) || '--' }}</div>
           <div style="font-size: small; color: #999999; margin-top: 3px;">签到率(%)</div>
+        </van-col>
+        <van-col span="6" style="padding-top: 15px;">
+          <div style="font-size: X-large; color: #00B261">{{ activityForm.signNum || '0' }}</div>
+          <div style="font-size: small; color: #999999; margin-top: 3px;">收益额(元)</div>
         </van-col>
       </van-row>
     </div>
@@ -84,7 +88,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import TicketUser from '@/components/TicketUser.vue';
 import NoData from '@/components/NoData.vue';
-import { getActivityDetail, getMyActivityTicket, editTicketAudit, addTicketTeller, getTellerList, delTeller } from '@/api/activity';
+import { getActivityDetail, getMyActivityTicket, editTicketAudit, addTicketTeller, getTellerList, delTeller, getTicketSum } from '@/api/activity';
 import moment from 'moment';
 import { Tab, Tabs, Row, Col, SwipeCell, Icon, Field, Button, Notify } from 'vant';
 Vue.use(Tab).use(Tabs).use(Row).use(Col).use(SwipeCell).use(Icon).use(Field).use(Button).use(Notify);
@@ -104,10 +108,12 @@ export default class MineActivityTicketData extends Vue {
   public isFreeFlag: string = '0';
   public phone: string = '';
   public show: boolean = false;
+  public ticketAmount: number = 0;
 
   public created() {
     this.fetchActivity();
     this.fetchTicket();
+    this.fetchTicketSum();
   }
 
   private onClick(value: any) {
@@ -129,6 +135,11 @@ export default class MineActivityTicketData extends Vue {
   private async fetchActivity() {
     const res = await getActivityDetail({id: this.$route.params.id});
     this.activityForm = res.data.data.activityDetail;
+  }
+
+  private async fetchTicketSum() {
+    const res = await getTicketSum({id: this.$route.params.id});
+    this.ticketAmount = res.data.data.amount;
   }
 
   private async fetchTicket() {

@@ -166,3 +166,10 @@ export const delTeller = (params: any) =>
     method: 'get',
     params
   });
+
+export const getTicketSum = (params: any) =>
+  request({
+    url: '/activity/amount',
+    method: 'get',
+    params
+  });
