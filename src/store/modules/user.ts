@@ -24,7 +24,7 @@ class User extends VuexModule implements UserState {
     public fromUrl = getFromUrl() || '';
 
     @Action
-    public Login(LoginForm: { phone: string, code: string }) {
+    public Login(LoginForm: { phone: string, code: string, openId: string }) {
         return new Promise((resolve, reject) => {
             service.post('/login', LoginForm).then((res: any) => {
                 setToken(res.data.data.token);

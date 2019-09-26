@@ -160,7 +160,8 @@ export default class Login extends Vue {
       const vm: any = this;
       UserModule.Login({
         phone: this.phone,
-        code: this.code
+        code: this.code,
+        openId: localStorage.openId
       }).then((res: any) => {
         // Notify({
         //   message: '登陆成功',

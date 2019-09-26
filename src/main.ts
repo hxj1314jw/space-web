@@ -45,6 +45,7 @@ router.beforeEach((to, from, next) => {
             window.location.href = process.env.VUE_APP_WX_LOGIN + `?callback=${callback}`;
           } else {
             if (to.query.token && to.query.refreshToken) {
+              localStorage.openId = to.query.openId;
               setToken(String(to.query.token));
               next(getToUrl());
             } else {

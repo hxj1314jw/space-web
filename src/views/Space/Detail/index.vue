@@ -69,6 +69,12 @@
           </van-grid>
         </template>
       </van-cell>
+
+      <!-- <van-cell style="padding-top: 10px; margin-top: 10px;">
+        <div style="margin-top: -90px; margin-left: -10px;">
+          <iframe :src="mapUrl" style="width: 100%; height: 450px;" />
+        </div>
+      </van-cell> -->
     </div>
 
     <div style="position: fixed; bottom: 0; height: 50px;">
@@ -104,6 +110,7 @@ export default class SpaceDetail extends Vue {
   public deviceList: any = [];
   public ableList: any = [];
   public isCollect: boolean = false;
+  public mapUrl: string = '';
 
   public created() {
     this.fetchSpace();
@@ -122,6 +129,8 @@ export default class SpaceDetail extends Vue {
       this.deviceList = res.data.data.deviceList;
       document.title = this.spaceForm.productName;
       this.initAbleList();
+      this.mapUrl = 'https://m.amap.com/search/mapview/keywords=' + this.spaceForm.address;
+      console.log(this.mapUrl);
       Toast.clear();
     });
   }
