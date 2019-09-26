@@ -1,6 +1,8 @@
 <template>
   <div style="margin-top: -10px;">
-    <TicketCard :ticketForm="ticketForm"/>
+    <div @click="toActivityDetail()">
+      <TicketCard :ticketForm="ticketForm"/>
+    </div>
 
     <van-divider style="margin: 0"/>
 
@@ -41,7 +43,7 @@ export default {
   data() {
     return {
       qrcode: "",
-      ticketForm: []
+      ticketForm: {}
     };
   },
 
@@ -60,6 +62,10 @@ export default {
       this.ticketForm = res.data.data;
       Toast.clear();
     },
+
+    toActivityDetail() {
+      this.$router.push(`/activity/detail/${this.ticketForm.activityId}`);
+    }
   },
 
   created() {

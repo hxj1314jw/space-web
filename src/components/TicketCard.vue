@@ -9,7 +9,11 @@
           <span v-if="ticketForm.status === '1'">待支付</span>
           <span v-if="ticketForm.status === '2'">待参加</span>
           <span v-if="ticketForm.status === '3'">待审核</span>
+          <span v-if="ticketForm.status === '4'">已拒绝</span>
+          <span v-if="ticketForm.status === '5'">退票中</span>
+          <span v-if="ticketForm.status === '6'">已过期</span>
           <span v-if="ticketForm.status === '7'">已使用</span>
+          <span v-if="ticketForm.status === '8'">已退票</span>
         </span>
       </template>
     </van-cell>
