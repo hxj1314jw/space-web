@@ -29,7 +29,7 @@
             </span>
           </div>
         </van-cell>
-        <van-cell title="地理位置: " :value="spaceForm.address">
+        <van-cell @click="toMap()" title="地理位置: " :value="spaceForm.address" is-link>
           <van-icon slot="icon" name="location-o" style="line-height: inherit; margin-right: 7px;" color="#00B261"/>
         </van-cell>
         <van-cell title="开放日: ">
@@ -129,10 +129,12 @@ export default class SpaceDetail extends Vue {
       this.deviceList = res.data.data.deviceList;
       document.title = this.spaceForm.productName;
       this.initAbleList();
-      this.mapUrl = 'https://gaode.com/search?query=' + this.spaceForm.address;
-      console.log(this.mapUrl);
       Toast.clear();
     });
+  }
+
+  private toMap() {
+    window.location.href = 'https://m.amap.com/search/mapview/keywords=' + this.spaceForm.address;
   }
 
   private initAbleList() {

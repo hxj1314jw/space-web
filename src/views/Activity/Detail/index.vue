@@ -17,7 +17,7 @@
         <van-cell title="活动时间: " :value="activityDate">
           <van-icon slot="icon" name="clock-o" style="line-height: inherit; margin-right: 7px;" color="#00B261"/>
         </van-cell>
-        <van-cell title="地理位置: " :value="activityForm.address">
+        <van-cell @click="toMap()" title="地理位置: " :value="activityForm.address" is-link>
           <van-icon slot="icon" name="location-o" style="line-height: inherit; margin-right: 7px;" color="#00B261"/>
         </van-cell>
       </van-cell-group>
@@ -101,6 +101,10 @@ export default class ActivityDetail extends Vue {
     getActivitySurplus({activityId: this.$route.params.id}).then((res: any) => {
       this.surplus = res.data.data;
     });
+  }
+
+  private toMap() {
+    window.location.href = 'https://m.amap.com/search/mapview/keywords=' + this.activityForm.address;
   }
 
   private collect() {
