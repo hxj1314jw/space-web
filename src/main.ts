@@ -44,8 +44,8 @@ router.beforeEach((to, from, next) => {
             const callback = encodeURIComponent(process.env.VUE_APP_URL + to.fullPath);
             window.location.href = process.env.VUE_APP_WX_LOGIN + `?callback=${callback}`;
           } else {
+            localStorage.openId = to.query.openId;
             if (to.query.token && to.query.refreshToken) {
-              localStorage.openId = to.query.openId;
               setToken(String(to.query.token));
               next(getToUrl());
             } else {

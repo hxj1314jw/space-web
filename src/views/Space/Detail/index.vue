@@ -129,7 +129,7 @@ export default class SpaceDetail extends Vue {
       this.deviceList = res.data.data.deviceList;
       document.title = this.spaceForm.productName;
       this.initAbleList();
-      this.mapUrl = 'https://m.amap.com/search/mapview/keywords=' + this.spaceForm.address;
+      this.mapUrl = 'https://gaode.com/search?query=' + this.spaceForm.address;
       console.log(this.mapUrl);
       Toast.clear();
     });
