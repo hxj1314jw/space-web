@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getToken } from '@/utils/auth';
+import { UserModule } from '@/store/modules/user';
 
 import { Toast, Notify, Dialog } from 'vant';
 import { getZoneId } from './zone';
@@ -62,6 +63,29 @@ service.interceptors.response.use(
                     background: '#F76C6C'
                 });
                 return Promise.reject(error);
+            }
+        }
+        if (code === 401) {
+            Dialog.alert({
+                message: '登录状态已过期，您可以继续留在该页面，或者重新登录',
+                title: '系统提示',
+                confirmButtonText: '重新登录',
+                cancelButtonText: '取消'
+            }).then(() => {
+                UserModule.Logout().then(() => {
+                    location.reload(); // 为了重新实例化vue-router对象 避免bug
+                });
+            });
+        } else if (code === 403) {
+            // Router.push({ path: '/401' })
+        } else {
+            const errorMsg = error.response.data.message;
+            if (errorMsg !== undefined) {
+                Notify({
+                    message: errorMsg,
+                    duration: 2500,
+                    background: '#F76C6C'
+                });
             }
         }
         return Promise.reject(error);
