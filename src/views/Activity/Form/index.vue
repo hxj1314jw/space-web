@@ -72,7 +72,11 @@ export default class ActivityTicketForm extends Vue {
     for (const field of this.fieldList) {
       switch (field.fieldName) {
         case 'name':
-          field.textStr = this.$store.state.user.name;
+          if ( this.$store.state.user.name !== 'null') {
+            field.textStr = this.$store.state.user.name;
+          } else {
+            field.textStr = '';
+          }
           break;
         case 'phone':
           field.textStr = this.$store.state.user.phone;
