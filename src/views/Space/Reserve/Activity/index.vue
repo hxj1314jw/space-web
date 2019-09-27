@@ -151,6 +151,7 @@ export default class ActivitySpaceReserve extends Vue {
         this.beginTimeErrMsg = "起租时间不能早于或等于当前时间";
         return false;
       } else {
+        this.beginTimeErrMsg = "";
         this.endTimeErrMsg = "";
         return true;
       }

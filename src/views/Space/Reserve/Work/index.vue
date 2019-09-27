@@ -99,8 +99,8 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { getOrganization, addSpaceReserve } from '@/api/space';
 
-import { Step, Steps, Cell, CellGroup, Field, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker, Toast } from 'vant';
-Vue.use(Step).use(Steps).use(Cell).use(CellGroup).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Field).use(Toast);
+import { Step, Steps, Cell, CellGroup, Field, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker, Toast, Notify } from 'vant';
+Vue.use(Step).use(Steps).use(Cell).use(CellGroup).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Field).use(Toast).use(Notify);
 
 @Component({
   components: {}
@@ -184,31 +184,39 @@ export default class SpaceReserve extends Vue {
   private async reserve() {
     await this.validate();
     if (this.isValid && this.radio) {
-      if (this.radio === '1') {
-        addSpaceReserve({
-          accessTime: this.reserveTime.getTime(),
-          retainingStartTime: this.beginTime.getTime(),
-          retainingEndTime: this.endTime.getTime(),
-          productId: this.$route.params.id,
-          productType: '1',
-          userName: this.name,
-          userPhone: this.phone,
-          visitType: '1'
-        }).then(() => {
-          this.$router.push('/space/reserve/success');
+      if (this.name === 'null' || !this.name) {
+        Notify({
+            message: '请先完善个人信息',
+            duration: 2500,
+            background: '#F76C6C'
         });
       } else {
-        addSpaceReserve({
-          accessTime: this.reserveTime.getTime(),
-          retainingStartTime: this.beginTime.getTime(),
-          retainingEndTime: this.endTime.getTime(),
-          productId: this.$route.params.id,
-          orgId: this.radio,
-          productType: '1',
-          visitType: '2'
-        }).then(() => {
-          this.$router.push('/space/reserve/success');
-        });
+        if (this.radio === '1') {
+          addSpaceReserve({
+            accessTime: this.reserveTime.getTime(),
+            retainingStartTime: this.beginTime.getTime(),
+            retainingEndTime: this.endTime.getTime(),
+            productId: this.$route.params.id,
+            productType: '1',
+            userName: this.name,
+            userPhone: this.phone,
+            visitType: '1'
+          }).then(() => {
+            this.$router.push('/space/reserve/success');
+          });
+        } else {
+          addSpaceReserve({
+            accessTime: this.reserveTime.getTime(),
+            retainingStartTime: this.beginTime.getTime(),
+            retainingEndTime: this.endTime.getTime(),
+            productId: this.$route.params.id,
+            orgId: this.radio,
+            productType: '1',
+            visitType: '2'
+          }).then(() => {
+            this.$router.push('/space/reserve/success');
+          });
+        }
       }
     } else {
       this.onEndTimeFocusOut();
