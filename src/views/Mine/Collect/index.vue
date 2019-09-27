@@ -132,7 +132,8 @@
           id: item.productId,
           tags: item.tags,
           hotStatus: item.hotStatus,
-          activityName: item.activityName
+          activityName: item.activityName,
+          status: item.status
         });
       }
       vm.$toast.clear();
