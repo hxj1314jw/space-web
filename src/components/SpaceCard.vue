@@ -4,7 +4,12 @@
     <div style="padding: 10px; padding-top: 5px;">
       <div class="product-name">
         <van-tag v-if="spaceForm.hotStatus" color="#fff7e8" text-color="#ffb11a">优选</van-tag>
-        {{ spaceForm.productName }}
+        {{ spaceForm.productName }} |
+        <span v-if="spaceForm.type === '1'">办公室</span>
+        <span v-if="spaceForm.type === '2'">会议室</span>
+        <span v-if="spaceForm.type === '3'">固定工位</span>
+        <span v-if="spaceForm.type === '4'">自由工位</span>
+        <span v-if="spaceForm.type === '5'">活动空间</span>
       </div>
       <div style="margin-top: 5px; line-height: 1.5em;">
         <span class="space-card-desc">

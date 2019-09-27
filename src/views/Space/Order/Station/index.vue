@@ -4,18 +4,30 @@
       <div style="padding: 10px 16px;">
         <van-steps :active="1" style="background-color: #F3F3F3">
           <van-step>选择空间</van-step>
-          <van-step>预约参访</van-step>
           <van-step>填写订单</van-step>
           <van-step>交易完成</van-step>
         </van-steps>
       </div>
 
       <van-cell-group>
-        <van-field label="起租日期" @click="showBeginTime = true" :value="beginTime | dateFmt('YYYY-MM-DD')" :is-link="true" disabled="true" input-align="right"/>
-        <van-field label="结束日期" @click="showEndTime = true"
-          :value="endTime | dateFmt('YYYY-MM-DD')" :is-link="true" disabled="true" input-align="right" error-message-align="right" :error-message="endTimeErrMsg"/>
-        <van-field label="参访时间" @click="showReserveTime = true"
-          :value="reserveTime | dateFmt('YYYY-MM-DD HH:mm')" :is-link="true" disabled="true" input-align="right" error-message-align="right" :error-message="reserveTimeErrMsg"/>
+        <van-cell>
+          <template slot="title">
+            <span>数量</span>
+          </template>
+          <template>
+            <van-stepper v-model="useNum" min="1" integer/>
+          </template>
+        </van-cell>
+        <van-field label="起租时间" @click="showBeginTime = true"
+          :value="beginTime | dateFmt('YYYY-MM-DD HH:mm')" :is-link="true" disabled="true" input-align="right" error-message-align="right" :error-message="beginTimeErrMsg"/>
+          <van-cell>
+          <template slot="title">
+            <span>租用时长（小时）</span>
+          </template>
+          <template>
+            <van-stepper v-model="rentNum" min="1" integer/>
+          </template>
+        </van-cell>
       </van-cell-group>
 
       <div style="margin-top: 10px; text-align: center">
@@ -76,50 +88,32 @@
         :min-date="today"
       />
     </van-popup>
-
-    <van-popup v-model="showEndTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEndTime" @cancel="showEndTime = false; endTime = today;"
-        v-model="endTime"
-        type="datetime"
-        :min-date="today"
-      />
-    </van-popup>
-
-    <van-popup v-model="showReserveTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmReserveTime" @cancel="showReserveTime = false; reserveTime = today;"
-        v-model="reserveTime"
-        type="datetime"
-        :min-date="today"
-      />
-    </van-popup>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { getOrganization, addSpaceReserve } from '@/api/space';
+import { getOrganization } from '@/api/space';
+import { addOrder } from '@/api/mine';
 
-import { Step, Steps, Cell, CellGroup, Field, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker, Toast, Notify } from 'vant';
-Vue.use(Step).use(Steps).use(Cell).use(CellGroup).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Field).use(Toast).use(Notify);
+import { Step, Steps, Cell, CellGroup, Field, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker, Toast, Notify, Stepper } from 'vant';
+Vue.use(Step).use(Steps).use(Cell).use(CellGroup).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Field).use(Toast).use(Notify).use(Stepper);
 
 @Component({
   components: {}
 })
-export default class SpaceReserve extends Vue {
+export default class StationSpaceOrder extends Vue {
   public orgList: any = [];
   public radio: string = '1';
-  public endTimeErrMsg: string = '';
-  public reserveTimeErrMsg: string = '';
+  public beginTimeErrMsg: string = '';
+  public useNum: number = 1;
+  public rentNum: number = 1;
   public name: string = this.$store.state.user.name;
   public phone: string = this.$store.state.user.phone;
   public showBeginTime: boolean = false;
-  public showEndTime: boolean = false;
-  public showReserveTime: boolean = false;
   public isValid: boolean = false;
   public today: Date = new Date();
   public beginTime: Date = new Date();
-  public endTime: Date = new Date();
-  public reserveTime: Date = new Date();
 
   public created() {
     this.fetchOrg();
@@ -127,41 +121,21 @@ export default class SpaceReserve extends Vue {
 
   @Watch("beginTime")
   private onBeginTimeChanged(newVal: boolean, oldVal: boolean) {
-    this.onEndTimeFocusOut();
+    this.onBeginTimeFocusOut();
   }
 
-  @Watch("endTime")
-  private onEndTimeChanged(newVal: boolean, oldVal: boolean) {
-    this.onEndTimeFocusOut();
-  }
-
-  @Watch("reserveTime")
-  private onReserveTimeChanged(newVal: boolean, oldVal: boolean) {
-    this.onReserveTimeFocusOut();
-  }
-
-  private onEndTimeFocusOut() {
-    if (this.endTime.getTime() <= this.beginTime.getTime()) {
-      this.endTimeErrMsg = "结束日期不能早于或等于起租日期";
-      return false;
+  private onBeginTimeFocusOut() {
+    if (this.beginTime.getTime() <= this.today.getTime()) {
+    this.beginTimeErrMsg = "起租时间不能早于或等于当前时间";
+    return false;
     } else {
-      this.endTimeErrMsg = "";
-      return true;
-    }
-  }
-
-    private onReserveTimeFocusOut() {
-    if (this.reserveTime.getTime() <= this.today.getTime()) {
-      this.reserveTimeErrMsg = "参访时间不能早于或等于当前时间";
-      return false;
-    } else {
-      this.reserveTimeErrMsg = "";
-      return true;
+    this.beginTimeErrMsg = "";
+    return true;
     }
   }
 
   private validate() {
-    if (this.onEndTimeFocusOut() && this.onReserveTimeFocusOut()) {
+    if (this.onBeginTimeFocusOut()) {
       this.isValid = true;
     } else {
       this.isValid = false;
@@ -192,50 +166,50 @@ export default class SpaceReserve extends Vue {
         });
       } else {
         if (this.radio === '1') {
-          addSpaceReserve({
-            accessTime: this.reserveTime.getTime(),
-            retainingStartTime: this.beginTime.getTime(),
-            retainingEndTime: this.endTime.getTime(),
-            productId: this.$route.params.id,
-            productType: '1',
-            userName: this.name,
-            userPhone: this.phone,
-            visitType: '1'
-          }).then(() => {
-            this.$router.push('/space/reserve/success');
+          addOrder({
+            consumerName: this.name,
+            consumerPhone: this.phone,
+            productType: this.$route.query.type,
+            purchaseMethod: '1',
+            rentNum: this.rentNum,
+            startDate: this.beginTime.getTime(),
+            useNum: this.useNum,
+            zoneProductId: this.$route.params.id
+          }).then((res: any) => {
+            this.$router.push({
+              path: `/mine/order/detail/${res.data.data}`,
+              query: {
+                status: '0'
+              }
+            });
           });
         } else {
-          addSpaceReserve({
-            accessTime: this.reserveTime.getTime(),
-            retainingStartTime: this.beginTime.getTime(),
-            retainingEndTime: this.endTime.getTime(),
-            productId: this.$route.params.id,
+          addOrder({
             orgId: this.radio,
-            productType: '1',
-            visitType: '2'
-          }).then(() => {
-            this.$router.push('/space/reserve/success');
+            productType: this.$route.query.type,
+            purchaseMethod: '2',
+            rentNum: this.rentNum,
+            startDate: this.beginTime.getTime(),
+            useNum: this.useNum,
+            zoneProductId: this.$route.params.id
+          }).then((res: any) => {
+            this.$router.push({
+              path: `/mine/order/detail/${res.data.data}`,
+              query: {
+                status: '0'
+              }
+            });
           });
         }
       }
     } else {
-      this.onEndTimeFocusOut();
-      this.onReserveTimeFocusOut();
+      this.onBeginTimeFocusOut();
     }
   }
 
   private confirmBeginTime(value: any) {
     this.beginTime = value;
     this.showBeginTime = false;
-  }
-
-  private confirmEndTime(value: any) {
-    this.endTime = value;
-    this.showEndTime = false;
-  }
-  private confirmReserveTime(value: any) {
-    this.reserveTime = value;
-    this.showReserveTime = false;
   }
 }
 </script>

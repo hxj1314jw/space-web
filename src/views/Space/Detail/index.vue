@@ -85,7 +85,10 @@
         <van-icon v-if="isCollect" name="star" color="#ffb11a" size="25" class="center"/>
         <van-icon v-else name="star-o" size="25" class="center"/>
       </van-button>
-      <van-button type="primary" @click="toSpaceReserve()" style="width: 60vw; margin: 0; padding: 0; height: 100%;">
+      <van-button v-if="spaceForm.type === '2' || spaceForm.type === '4'" type="primary" @click="toAddOrder()" style="width: 60vw; margin: 0; padding: 0; height: 100%;">
+        <span class="center van-icon">立即下单</span>
+      </van-button>
+      <van-button v-else type="primary" @click="toSpaceReserve()" style="width: 60vw; margin: 0; padding: 0; height: 100%;">
         <span class="center van-icon">立即预定</span>
       </van-button>
     </div>
@@ -197,6 +200,15 @@ export default class SpaceDetail extends Vue {
         this.$router.push(`/space/reserve/work/${this.$route.params.id}`);
         break;
     }
+  }
+
+  private toAddOrder() {
+    this.$router.push({
+      path: `/space/order/${this.$route.params.id}`,
+      query: {
+        type: this.spaceForm.type
+      }
+    });
   }
 }
 </script>

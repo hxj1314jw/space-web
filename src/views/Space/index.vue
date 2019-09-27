@@ -45,7 +45,10 @@
     public spaceList: any = [];
     public typeOption: any = [
       {text: '全部类型', value: ""},
-      {text: '办公空间', value: "1"},
+      {text: '办公室', value: "1"},
+      {text: '会议室', value: "2"},
+      {text: '固定工位', value: "3"},
+      {text: '自由工位', value: "4"},
       {text: '活动空间', value: "5"}
     ];
     public methodOption: any = [
