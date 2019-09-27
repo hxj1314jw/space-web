@@ -41,6 +41,12 @@ class User extends VuexModule implements UserState {
     }
 
     @Action
+    public SetUserInfo(name: string) {
+        setName(name);
+        this.SET_NAME(name);
+    }
+
+    @Action
     public Logout() {
         return new Promise((resolve) => {
             removeToken();

@@ -49,8 +49,10 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { getUserInfo } from '@/api/user';
 import { updateAvatar, editUserInfo } from '@/api/mine';
+import { UserModule } from '@/store/modules/user';
 import moment from 'moment';
 import { Cell, CellGroup, Button, Image, Grid, GridItem, Uploader, Field, Picker, Popup, DatetimePicker, Toast } from 'vant';
+import { setName } from '../../../utils/auth';
 Vue.use(Cell).use(CellGroup).use(Button).use(Image).use(Grid).use(GridItem).use(Uploader).use(Field).use(Picker).use(Popup).use(DatetimePicker).use(Toast);
 
 @Component({
@@ -96,6 +98,7 @@ export default class MineInfo extends Vue {
     this.userForm.birthday = moment(this.birthday).format('YYYY-MM-DD');
     editUserInfo(this.userForm).then(() => {
       this.fetchInfo().then(() => {
+        UserModule.SetUserInfo(this.userForm.name);
         Toast({
           message: '修改成功',
           icon: 'success',
