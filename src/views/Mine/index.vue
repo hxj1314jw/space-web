@@ -39,6 +39,7 @@ import { UserModule } from '@/store/modules/user';
 import { getUserInfo } from '@/api/user';
 import { updateAvatar, editUserInfo } from '@/api/mine';
 import { Cell, CellGroup, Button, Image, Grid, GridItem, Uploader } from 'vant';
+import {setName} from "@/utils/auth";
 Vue.use(Cell).use(CellGroup).use(Button).use(Image).use(Grid).use(GridItem).use(Uploader);
 
 @Component({
@@ -60,6 +61,7 @@ export default class Mine extends Vue {
     });
     const res: any = await getUserInfo();
     this.userForm = res.data.data;
+    setName(this.userForm.name);
     vm.$toast.clear();
   }
 
