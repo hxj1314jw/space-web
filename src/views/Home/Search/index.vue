@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-search
+    <!-- <van-search
       style="flex: 1;"
       v-model="search"
       placeholder="请输入关键字搜索"
@@ -8,7 +8,7 @@
       shape="round"
       @search="onSearch">
       <div slot="action" @click="onSearch">搜索</div>
-    </van-search>
+    </van-search> -->
 
     <van-tabs v-model="activeName" color="#23B36E" @click="onClick">
       <van-tab title="活动" name="activity">

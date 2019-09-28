@@ -250,22 +250,34 @@ export default class EditActivity extends Vue {
 
   private confirmBeginTime(value: any) {
     this.beginTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
+    this.activityForm.beginTime = moment(value).valueOf();
     this.showBeginTime = false;
   }
 
   private confirmEndTime(value: any) {
     this.endTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
+    this.activityForm.endTime = moment(value).valueOf();
     this.showEndTime = false;
   }
 
   private confirmEnrollBeginTime(value: any) {
     this.enrollBeginTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
+    this.activityForm.enrollBeginTime = moment(value).valueOf();
     this.showEnrollBeginTime = false;
   }
 
   private confirmEnrollEndTime(value: any) {
     this.enrollEndTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
+    this.activityForm.enrollEndTime = moment(value).valueOf();
     this.showEnrollEndTime = false;
+  }
+
+  private toTimeZone() {
+    this.activityForm.beginTime = moment(this.beginTime).valueOf();
+    this.activityForm.endTime = moment(this.endTime).valueOf();
+    this.activityForm.enrollBeginTime = moment(this.enrollBeginTime).valueOf();
+    this.activityForm.enrollEndTime = moment(this.enrollEndTime).valueOf();
+    console.log(this.activityForm);
   }
 
   private toEditTicket() {
@@ -284,10 +296,7 @@ export default class EditActivity extends Vue {
     this.activityForm.addType = 2;
     this.activityForm.publisherName = this.name;
     this.activityForm.publisherPhone = this.phone;
-    this.activityForm.beginTime = moment(this.beginTime).valueOf();
-    this.activityForm.endTime = moment(this.endTime).valueOf();
-    this.activityForm.enrollBeginTime = moment(this.enrollBeginTime).valueOf();
-    this.activityForm.enrollEndTime = moment(this.enrollEndTime).valueOf();
+    this.toTimeZone();
     this.activityForm.tags = this.tagText;
     if (this.$route.query.activityId) {
       editActivity(this.activityForm).then((res: any) => {

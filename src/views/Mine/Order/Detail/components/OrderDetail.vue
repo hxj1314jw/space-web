@@ -9,7 +9,7 @@
 
       <van-cell-group style="margin-top: 10px;">
         <van-cell title="单价" :value="'￥' + orderForm.price" />
-        <van-cell title="数量" value="x 1" />
+        <van-cell title="数量" :value="'x ' + orderForm.useNum" />
         <van-cell title="起租日期" :value="orderForm.purchaseBeginTime | dateFmt('YYYY-MM-DD')" />
         <van-cell title="起租时长" :value="orderForm.rentNum" />
       </van-cell-group>
@@ -122,6 +122,9 @@
           <van-field v-model="invoiceForm.email" :border="false" style="padding: 0;">
             <span slot="label" style="font-size: smaller; color: #999999">收票人邮箱：</span>
           </van-field>
+          <van-field v-model="invoiceForm.name" v-if="invoiceForm.invoiceType == '2'" :border="false" style="padding: 0;">
+            <span slot="label" style="font-size: smaller; color: #999999">收票人姓名：</span>
+          </van-field>
           <van-field v-model="invoiceForm.address" v-if="invoiceForm.invoiceType == '2'" :border="false" style="padding: 0;">
             <span slot="label" style="font-size: smaller; color: #999999">收票人地址：</span>
           </van-field>
@@ -209,7 +212,9 @@ export default class OrderDetail extends Vue {
   }
 
   private addInvoice() {
-    addInvoice(this.invoiceForm);
+    addInvoice(this.invoiceForm).then(() => {
+      this.showInvoice = false;
+    });
   }
 
   private cancelOrder() {

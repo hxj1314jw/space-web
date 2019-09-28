@@ -31,9 +31,9 @@ service.interceptors.request.use(
 // response 拦截器
 service.interceptors.response.use(
     (response: { status: any; message: any; data: any; }) => {
-        const code = response.status;
+        const code = response.data.code;
         if (code < 200 || code > 300) {
-            Toast.fail(response.message);
+            Toast.fail(response.data.message);
             return Promise.reject('error');
         } else {
             return response;
