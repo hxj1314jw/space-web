@@ -32,9 +32,9 @@
       </div>
     </div>
 
-    <div style="width: 100%; text-align: center; position: absolute; bottom: 0;">
+    <!-- <div style="width: 100%; text-align: center; position: absolute; bottom: 0;">
       <img width="80px" height="30px" style="margin-bottom: 20px;" src="../../assets/youkong_logo.png" />
-    </div>
+    </div> -->
   </div>
 </template>
 
