@@ -46,6 +46,7 @@ router.beforeEach((to, from, next) => {
           } else {
             localStorage.openId = to.query.openId;
             if (to.query.token && to.query.refreshToken) {
+              UserModule.GetUserInfo(to.query.token);
               setToken(String(to.query.token));
               next(getToUrl());
             } else {

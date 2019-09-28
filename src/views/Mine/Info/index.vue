@@ -98,7 +98,7 @@ export default class MineInfo extends Vue {
     this.userForm.birthday = moment(this.birthday).format('YYYY-MM-DD');
     editUserInfo(this.userForm).then(() => {
       this.fetchInfo().then(() => {
-        UserModule.SetUserInfo(this.userForm.name);
+        UserModule.SetUserInfo(this.userForm.name, this.userForm.phone);
         Toast({
           message: '修改成功',
           icon: 'success',

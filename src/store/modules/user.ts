@@ -41,9 +41,28 @@ class User extends VuexModule implements UserState {
     }
 
     @Action
-    public SetUserInfo(name: string) {
+    public GetUserInfo(token: any) {
+        return new Promise((resolve, reject) => {
+            service.get('/user/userInfo', {
+                headers: {'AUTH-TOKEN': token}
+            }).then((res: any) => {
+                setName(res.data.data.name);
+                setPhone(res.data.data.phone);
+                this.SET_NAME(res.data.data.name);
+                this.SET_PHONE(res.data.data.phone);
+                resolve();
+            }).catch((err: any) => {
+                reject(err.response.data.msg);
+            });
+        });
+    }
+
+    @Action
+    public SetUserInfo(name: string, phone: string) {
         setName(name);
+        setPhone(phone);
         this.SET_NAME(name);
+        this.SET_PHONE(phone);
     }
 
     @Action
