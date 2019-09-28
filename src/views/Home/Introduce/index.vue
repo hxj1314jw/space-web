@@ -30,10 +30,10 @@
             </template>
           </van-cell>
 
-          <van-cell title="资质" is-link @click="showQualify()">
+          <van-cell title="协议" is-link @click="showQualify()">
             <van-icon slot="icon" name="orders-o" style="line-height: inherit; margin-right: 7px;" color="#00B261"/>
             <template>
-              查看空间资质
+              查看空间协议
             </template>
           </van-cell>
         </van-cell-group>
