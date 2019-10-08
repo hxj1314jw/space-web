@@ -12,12 +12,12 @@
 
     <div v-if="orgList.length !== 0" style="margin-top: -10px;">
       <template v-for="(org, index) in orgList">
-        <van-swipe-cell :key="index">
+        <div :key="index">
           <OrgCard :orgForm="org"/>
-          <template slot="right">
-            <van-button @click="joinOrg(org.id)" icon="plus" square type="primary" text="加入" style="height: 100%"/>
-          </template>
-        </van-swipe-cell>
+            <div style="position: relative; bottom: 30px; float: right; right: 10px;">
+              <van-icon @click="joinOrg(org.id)" color="rgb(0, 178, 97)" name="add-o"  size="20px" style="margin: 0 5px;"/>
+            </div>
+        </div>
       </template>
     </div>
     <NoData v-else/>
@@ -29,8 +29,8 @@
   import OrgCard from '@/components/OrgCard.vue';
   import NoData from '@/components/NoData.vue';
   import { getOrgList, addOrgMember } from '@/api/organization';
-  import { Search, SwipeCell, Button, Toast, Icon } from 'vant';
-  Vue.use(Search).use(SwipeCell).use(Button).use(Toast).use(Icon);
+  import { Search, Cell, Button, Toast, Icon } from 'vant';
+  Vue.use(Search).use(Cell).use(Button).use(Toast).use(Icon);
 
   @Component({
     components: {
