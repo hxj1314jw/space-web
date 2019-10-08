@@ -19,7 +19,7 @@
         <van-field label="详细地址" required v-model="activityForm.address" placeholder="请输入地址" input-align="right"/>
         <van-field @click="showType = true" label="活动分类" required v-model="activityType" placeholder="请选择活动分类" input-align="right" is-link disabled/>
         <van-field @click="showTags = true" label="标签" required v-model="tagText" placeholder="请选择标签" input-align="right" is-link disabled/>
-        <van-field label="活动详情" required v-model="activityForm.content" placeholder="请输入活动详情" input-align="right" rows="1" type="textarea" autosize/>
+        <van-field label="活动详情" @click="showContent = true" required input-align="right" rows="1" type="textarea" autosize is-link readonly/>
       </van-cell-group>
 
       <div style="margin-top: 10px; text-align: center">
@@ -72,6 +72,10 @@
         <span class="center van-icon">下一步</span>
       </van-button>
     </div>
+
+    <van-popup v-model="showContent" position="bottom" style="min-height: 30%; max-height: 70%">
+      <VueQuillEditor @func="getActivityContent" :activityContent="activityForm.content"/>      
+    </van-popup>
 
     <van-popup v-model="showType" position="bottom">
       <van-picker :columns="columns" @change="onChange" />
@@ -131,6 +135,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { UserModule } from '@/store/modules/user';
 import moment from 'moment';
+import VueQuillEditor from '@/components/VueQuillEditor.vue';
 import { getActivityDetail, addActivity, addActivityImage, getActivityTypeList, editActivity } from '@/api/activity';
 import { getOrganization } from '@/api/space';
 
@@ -138,7 +143,9 @@ import { Image, Toast, Uploader, CellGroup, Field, Cell, RadioGroup, Radio, Icon
 Vue.use(Image).use(Toast).use(Uploader).use(CellGroup).use(Field).use(Cell).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Picker).use(Notify);
 
 @Component({
-  components: {}
+  components: {
+    VueQuillEditor
+  }
 })
 export default class EditActivity extends Vue {
   public activityForm: any = {
@@ -157,6 +164,7 @@ export default class EditActivity extends Vue {
   public showEnrollEndTime: boolean = false;
   public showType: boolean = false;
   public showTags: boolean = false;
+  public showContent: boolean = false;
   public today: Date = new Date();
   public radio: string = '1';
   public tagText: string = this.tagList.join(',');
@@ -178,6 +186,11 @@ export default class EditActivity extends Vue {
   @Watch("tagList")
   private onTagListChanged(newVal: boolean, oldVal: boolean) {
     this.tagText = this.tagList.join(',');
+  }
+
+  private getActivityContent(content: any) {
+    this.activityForm.content = content;
+    this.showContent = false;
   }
 
   private addTag() {
@@ -277,7 +290,6 @@ export default class EditActivity extends Vue {
     this.activityForm.endTime = moment(this.endTime).valueOf();
     this.activityForm.enrollBeginTime = moment(this.enrollBeginTime).valueOf();
     this.activityForm.enrollEndTime = moment(this.enrollEndTime).valueOf();
-    console.log(this.activityForm);
   }
 
   private toEditTicket() {
