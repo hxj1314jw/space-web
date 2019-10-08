@@ -19,7 +19,7 @@
         <van-field label="详细地址" required v-model="activityForm.address" placeholder="请输入地址" input-align="right"/>
         <van-field @click="showType = true" label="活动分类" required v-model="activityType" placeholder="请选择活动分类" input-align="right" is-link disabled/>
         <van-field @click="showTags = true" label="标签" required v-model="tagText" placeholder="请选择标签" input-align="right" is-link disabled/>
-        <van-field label="活动详情" @click="showContent = true" required input-align="right" rows="1" type="textarea" autosize is-link readonly/>
+        <van-field label="活动详情" @click="showContent = true" required is-link readonly/>
       </van-cell-group>
 
       <div style="margin-top: 10px; text-align: center">
@@ -73,7 +73,7 @@
       </van-button>
     </div>
 
-    <van-popup v-model="showContent" position="bottom" style="min-height: 30%; max-height: 70%">
+    <van-popup v-model="showContent" position="bottom" style="min-height: 30%; max-height: 70%" :safe-area-inset-bottom="true">
       <VueQuillEditor @func="getActivityContent" :activityContent="activityForm.content"/>      
     </van-popup>
 

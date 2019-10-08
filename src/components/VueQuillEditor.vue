@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div class="van-hairline--top-bottom van-picker__toolbar">
+      <button @click="saveHtml" class="van-picker__cancel">取消</button>
+      <button @click="saveHtml" class="van-picker__confirm">确认</button>
+    </div>
     <quill-editor 
       v-model="content" 
       ref="myQuillEditor" 
@@ -8,11 +12,11 @@
       @change="onEditorChange($event)">
     </quill-editor>
 
-    <van-button
+    <!-- <van-button
       type="primary"
       @click="saveHtml"
       style="margin: 15px 0; width: 95vw; margin-left: 2.5vw"
-    >确定</van-button>
+    >确定</van-button> -->
 
     <van-uploader :after-read="afterRead" style="display: none"/>
   </div>
@@ -23,12 +27,12 @@
   import { addActivityImage } from '@/api/activity';
 
   import VueQuillEditor from 'vue-quill-editor';
-  import { Button, Uploader } from 'vant';
+  import { DatetimePicker, Uploader } from 'vant';
   import 'quill/dist/quill.core.css';
   import 'quill/dist/quill.snow.css';
   import 'quill/dist/quill.bubble.css';
   
-  Vue.use(VueQuillEditor).use(Button).use(Uploader);
+  Vue.use(VueQuillEditor).use(DatetimePicker).use(Uploader);
 
   export default {
     name: 'VueQuillEditor',
@@ -92,7 +96,18 @@
 </script>
 
 <style>
-.ql-editor {
-  min-height: 250px;
+.van-picker__cancel, .van-picker__confirm {
+    padding: 0 16px;
+    color: #1989fa;
+    font-size: 14px;
+    background-color: transparent;
+    border: none;
+}
+.ql-toolbar.ql-snow {
+    border: 0px;;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    padding: 8px;
 }
 </style>
