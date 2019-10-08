@@ -4,7 +4,7 @@
       <button @click="saveHtml" class="van-picker__cancel">取消</button>
       <button @click="saveHtml" class="van-picker__confirm">确认</button>
     </div>
-    <quill-editor 
+    <quill-editor
       v-model="content" 
       ref="myQuillEditor" 
       :options="editorOption" 
@@ -104,10 +104,9 @@
     border: none;
 }
 .ql-toolbar.ql-snow {
-    border: 0px;;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-    padding: 8px;
+    border: 0px;
+}
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+  border: 0px;
 }
 </style>

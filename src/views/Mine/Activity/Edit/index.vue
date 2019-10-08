@@ -73,7 +73,7 @@
       </van-button>
     </div>
 
-    <van-popup v-model="showContent" position="bottom" style="min-height: 30%; max-height: 70%" :safe-area-inset-bottom="true">
+    <van-popup v-model="showContent" position="bottom" style="min-height: 70%; max-height: 100%" :safe-area-inset-bottom="true">
       <VueQuillEditor @func="getActivityContent" :activityContent="activityForm.content"/>      
     </van-popup>
 
