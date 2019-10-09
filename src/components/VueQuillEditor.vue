@@ -4,6 +4,7 @@
       <button @click="saveHtml" class="van-picker__cancel">取消</button>
       <button @click="saveHtml" class="van-picker__confirm">确认</button>
     </div>
+    
     <quill-editor
       v-model="content" 
       ref="myQuillEditor" 
@@ -11,12 +12,6 @@
       @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
       @change="onEditorChange($event)">
     </quill-editor>
-
-    <!-- <van-button
-      type="primary"
-      @click="saveHtml"
-      style="margin: 15px 0; width: 95vw; margin-left: 2.5vw"
-    >确定</van-button> -->
 
     <van-uploader :after-read="afterRead" style="display: none"/>
   </div>
