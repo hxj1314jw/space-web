@@ -12,8 +12,8 @@
 
       <van-cell-group style="margin-top: 10px">
         <template v-for="(field, index) in fieldList">
-          <!-- <van-field v-if="field.name === '手机'" disabled v-model="field.textStr" :label="field.name+ '：'" :placeholder="'请输入' + field.name" :required="field.requireStatus" :key="index" input-align="right"/> -->
-          <van-field v-model="field.textStr" :label="field.name+ '：'" :placeholder="'请输入' + field.name" :required="field.requireStatus" :key="index" input-align="right"/>
+          <van-field v-if="field.name === '手机'" disabled v-model="field.textStr" :label="field.name+ '：'" :placeholder="'请输入' + field.name" :required="field.requireStatus" :key="index" input-align="right"/>
+          <van-field v-else v-model="field.textStr" :label="field.name+ '：'" :placeholder="'请输入' + field.name" :required="field.requireStatus" :key="index" input-align="right"/>
         </template>
       </van-cell-group>
     </div>

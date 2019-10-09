@@ -230,8 +230,6 @@
       const year = moment(today).format("YYYY");
       const month = moment(today).format("M");
       const res = await getActivityList({
-        year,
-        month,
         size: 3,
         hotStatus: 1
       });
