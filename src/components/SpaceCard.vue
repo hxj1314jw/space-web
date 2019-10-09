@@ -16,7 +16,7 @@
           {{ spaceForm.remark }}<br>
           {{ spaceForm.address }} | 
           <template v-for="(tag, index) in tagList">
-            <van-tag v-if="tag" :key="index" color="rgba(193,255,182,.31)" text-color="#07c160" round size="medium">{{ tag }}</van-tag>
+            <van-tag v-if="tag" :key="index" color="rgba(193,255,182,.31)" text-color="#07c160" size="medium" style="margin: 0 3px;">{{ tag }}</van-tag>
             <span v-else :key="index">无</span>
           </template><br>
           容纳{{ spaceForm.numberOfPeople}}人 {{ spaceForm.dimensions }}㎡
