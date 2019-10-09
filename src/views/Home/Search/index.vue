@@ -12,7 +12,7 @@
 
     <van-tabs v-model="activeName" color="#23B36E" @click="onClick">
       <van-tab title="活动" name="activity">
-        <van-list v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <van-list :loading="loadingActivity" :immediate-check="false" :finished="finishedActivity" finished-text="没有更多了" @load="onLoad">
           <div style="margin-top: -10px;">
             <template v-for="(activity, index) in activityList">
               <ActivityCard :key="index" :activityForm="activity"/>
@@ -21,7 +21,7 @@
         </van-list>
       </van-tab>
       <van-tab title="空间" name="space">
-        <van-list v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <van-list :loading="loadingSpace" :immediate-check="false" :finished="finishedSpace" finished-text="没有更多了" @load="onLoad">
           <div>
             <template v-for="(space, index) in spaceList">
               <SpaceCard :key="index" :spaceForm="space"/>
@@ -56,10 +56,13 @@
     public spaceList: any = [];
     public activeName: string = 'activity';
     public currentPage: number = 1;
-    public total: number = 0;
+    public totalActivity: number = 0;
+    public totalSpace: number = 0;
     public size: number = Math.ceil(window.screen.availHeight / 100);
-    public loading: boolean = false;
-    public finished: boolean = false;
+    public loadingActivity: boolean = false;
+    public finishedActivity: boolean = false;
+    public loadingSpace: boolean = false;
+    public finishedSpace: boolean = false;
 
     @Prop() public hotStatus: any;
 
@@ -71,9 +74,11 @@
     private onClick(value: any) {
       switch (value) {
         case 'space':
+          this.currentPage = 1;
           this.onSearch();
           break;
         case 'activity':
+          this.currentPage = 1;
           this.onSearch();
           break;
       }
@@ -94,13 +99,14 @@
         searchName: this.search,
         hotStatus: this.hotStatus
       });
-      this.loading = false;
+      console.log(this.spaceList);
+      this.loadingSpace = false;
       for (const item of res.data.data.rows) {
         this.spaceList.push(item);
       }
-      this.total = Number(res.data.data.total);
-      if (this.spaceList.length < this.size || this.spaceList.length === this.total) {
-        this.finished = true;
+      this.totalSpace = Number(res.data.data.total);
+      if (this.spaceList.length < this.size || this.spaceList.length === this.totalSpace) {
+        this.finishedSpace = true;
       }
       vm.$toast.clear();
     }
@@ -120,21 +126,29 @@
         searchName: this.search,
         hotStatus: this.hotStatus
       });
-      this.loading = false;
+      this.loadingActivity = false;
       for (const item of res.data.data.rows) {
         this.activityList.push(item);
       }
-      this.total = Number(res.data.data.total);
-      if (this.activityList.length < this.size || this.activityList.length === this.total) {
-        this.finished = true;
+      this.totalActivity = Number(res.data.data.total);
+      if (this.activityList.length < this.size || this.activityList.length === this.totalActivity) {
+        this.finishedActivity = true;
       }
       vm.$toast.clear();
     }
 
     private onLoad() {
-      this.loading = true;
+      this.loadingSpace = true;
+      this.loadingActivity = true;
       this.currentPage++;
-      this.fetchActivity();
+      switch (this.activeName) {
+        case 'space':
+          this.fetchSpace();
+          break;
+        case 'activity':
+          this.fetchActivity();
+          break;
+      }
     }
 
     private onSearch() {
@@ -151,9 +165,12 @@
 
     private initList() {
       this.currentPage = 1;
-      this.total = 0;
-      this.loading = false;
-      this.finished = false;
+      this.totalActivity = 0;
+      this.totalSpace = 0;
+      this.loadingSpace = false;
+      this.loadingActivity = false;
+      this.finishedActivity = false;
+      this.finishedSpace = false;
       this.activityList = [];
       this.spaceList = [];
     }
