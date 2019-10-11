@@ -58,9 +58,9 @@
         </van-cell>
       </van-cell-group>
 
-      <van-cell style="padding-top: 10px; margin-top: 10px;">
+      <van-cell v-if="deviceList && deviceList.length > 0" style="padding-top: 10px; margin-top: 10px;">
         <template slot="title">
-          <span style="margin: 0; padding: 0;">设施服务</span>
+          <span style="margin: 0; padding: 0;">免费设施</span>
         </template>
         <template slot="label">
           <van-grid :border="false" style="margin-top: 10px;" :column-num="5">
@@ -68,6 +68,28 @@
               <van-grid-item :key="index" :column-num="5" style="margin-top: -7px;">
                 <template slot="icon">
                   <div style="border-radius: 50%; border: 1px solid; border-color: #cdcdcd; width: 40px; height: 40px;">
+                    <van-image style="margin-top: 10px; margin-left: 10px;" fit="contain" width="20px" height="20px" :src="ossImageUrl(device.url)" />
+                  </div>
+                </template>
+                <template slot="text">
+                  <span style="margin-top: 5px;">{{ device.name }}</span>
+                </template>
+              </van-grid-item>
+            </template>
+          </van-grid>
+        </template>
+      </van-cell>
+
+      <van-cell v-if="chargeDeviceList && chargeDeviceList.length > 0" style="padding-top: 10px; margin-top: 10px;">
+        <template slot="title">
+          <span style="margin: 0; padding: 0;">收费设施</span>
+        </template>
+        <template slot="label">
+          <van-grid :border="false" style="margin-top: 10px;" :column-num="5">
+            <template v-for="(device, index) in chargeDeviceList">
+              <van-grid-item :key="index" :column-num="5" style="margin-top: -7px;">
+                <template slot="icon">
+                  <div style="border-radius: 50%; border: 1px solid; border-color: #ffb11a; width: 40px; height: 40px;">
                     <van-image style="margin-top: 10px; margin-left: 10px;" fit="contain" width="20px" height="20px" :src="ossImageUrl(device.url)" />
                   </div>
                 </template>
@@ -121,6 +143,7 @@ export default class SpaceDetail extends Vue {
   public spaceForm: any = {};
   public tagList: any = [];
   public deviceList: any = [];
+  public chargeDeviceList: any = [];
   public ableList: any = [];
   public isCollect: boolean = false;
   public mapUrl: string = '';
@@ -139,7 +162,13 @@ export default class SpaceDetail extends Vue {
       this.spaceForm = res.data.data.productDetail;
       this.isCollect = res.data.data.isCollect;
       this.tagList = this.spaceForm.tags.split(',');
-      this.deviceList = res.data.data.deviceList;
+      for (const item of res.data.data.deviceList) {
+        if (item.freeFlag === '0') {
+          this.deviceList.push(item);
+        } else {
+          this.chargeDeviceList.push(item);
+        }
+      }
       document.title = this.spaceForm.productName;
       this.initAbleList();
       Toast.clear();
