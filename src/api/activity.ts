@@ -173,3 +173,10 @@ export const getTicketSum = (params: any) =>
     method: 'get',
     params
   });
+
+export const getTicketAllList = (params: any) =>
+  request({
+    url: '/ticket/AllList',
+    method: 'get',
+    params
+  });

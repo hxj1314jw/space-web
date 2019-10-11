@@ -46,7 +46,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { UserModule } from '@/store/modules/user';
 import moment from 'moment';
-import { getTicketList, delTicket } from '@/api/activity';
+import { getTicketAllList, delTicket } from '@/api/activity';
 
 import { Toast, CellGroup, Cell, Divider, Button, Dialog } from 'vant';
 Vue.use(Toast).use(CellGroup).use(Cell).use(Divider).use(Button).use(Dialog);
@@ -62,8 +62,14 @@ export default class EditActivityTicket extends Vue {
   }
 
   private async fetchTicket() {
-    const res = await getTicketList({activityId: this.$route.params.id});
+    Toast.loading({
+      mask: true,
+      forbidClick: true,
+      message: '加载中...'
+    });
+    const res = await getTicketAllList({activityId: this.$route.params.id});
     this.ticketList = res.data.data;
+    Toast.clear();
   }
 
   private deleteTicket(id: any) {
