@@ -19,8 +19,20 @@
               容纳{{ spaceForm.numberOfPeople}}人 {{ spaceForm.dimensions }}㎡ | {{ spaceForm.counts }}个可预订
             </span>
           </span>
-          <div style="float: right">
-            <span style="color: #00B261; font-size: large;">
+          <div style="float: right; text-align: right">
+            <span v-if="spaceForm.priceStates === '1'">
+              <s style="color: #999999;">
+                ￥{{spaceForm.price}} /
+                <span v-if="spaceForm.chargeMethod === '1'">小时</span>
+                <span v-if="spaceForm.chargeMethod === '3'">月</span>
+              </s><br>
+              <span style="color: #F76C6C; font-size: large;">
+                ￥{{spaceForm.activityPrice}} /
+                <span v-if="spaceForm.chargeMethod === '1'">小时</span>
+                <span v-if="spaceForm.chargeMethod === '3'">月</span>
+              </span>
+            </span>
+            <span v-else style="color: #00B261; font-size: large;">
               ￥{{spaceForm.price}} /
               <span v-if="spaceForm.chargeMethod === '1'">小时</span>
               <span v-if="spaceForm.chargeMethod === '3'">月</span>

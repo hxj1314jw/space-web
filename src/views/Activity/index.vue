@@ -118,3 +118,9 @@
     }
   }
 </script>
+
+<style>
+.van-popup.van-popup--top.van-dropdown-item__content {
+  max-height: 70%;
+}
+</style>

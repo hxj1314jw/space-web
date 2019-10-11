@@ -21,8 +21,24 @@
           </template><br>
           容纳{{ spaceForm.numberOfPeople}}人 {{ spaceForm.dimensions }}㎡
         </span>
-        <div style="color: #00B261; font-size: larger; float: right">
-          <span>
+        <div style="float: right; text-align: right; margin-bottom: 10px;">
+          <span v-if="spaceForm.priceStates === '1'">
+            <s style="color: #999999">
+              ￥{{ spaceForm.price }} /
+              <span v-if="spaceForm.chargeMethod === '1'">小时</span>
+              <span v-if="spaceForm.chargeMethod === '2'">日</span>
+              <span v-if="spaceForm.chargeMethod === '3'">月</span>
+              <span v-if="spaceForm.chargeMethod === '4'">年</span>
+            </s><br>
+            <span style="color: #F76C6C; font-size: larger;">
+              ￥{{ spaceForm.activityPrice }} /
+              <span v-if="spaceForm.chargeMethod === '1'">小时</span>
+              <span v-if="spaceForm.chargeMethod === '2'">日</span>
+              <span v-if="spaceForm.chargeMethod === '3'">月</span>
+              <span v-if="spaceForm.chargeMethod === '4'">年</span>
+            </span>
+          </span>
+          <span v-else style="color: #00B261; font-size: larger;">
             ￥{{ spaceForm.price }} /
             <span v-if="spaceForm.chargeMethod === '1'">小时</span>
             <span v-if="spaceForm.chargeMethod === '2'">日</span>
