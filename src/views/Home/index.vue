@@ -7,9 +7,21 @@
       placeholder="请输入关键字搜索"
       show-action
       shape="round"
-      @search="onSearch">
+      @search="onSearch"
+      @focus="onFocus">
       <div slot="action" @click="onSearch">搜索</div>
     </van-search>
+
+    <van-popup v-model="show" position="top" :overlay="false" :style="isWeixin ? 'margin-top: 54px;' : 'margin-top: 100px;'">
+      <div style="padding: 10px 16px">
+        <span style="font-size: xx-small">历史记录：</span>
+        <div style="margin-top: 10px;">
+          <template v-for="(search, index) in searchList">
+            <van-tag :key="index" color="rgba(193,255,182,.31)" text-color="#07c160" size="medium" style="margin-right: 3px;" @click="searchHistory(search)">{{ search }}</van-tag>
+          </template>
+        </div>
+      </div>
+    </van-popup>
 
     <div style="height: 230px">
       <van-swipe :autoplay="3000">
@@ -164,8 +176,8 @@
   import { getBannerList, getProductList, getProjectList, getZoneInfo } from '@/api/home';
   import { getActivityList, getActivityTypeList } from '@/api/activity';
   import moment from 'moment';
-  import { Search, Swipe, SwipeItem, Lazyload, Grid, GridItem, Cell, Toast, Image, Row, Col, Divider, Card, Button, Tag, Icon } from 'vant';
-  Vue.use(Search).use(Swipe).use(SwipeItem).use(Lazyload).use(Grid).use(GridItem).use(Cell).use(Toast).use(Image).use(Row).use(Col).use(Divider).use(Card).use(Button).use(Tag).use(Icon);
+  import { Search, Swipe, SwipeItem, Lazyload, Grid, GridItem, Cell, Toast, Image, Row, Col, Divider, Card, Button, Tag, Icon, Popup } from 'vant';
+  Vue.use(Search).use(Swipe).use(SwipeItem).use(Lazyload).use(Grid).use(GridItem).use(Cell).use(Toast).use(Image).use(Row).use(Col).use(Divider).use(Card).use(Button).use(Popup).use(Tag).use(Icon);
 
   @Component({
     components: {}
@@ -181,6 +193,8 @@
     public activityList: any = [];
     public tagList: any = [];
     public projectList: any = [];
+    public searchList: any = [];
+    public show: boolean = false;
 
     public created() {
       this.fetchBanner();
@@ -189,6 +203,18 @@
       this.fetchActivityType();
       this.fetchProject();
       this.fetchZone();
+      if (localStorage.search) {
+        this.searchList.split(',');
+      }
+    }
+
+    get isWeixin(): boolean {
+      const ua = navigator.userAgent.toLowerCase();
+      if (ua.indexOf('micromessenger') !== -1) {
+        return true;
+      } else {
+        return false;
+      }
     }
 
     private async fetchBanner() {
@@ -290,8 +316,35 @@
       window.location.href = productUrl;
     }
 
+    private onFocus() {
+      this.show = true;
+    }
+
+    private searchHistory(search: any) {
+      this.search = search;
+      this.onSearch();
+    }
+
     private onSearch() {
       if (this.search) {
+        if (localStorage.search) {
+          let exist = false;
+          this.searchList = localStorage.search.split(',');
+          for (const item of this.searchList) {
+            if (item === this.search) {
+              exist = true;
+              break;
+            } else {
+              exist = false;
+            }
+          }
+          if (!exist) {
+            this.searchList.push(this.search);
+            localStorage.setItem('search', this.searchList.join(','));
+          }
+        } else {
+          localStorage.search = this.search;
+        }
         this.$router.push({
           path: '/home/search',
           query: {
