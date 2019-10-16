@@ -8,7 +8,7 @@
 
       <van-cell-group>
         <van-field label="标题" required v-model="activityForm.name" placeholder="请输入标题(不超过35字)" input-align="right" rows="1" type="textarea" autosize/>
-        <van-field label="人数" required v-model="activityForm.count" placeholder="请输入人数" input-align="right"/>
+        <van-field label="人数" type="number" required v-model="activityForm.count" placeholder="请输入人数" input-align="right"/>
         <van-field @click="showBeginTime = true" label="开始时间" required v-model="beginTime" placeholder="请选择开始时间" input-align="right" is-link disabled/>
         <van-field @click="showEndTime = true" label="结束时间" required v-model="endTime" placeholder="请选择结束时间" input-align="right" is-link disabled/>
         <van-field @click="showEnrollBeginTime = true" label="报名开始时间" required v-model="enrollBeginTime" placeholder="请选择报名开始时间" input-align="right" is-link disabled/>

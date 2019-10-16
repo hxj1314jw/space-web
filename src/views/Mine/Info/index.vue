@@ -17,7 +17,7 @@
 
     <van-cell-group style="margin-top: 10px;">
       <van-field label="手机" input-align="right" v-model="userForm.phone" placeholder="请输入手机" disabled/>
-      <van-field label="邮箱" input-align="right" v-model="userForm.email" placeholder="请输入邮箱" />
+      <van-field type="email" label="邮箱" input-align="right" v-model="userForm.email" placeholder="请输入邮箱" :error-message="emailErrMsg" error-message-align="right"/>
       <van-field label="QQ" input-align="right" v-model="userForm.qqInfo" placeholder="请输入QQ" />
       <van-field label="微信" input-align="right" v-model="userForm.wxInfo" placeholder="请输入微信" />
     </van-cell-group>
@@ -61,15 +61,29 @@ Vue.use(Cell).use(CellGroup).use(Button).use(Image).use(Grid).use(GridItem).use(
 export default class MineInfo extends Vue {
   public userForm: any = {};
   public birthText: string = '请选择生日';
+  public emailErrMsg: string = '';
   public columns: any = ['保密', '男', '女'];
   public showSex: boolean = false;
   public showBirth: boolean = false;
+  public isValid: boolean = false;
   public today: Date = new Date();
   public birthday: Date = new Date();
   public minDate: Date = new Date(this.today.getFullYear() - 50, this.today.getMonth(), this.today.getDate());
+  public reg = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
   public created() {
     this.fetchInfo();
+  }
+
+  @Watch("userForm.email")
+  private onEmailChanged(newVal: boolean, oldVal: boolean) {
+    if (!this.reg.test(this.userForm.email)) {
+      this.emailErrMsg = '请输入正确的邮箱';
+      this.isValid = false;
+    } else {
+      this.emailErrMsg = '';
+      this.isValid = true;
+    }
   }
 
   private async fetchInfo() {
@@ -95,17 +109,19 @@ export default class MineInfo extends Vue {
   }
 
   private saveInfo() {
-    this.userForm.birthday = moment(this.birthday).format('YYYY-MM-DD');
-    editUserInfo(this.userForm).then(() => {
-      this.fetchInfo().then(() => {
-        UserModule.SetUserInfo(this.userForm.name, this.userForm.phone);
-        Toast({
-          message: '修改成功',
-          icon: 'success',
-          duration: 1000
+    if (this.isValid) {
+      this.userForm.birthday = moment(this.birthday).format('YYYY-MM-DD');
+      editUserInfo(this.userForm).then(() => {
+        this.fetchInfo().then(() => {
+          UserModule.SetUserInfo(this.userForm.name, this.userForm.phone);
+          Toast({
+            message: '修改成功',
+            icon: 'success',
+            duration: 1000
+          });
         });
       });
-    });
+    }
   }
 
   private beforeRead(file: any) {

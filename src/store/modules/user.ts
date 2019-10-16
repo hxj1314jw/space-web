@@ -58,11 +58,11 @@ class User extends VuexModule implements UserState {
     }
 
     @Action
-    public SetUserInfo(name: string, phone: string) {
+    public SetUserInfo(name: any, phone: any) {
         setName(name);
-        setPhone(phone);
+        // setPhone(phone);
         this.SET_NAME(name);
-        this.SET_PHONE(phone);
+        // this.SET_PHONE(phone);
     }
 
     @Action

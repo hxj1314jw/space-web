@@ -13,10 +13,18 @@
       <van-cell-group>
         <van-field label="起租时间" @click="showBeginTime = true"
           :value="beginTime | dateFmt('YYYY-MM-DD HH:mm')" :is-link="true" disabled="true" input-align="right" error-message-align="right" :error-message="beginTimeErrMsg"/>
-        <van-field label="结束时间" @click="showEndTime = true"
-          :value="endTime | dateFmt('YYYY-MM-DD HH:mm')" :is-link="true" disabled="true" input-align="right" error-message-align="right" :error-message="endTimeErrMsg"/>
-        <van-field label="参访时间" @click="showReserveTime = true"
-          :value="reserveTime | dateFmt('YYYY-MM-DD HH:mm')" :is-link="true" disabled="true" input-align="right" error-message-align="right" :error-message="reserveTimeErrMsg"/>
+        <!-- <van-field label="结束时间" @click="showEndTime = true"
+          :value="endTime | dateFmt('YYYY-MM-DD HH:mm')" :is-link="true" disabled="true" input-align="right" error-message-align="right" :error-message="endTimeErrMsg"/> -->
+        <van-cell>
+          <template slot="title">
+            <span>租用时长</span>
+          </template>
+          <template>
+            <van-stepper v-model="reserveTime" />
+          </template>
+        </van-cell>
+        <van-field label="参访时间" @click="showAccessTime = true"
+          :value="accessTime | dateFmt('YYYY-MM-DD HH:mm')" :is-link="true" disabled="true" input-align="right" error-message-align="right" :error-message="accessTimeErrMsg"/>
       </van-cell-group>
 
       <div style="margin-top: 10px; text-align: center">
@@ -86,9 +94,9 @@
       />
     </van-popup>
 
-    <van-popup v-model="showReserveTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmReserveTime" @cancel="showReserveTime = false; reserveTime = today;"
-        v-model="reserveTime"
+    <van-popup v-model="showAccessTime" position="bottom">
+      <van-datetime-picker cancel-button-text="重置" @confirm="confirmAccessTime" @cancel="showAccessTime = false; accessTime = today;"
+        v-model="accessTime"
         type="datetime"
         :min-date="today"
       />
@@ -111,17 +119,18 @@ export default class ActivitySpaceReserve extends Vue {
   public radio: string = '1';
   public beginTimeErrMsg: string = '';
   public endTimeErrMsg: string = '';
-  public reserveTimeErrMsg: string = '';
+  public accessTimeErrMsg: string = '';
   public name: string = this.$store.state.user.name;
   public phone: string = this.$store.state.user.phone;
   public showBeginTime: boolean = false;
   public showEndTime: boolean = false;
-  public showReserveTime: boolean = false;
+  public showAccessTime: boolean = false;
   public isValid: boolean = false;
   public today: Date = new Date();
   public beginTime: Date = new Date();
   public endTime: Date = new Date();
-  public reserveTime: Date = new Date();
+  public accessTime: Date = new Date();
+  public reserveTime: number = 1;
 
   public created() {
     this.fetchOrg();
@@ -132,44 +141,33 @@ export default class ActivitySpaceReserve extends Vue {
     this.onEndTimeFocusOut();
   }
 
-  @Watch("endTime")
-  private onEndTimeChanged(newVal: boolean, oldVal: boolean) {
-    this.onEndTimeFocusOut();
-  }
-
-  @Watch("reserveTime")
-  private onReserveTimeChanged(newVal: boolean, oldVal: boolean) {
-    this.onReserveTimeFocusOut();
+  @Watch("accessTime")
+  private onaccessTimeChanged(newVal: boolean, oldVal: boolean) {
+    this.onAccessTimeFocusOut();
   }
 
   private onEndTimeFocusOut() {
-    if (this.endTime.getTime() <= this.beginTime.getTime()) {
-      this.endTimeErrMsg = "结束时间不能早于或等于起租时间";
+    if (this.beginTime.getTime() <= this.today.getTime()) {
+      this.beginTimeErrMsg = "起租时间不能早于或等于当前时间";
       return false;
     } else {
-      if (this.beginTime.getTime() <= this.today.getTime()) {
-        this.beginTimeErrMsg = "起租时间不能早于或等于当前时间";
-        return false;
-      } else {
-        this.beginTimeErrMsg = "";
-        this.endTimeErrMsg = "";
-        return true;
-      }
+      this.beginTimeErrMsg = "";
+      return true;
     }
   }
 
-  private onReserveTimeFocusOut() {
-    if (this.reserveTime.getTime() <= this.today.getTime()) {
-      this.reserveTimeErrMsg = "参访时间不能早于或等于当前时间";
+  private onAccessTimeFocusOut() {
+    if (this.accessTime.getTime() <= this.today.getTime()) {
+      this.accessTimeErrMsg = "参访时间不能早于或等于当前时间";
       return false;
     } else {
-      this.reserveTimeErrMsg = "";
+      this.accessTimeErrMsg = "";
       return true;
     }
   }
 
   private validate() {
-    if (this.onEndTimeFocusOut() && this.onReserveTimeFocusOut()) {
+    if (this.onEndTimeFocusOut() && this.onAccessTimeFocusOut()) {
       this.isValid = true;
     } else {
       this.isValid = false;
@@ -201,11 +199,11 @@ export default class ActivitySpaceReserve extends Vue {
       } else {
         if (this.radio === '1') {
           addSpaceReserve({
-            accessTime: this.reserveTime.getTime(),
+            accessTime: this.accessTime.getTime(),
             retainingStartTime: this.beginTime.getTime(),
             productId: this.$route.params.id,
             productType: '5',
-            reserveTime: 0,
+            reserveTime: this.reserveTime,
             userName: this.name,
             userPhone: this.phone,
             visitType: '1'
@@ -214,12 +212,12 @@ export default class ActivitySpaceReserve extends Vue {
           });
         } else {
           addSpaceReserve({
-            accessTime: this.reserveTime.getTime(),
+            accessTime: this.accessTime.getTime(),
             retainingStartTime: this.beginTime.getTime(),
             productId: this.$route.params.id,
             orgId: this.radio,
             productType: '5',
-            reserveTime: 0,
+            reserveTime: this.reserveTime,
             visitType: '2'
           }).then(() => {
             this.$router.push('/space/reserve/success');
@@ -228,7 +226,7 @@ export default class ActivitySpaceReserve extends Vue {
       }
     } else {
       this.onEndTimeFocusOut();
-      this.onReserveTimeFocusOut();
+      this.onAccessTimeFocusOut();
     }
   }
 
@@ -237,13 +235,9 @@ export default class ActivitySpaceReserve extends Vue {
     this.showBeginTime = false;
   }
 
-  private confirmEndTime(value: any) {
-    this.endTime = value;
-    this.showEndTime = false;
-  }
-  private confirmReserveTime(value: any) {
-    this.reserveTime = value;
-    this.showReserveTime = false;
+  private confirmAccessTime(value: any) {
+    this.accessTime = value;
+    this.showAccessTime = false;
   }
 }
 </script>
