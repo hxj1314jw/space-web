@@ -8,16 +8,17 @@
       show-action
       shape="round"
       @search="onSearch"
-      @focus="onFocus">
+      @focus="onFocus"
+      @blur="show = false">
       <div slot="action" @click="onSearch">搜索</div>
     </van-search>
 
-    <van-popup v-model="show" position="top" :overlay="false" :style="isWeixin ? 'margin-top: 54px;' : 'margin-top: 100px;'">
+    <van-popup v-model="show" position="top" :overlay="false" class="search-history">
       <div style="padding: 10px 16px">
-        <span style="font-size: xx-small">历史记录：</span>
+        <span style="font-size: small">历史记录：</span>
         <div style="margin-top: 10px;">
           <template v-for="(search, index) in searchList">
-            <van-tag :key="index" color="rgba(193,255,182,.31)" text-color="#07c160" size="medium" style="margin-right: 3px;" @click="searchHistory(search)">{{ search }}</van-tag>
+            <van-tag :key="index" color="rgba(193,255,182,.31)" text-color="#07c160" size="large" style="margin-right: 5px;" @click="searchHistory(search)">{{ search }}</van-tag>
           </template>
         </div>
       </div>
@@ -204,7 +205,7 @@
       this.fetchProject();
       this.fetchZone();
       if (localStorage.search) {
-        this.searchList.split(',');
+        this.searchList = localStorage.search.split(',');
       }
     }
 
@@ -399,5 +400,9 @@
     transform: translate(-50%, -50%);
     font-size: 200%;
     color: white;
+  }
+  .search-history {
+    position: absolute;
+    top: 54px;
   }
 </style>
