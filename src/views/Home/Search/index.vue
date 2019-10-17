@@ -99,7 +99,6 @@
         searchName: this.search,
         hotStatus: this.hotStatus
       });
-      console.log(this.spaceList);
       this.loadingSpace = false;
       for (const item of res.data.data.rows) {
         this.spaceList.push(item);

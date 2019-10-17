@@ -77,7 +77,7 @@ export default class MineInfo extends Vue {
 
   @Watch("userForm.email")
   private onEmailChanged(newVal: boolean, oldVal: boolean) {
-    if (!this.reg.test(this.userForm.email)) {
+    if (!this.reg.test(this.userForm.email) && this.userForm.email) {
       this.emailErrMsg = '请输入正确的邮箱';
       this.isValid = false;
     } else {
