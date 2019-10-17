@@ -12,22 +12,24 @@
 
     <van-tabs v-model="activeName" color="#23B36E" @click="onClick">
       <van-tab title="活动" name="activity">
-        <van-list :loading="loadingActivity" :immediate-check="false" :finished="finishedActivity" finished-text="没有更多了" @load="onLoad">
+        <van-list v-if="activityList.length !== 0" :loading="loadingActivity" :immediate-check="false" :finished="finishedActivity" finished-text="没有更多了" @load="onLoad">
           <div style="margin-top: -10px;">
             <template v-for="(activity, index) in activityList">
               <ActivityCard :key="index" :activityForm="activity"/>
             </template>
           </div>
         </van-list>
+        <NoData v-else/>
       </van-tab>
       <van-tab title="空间" name="space">
-        <van-list :loading="loadingSpace" :immediate-check="false" :finished="finishedSpace" finished-text="没有更多了" @load="onLoad">
+        <van-list v-if="spaceList.length !== 0" :loading="loadingSpace" :immediate-check="false" :finished="finishedSpace" finished-text="没有更多了" @load="onLoad">
           <div>
             <template v-for="(space, index) in spaceList">
               <SpaceCard :key="index" :spaceForm="space"/>
             </template>
           </div>
         </van-list>
+        <NoData v-else/>
       </van-tab>
     </van-tabs>
   </div>
@@ -37,6 +39,7 @@
   import { Component, Vue, Prop } from "vue-property-decorator";
   import SpaceCard from '@/components/SpaceCard.vue';
   import ActivityCard from '@/components/ActivityCard.vue';
+  import NoData from '@/components/NoData.vue';
   import { getActivityList } from '@/api/activity';
   import { getSpaceList } from '@/api/space';
   import moment from 'moment';
@@ -46,7 +49,8 @@
   @Component({
     components: {
       SpaceCard,
-      ActivityCard
+      ActivityCard,
+      NoData
     }
   })
 

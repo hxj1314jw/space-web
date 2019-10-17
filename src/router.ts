@@ -24,6 +24,7 @@ export default new Router({
         { path: '/home/introduce', name: 'introduce', component: () => import('./views/Home/Introduce/index.vue'), meta: { title: '空间介绍' } },
         { path: '/home/search', name: 'search', component: () => import('./views/Home/Search/index.vue'), meta: { title: '搜索详情' } },
         { path: '/home/type/:id', name: 'type', component: () => import('./views/Home/Type/index.vue'), meta: { title: '精选榜单' } },
+        { path: '/home/project/:id', name: 'project', component: () => import('./views/Home/Project/index.vue'), meta: { title: '发现更多' } },
 
         { path: '/space/detail/:id', name: 'spaceDetail', component: () => import('./views/Space/Detail/index.vue'), meta: { title: '空间详情' } },
         { path: '/space/order/:id', name: 'spaceOrder', component: () => import('./views/Space/Order/Station/index.vue'), meta: { title: '空间订单', login: 'true' } },

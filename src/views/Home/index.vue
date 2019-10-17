@@ -123,8 +123,13 @@
                   {{ product.address }} | {{ product.tags || '无' }}<br>
                   容纳{{ product.numberOfPeople}}人 {{ product.dimensions }}㎡
                 </span>
-                <span style="float: right; font-weight: bold; color: #00B261;">
-                  ￥{{ product.price }}/<span v-if="product.chargeMethod === '1'">时</span><span v-if="product.chargeMethod === '3'">月</span>
+                <span style="float: right; font-weight: bold;">
+                  <span v-if="product.priceStates === '1'" style="color: #f76c6c">
+                    ￥{{ product.activityPrice }}/<span v-if="product.chargeMethod === '1'">时</span><span v-if="product.chargeMethod === '2'">日</span><span v-if="product.chargeMethod === '3'">月</span><span v-if="product.chargeMethod === '4'">年</span>
+                  </span>
+                  <span v-else style="color: #00B261;">
+                    ￥{{ product.price }}/<span v-if="product.chargeMethod === '1'">时</span><span v-if="product.chargeMethod === '2'">日</span><span v-if="product.chargeMethod === '3'">月</span><span v-if="product.chargeMethod === '4'">年</span>
+                  </span>
                 </span>
               </div>
               <van-divider v-if="index < 2" :hairline="false" style="margin: 10px 0;"/>
@@ -142,10 +147,10 @@
         <div style="width: 100vw; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; margin: 10px 0;">
           <template v-for="(project, index) in projectList">
             <span v-if="index === 0" :key="index" style="margin-left: 16px; margin-right: 5px;">
-              <van-image width="80%" height="10rem" radius="5" fit="cover" :src="ossImageUrl(project.banner)" class="box-shadow" @click="toProjectDetail(project.url)"/>
+              <van-image width="80%" height="10rem" radius="5" fit="cover" :src="ossImageUrl(project.banner)" class="box-shadow" @click="toProjectDetail(project.url, project.id)"/>
             </span>
             <span v-else :key="index" style="margin: 0 5px;">
-              <van-image width="80%" height="10rem" radius="5" fit="cover" :src="ossImageUrl(project.banner)" class="box-shadow" @click="toProjectDetail(project.url)"/>
+              <van-image width="80%" height="10rem" radius="5" fit="cover" :src="ossImageUrl(project.banner)" class="box-shadow" @click="toProjectDetail(project.url, project.id)"/>
             </span>
           </template>
         </div>
@@ -247,7 +252,7 @@
     private async fetchProject() {
       const res = await getProjectList({
         page: 1,
-        size: 3
+        size: 10
       });
       this.projectList = res.data.data.rows;
     }
@@ -313,8 +318,12 @@
       this.$router.push('/activity');
     }
 
-    private toProjectDetail(productUrl: string) {
-      window.location.href = productUrl;
+    private toProjectDetail(productUrl: string, id: any) {
+      if (productUrl) {
+        window.location.href = productUrl;
+      } else {
+        this.$router.push(`/home/project/${id}`);
+      }
     }
 
     private onFocus() {

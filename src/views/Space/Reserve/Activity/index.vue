@@ -86,14 +86,6 @@
       />
     </van-popup>
 
-    <van-popup v-model="showEndTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEndTime" @cancel="showEndTime = false; endTime = today;"
-        v-model="endTime"
-        type="datetime"
-        :min-date="today"
-      />
-    </van-popup>
-
     <van-popup v-model="showAccessTime" position="bottom">
       <van-datetime-picker cancel-button-text="重置" @confirm="confirmAccessTime" @cancel="showAccessTime = false; accessTime = today;"
         v-model="accessTime"
@@ -108,8 +100,8 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { getOrganization, addSpaceReserve } from '@/api/space';
 
-import { Step, Steps, Cell, CellGroup, Field, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker, Toast, Notify } from 'vant';
-Vue.use(Step).use(Steps).use(Cell).use(CellGroup).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Field).use(Toast).use(Notify);
+import { Step, Steps, Cell, CellGroup, Field, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker, Toast, Notify, Stepper } from 'vant';
+Vue.use(Step).use(Steps).use(Cell).use(CellGroup).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Field).use(Toast).use(Notify).use(Stepper);
 
 @Component({
   components: {}

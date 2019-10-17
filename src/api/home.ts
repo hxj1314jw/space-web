@@ -39,3 +39,10 @@ export const getZoneDetail = (params: any) =>
     method: 'get',
     params
   });
+
+export const getProjectDetail = (params: any) =>
+  request({
+    url: '/project/info',
+    method: 'get',
+    params
+  });
