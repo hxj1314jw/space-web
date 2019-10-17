@@ -42,12 +42,14 @@
         content: '',
         editorOption: {},
         editorOption: {
+          placeholder: '请输入活动内容',
           modules: {
             toolbar: {
               container: [
                 ['bold', 'italic', 'underline', 'strike'],
-                ['blockquote', 'code-block'],
-                ['image'],
+                ['color', 'background'],
+                ['clean'],
+                ['link', 'image', 'video']
               ],
               handlers: {
                   image: (value) => {

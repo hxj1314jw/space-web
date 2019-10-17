@@ -20,7 +20,7 @@
             搜索历史:
             <span style="float: right; color: #666666" @click="delSearchHistory()">
               <van-icon name="delete" />
-              清除记录
+              <!-- 清除记录 -->
             </span>
           </div>
           <div style="margin-top: 10px;">

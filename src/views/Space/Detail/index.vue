@@ -56,6 +56,12 @@
             {{ spaceForm.openDate }}
           </template>
         </van-cell>
+        <van-cell title="备注: ">
+          <van-icon slot="icon" name="notes-o" style="line-height: inherit; margin-right: 7px;" color="#00B261"/>
+          <template>
+            {{ spaceForm.opRemark }}
+          </template>
+        </van-cell>
       </van-cell-group>
 
       <van-cell v-if="deviceList && deviceList.length > 0" style="padding-top: 10px; margin-top: 10px;">
