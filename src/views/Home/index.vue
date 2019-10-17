@@ -13,12 +13,25 @@
       <div slot="action" @click="onSearch">搜索</div>
     </van-search>
 
-    <van-popup v-model="show" position="top" :overlay="false" class="search-history">
-      <div style="padding: 10px 16px">
-        <span style="font-size: small">历史记录：</span>
-        <div style="margin-top: 10px;">
-          <template v-for="(search, index) in searchList">
-            <van-tag :key="index" color="rgba(193,255,182,.31)" text-color="#07c160" size="large" style="margin-right: 5px;" @click="searchHistory(search)">{{ search }}</van-tag>
+    <van-popup v-model="show" position="top" :overlay="false" class="search-history" style="max-height: 70%">
+      <div>
+        <div v-if="searchList.length !== 0" style="padding: 10px 16px">
+          <div style="font-size: small; width: 100%;">
+            搜索历史:
+            <span style="float: right; color: #666666" @click="delSearchHistory()">
+              <van-icon name="delete" />
+              清除记录
+            </span>
+          </div>
+          <div style="margin-top: 10px;">
+            <template v-for="(search, index) in searchList">
+              <van-tag :key="index" color="rgba(193,255,182,.31)" text-color="#07c160" size="large" style="margin-right: 5px; margin-bottom: 5px;" @click="searchHistory(search)">{{ search }}</van-tag>
+            </template>
+          </div>
+        </div>
+        <div>
+          <template v-for="(suggest, index) in suggestList">
+            <van-cell :key="index" :title="suggest" @click="searchHistory(suggest)"/>
           </template>
         </div>
       </div>
@@ -178,8 +191,8 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from "vue-property-decorator";
-  import { getBannerList, getProductList, getProjectList, getZoneInfo } from '@/api/home';
+  import { Component, Vue, Watch } from "vue-property-decorator";
+  import { getBannerList, getProductList, getProjectList, getZoneInfo, getSearchTagList } from '@/api/home';
   import { getActivityList, getActivityTypeList } from '@/api/activity';
   import moment from 'moment';
   import { Search, Swipe, SwipeItem, Lazyload, Grid, GridItem, Cell, Toast, Image, Row, Col, Divider, Card, Button, Tag, Icon, Popup } from 'vant';
@@ -200,6 +213,7 @@
     public tagList: any = [];
     public projectList: any = [];
     public searchList: any = [];
+    public suggestList: any = [];
     public show: boolean = false;
 
     public created() {
@@ -209,8 +223,9 @@
       this.fetchActivityType();
       this.fetchProject();
       this.fetchZone();
+      this.fetchSearchTag();
       if (localStorage.search) {
-        this.searchList = localStorage.search.split(',');
+        this.searchList = localStorage.search.split(',').slice(-5);
       }
     }
 
@@ -223,6 +238,11 @@
       }
     }
 
+    @Watch("search")
+    private onSearchChanged(newVal: boolean, oldVal: boolean) {
+      this.fetchSearchTag();
+    }
+
     private async fetchBanner() {
       Toast.loading({
         mask: true,
@@ -233,6 +253,11 @@
       this.bannerList = res.data.data;
       this.orgLogo = res.data.data[0].imageUrl;
       Toast.clear();
+    }
+
+    private async fetchSearchTag() {
+      const res = await getSearchTagList({tagsName: this.search});
+      this.suggestList = res.data.data;
     }
 
     private async fetchProduct() {
@@ -330,6 +355,11 @@
       this.show = true;
     }
 
+    private delSearchHistory() {
+      localStorage.setItem('search', '');
+      this.searchList = [];
+    }
+
     private searchHistory(search: any) {
       this.search = search;
       this.onSearch();
@@ -339,8 +369,8 @@
       if (this.search) {
         if (localStorage.search) {
           let exist = false;
-          this.searchList = localStorage.search.split(',');
-          for (const item of this.searchList) {
+          const searchList = localStorage.search.split(',');
+          for (const item of searchList) {
             if (item === this.search) {
               exist = true;
               break;

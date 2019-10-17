@@ -46,3 +46,10 @@ export const getProjectDetail = (params: any) =>
     method: 'get',
     params
   });
+
+export const getSearchTagList = (params: any) =>
+  request({
+    url: '/product/tags',
+    method: 'get',
+    params
+  });
