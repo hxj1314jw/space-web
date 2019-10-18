@@ -9,8 +9,7 @@
             {{activityForm.name}}
           </h3>
           <div style="margin-top: 7px;">
-            <span v-if="activityForm.price !== 0" style="color: #00B261; font-size: large; font-weight: bold">￥{{activityForm.price}} 起</span>
-            <span v-else style="color: #00B261; font-size: large; font-weight: bold">免费</span>
+            <span style="color: #00B261; font-size: large; font-weight: bold">￥{{activityForm.price}} 起</span>
             <span style="color: #999999; font-size: x-small; margin-left: 10px;">门票剩余总数: {{surplus}}张</span>
           </div>
         </van-cell>

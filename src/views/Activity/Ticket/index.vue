@@ -83,7 +83,8 @@ export default class ActivityTicket extends Vue {
 
   private async fetchTicket() {
     const res = await getTicketList({
-      activityId: this.activityId
+      activityId: this.activityId,
+      ticketKey: this.$route.query.ticketKey
     });
     this.ticketList = res.data.data;
   }
