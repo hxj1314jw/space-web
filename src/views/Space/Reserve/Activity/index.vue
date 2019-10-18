@@ -15,7 +15,7 @@
           :value="beginTime | dateFmt('YYYY-MM-DD HH:mm')" :is-link="true" disabled="true" input-align="right" error-message-align="right" :error-message="beginTimeErrMsg"/>
         <!-- <van-field label="结束时间" @click="showEndTime = true"
           :value="endTime | dateFmt('YYYY-MM-DD HH:mm')" :is-link="true" disabled="true" input-align="right" error-message-align="right" :error-message="endTimeErrMsg"/> -->
-        <van-cell>
+        <van-cell :label="desc">
           <template slot="title">
             <span>租用时长</span>
           </template>
@@ -98,7 +98,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { getOrganization, addSpaceReserve } from '@/api/space';
+import { getOrganization, addSpaceReserve, getReserveNum } from '@/api/space';
 
 import { Step, Steps, Cell, CellGroup, Field, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker, Toast, Notify, Stepper } from 'vant';
 Vue.use(Step).use(Steps).use(Cell).use(CellGroup).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Field).use(Toast).use(Notify).use(Stepper);
@@ -112,6 +112,7 @@ export default class ActivitySpaceReserve extends Vue {
   public beginTimeErrMsg: string = '';
   public endTimeErrMsg: string = '';
   public accessTimeErrMsg: string = '';
+  public desc: string = '';
   public name: string = this.$store.state.user.name;
   public phone: string = this.$store.state.user.phone;
   public showBeginTime: boolean = false;
@@ -138,12 +139,18 @@ export default class ActivitySpaceReserve extends Vue {
     this.onAccessTimeFocusOut();
   }
 
+  @Watch("reserveTime")
+  private onReserveTimeChanged(newVal: boolean, oldVal: boolean) {
+    this.fetchReserveNum();
+  }
+
   private onEndTimeFocusOut() {
     if (this.beginTime.getTime() <= this.today.getTime()) {
       this.beginTimeErrMsg = "起租时间不能早于或等于当前时间";
       return false;
     } else {
       this.beginTimeErrMsg = "";
+      this.fetchReserveNum();
       return true;
     }
   }
@@ -177,6 +184,15 @@ export default class ActivitySpaceReserve extends Vue {
     });
     this.orgList = res.data.data;
     Toast.clear();
+  }
+
+  private async fetchReserveNum() {
+    const res = await getReserveNum({
+      productId: this.$route.params.id,
+      retainingStartTime: this.beginTime.valueOf(),
+      reserveTime: this.reserveTime
+    });
+    this.desc = `该时段已有${res.data.data}人预约`;
   }
 
   private async reserve() {

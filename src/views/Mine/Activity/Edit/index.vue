@@ -20,6 +20,7 @@
         <van-field @click="showType = true" label="活动分类" required v-model="activityType" placeholder="请选择活动分类" input-align="right" is-link disabled/>
         <van-field @click="showTags = true" label="标签" required v-model="tagText" placeholder="请选择标签" input-align="right" is-link disabled/>
         <van-field label="活动详情" @click="showContent = true" required is-link readonly/>
+        <van-field label="选择订单" @click="showOrder = true" required is-link readonly/>
       </van-cell-group>
 
       <div style="margin-top: 10px; text-align: center">
@@ -72,6 +73,28 @@
         <span class="center van-icon">下一步</span>
       </van-button>
     </div>
+
+    <van-popup v-model="showOrder" position="bottom" style="min-height: 70%; max-height: 100%" :safe-area-inset-bottom="true">
+      <div style="padding: 10px 16px;">
+        <van-radio-group v-model="orderRadio">
+          <template v-for="(order, index) in orderList">
+            <van-radio :key="index" :name="order.id" checked-color="#00B261" icon-size="20" style="margin: 0; margin-top: 10px;">
+              <div style="background-color: #f3f3f3; padding: 10px 16px; width: 70vw; border-radius: 5px;">
+                <span style="font-weight: bold; font-size: small">
+                  {{order.productName}}
+                </span>
+                <div style="color: #969799; font-size: x-small">
+                  <van-icon name="location-o" style="line-height: inherit; margin-right: 0px;" color="#00B261"/>
+                  {{order.address}}<br>
+                  <van-icon name="clock-o" style="line-height: inherit; margin-right: 0px;" color="#00B261"/>
+                  {{order.purchaseBeginTime | dateFmt('YYYY.MM.DD')}}<br>
+                </div>
+              </div>
+            </van-radio>
+          </template>
+        </van-radio-group>
+      </div>   
+    </van-popup>
 
     <van-popup v-model="showContent" position="bottom" style="min-height: 70%; max-height: 100%" :safe-area-inset-bottom="true">
       <VueQuillEditor @func="getActivityContent" :activityContent="activityForm.content"/>      
@@ -138,6 +161,7 @@ import moment from 'moment';
 import VueQuillEditor from '@/components/VueQuillEditor.vue';
 import { getActivityDetail, addActivity, addActivityImage, getActivityTypeList, editActivity } from '@/api/activity';
 import { getOrganization } from '@/api/space';
+import { getOrderList } from '@/api/mine';
 
 import { Image, Toast, Uploader, CellGroup, Field, Cell, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker, Picker, Notify } from 'vant';
 Vue.use(Image).use(Toast).use(Uploader).use(CellGroup).use(Field).use(Cell).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Picker).use(Notify);
@@ -154,6 +178,7 @@ export default class EditActivity extends Vue {
   public orgList: any = [];
   public typeList: any = [];
   public columns: any = [];
+  public orderList: any = [];
   public tagList: any = ['活动', '办公', '聚会'];
   public activityId: any;
   public name: string = this.$store.state.user.name;
@@ -165,8 +190,10 @@ export default class EditActivity extends Vue {
   public showType: boolean = false;
   public showTags: boolean = false;
   public showContent: boolean = false;
+  public showOrder: boolean = false;
   public today: Date = new Date();
   public radio: string = '1';
+  public orderRadio: string = '';
   public tagText: string = this.tagList.join(',');
   public activityType: string = '';
   public beginTime: string = '';
@@ -178,6 +205,7 @@ export default class EditActivity extends Vue {
     this.activityId = this.$route.query.activityId;
     this.fetchOrg();
     this.fetchActivityType();
+    this.fetchOrder();
     if (this.activityId) {
       this.fetchActivity();
     }
@@ -218,6 +246,11 @@ export default class EditActivity extends Vue {
       document.title = this.activityForm.name;
       Toast.clear();
     });
+  }
+
+  private async fetchOrder() {
+    const res = await getOrderList({page: 1, size: 100, states: '2,3'});
+    this.orderList = res.data.data.rows;
   }
 
   private async fetchActivityType() {
@@ -308,6 +341,7 @@ export default class EditActivity extends Vue {
     this.activityForm.addType = 2;
     this.activityForm.publisherName = this.name;
     this.activityForm.publisherPhone = this.phone;
+    this.activityForm.orderId = this.orderRadio;
     this.toTimeZone();
     this.activityForm.tags = this.tagText;
     if (this.$route.query.activityId) {
@@ -346,5 +380,11 @@ export default class EditActivity extends Vue {
   border-radius: 50%;
   position: relative;
   bottom: 47px;
+}
+.order-shadow {
+  -moz-box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  -webkit-box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  border-radius: 4px
 }
 </style>

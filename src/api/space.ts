@@ -41,3 +41,10 @@ export const addSpaceReserve = (data: any) =>
     method: 'post',
     data
   });
+
+export const getReserveNum = (params: any) =>
+  request({
+    url: '/reserve/lineUp',
+    method: 'get',
+    params
+  });

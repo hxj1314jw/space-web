@@ -13,7 +13,7 @@
       </div>
       <div style="margin-top: 5px; line-height: 1.5em;">
         <span class="space-card-desc">
-          {{ spaceForm.remark }}<br>
+          <span v-if="spaceForm.remark">{{ spaceForm.remark }}<br></span>
           {{ spaceForm.address }} | 
           <template v-for="(tag, index) in tagList">
             <van-tag v-if="tag" :key="index" color="rgba(193,255,182,.31)" text-color="#07c160" size="medium" style="margin: 0 3px;">{{ tag }}</van-tag>
