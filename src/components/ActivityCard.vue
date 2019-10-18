@@ -5,15 +5,19 @@
     </div>
     <div slot="title">
       <span style="float: right; width: 80%; font-weight: bold">
-        <van-tag v-if="activityForm.hotStatus" color="#fff7e8" text-color="#ffb11a">优选</van-tag>
+        <van-tag v-if="activityForm.hotStatus && activityForm.status !== '9'" color="#fff7e8" text-color="#ffb11a">优选</van-tag>
+        <van-tag v-if="activityForm.status === '9'" color="#ffe8f7" text-color="#ff1ab1">已拒绝</van-tag>
         {{activityForm.name}}
       </span>
     </div>
     <div slot="desc">
       <div style="float: right; width: 80%;">
-        <span style="color: #969799;">
+        <span v-if="activityForm.status !== '9'" style="color: #969799;">
           {{activityForm.publisherName}}<br>
           {{activityForm.beginTime | dateFmt('YYYY-MM-DD')}} | {{activityForm.tags || '无'}}
+        </span>
+        <span v-else style="color: #969799;">
+          说明：{{activityForm.reason}}
         </span>
         <div v-if="!hidden" style="text-align: right; font-weight: bold; color: #00B261; padding-right: 3px;">￥{{activityForm.price}} 起</div>
         <div v-if="!hidden" style="width: 100%; text-align: right">
@@ -39,19 +43,21 @@ export default class ActivityCard extends Vue {
   @Prop() public mine: any;
 
   private toActivityDetail(id: any) {
-    if (this.mine) {
-      if (this.activityForm.status === '5' || this.activityForm.status === '10') {
-        this.$router.push({
-          path: `/mine/activity/edit`,
-          query: {
-            activityId: id
-          }
-        });
+    if (this.activityForm.status !== "9") {
+      if (this.mine) {
+        if (this.activityForm.status === '5' || this.activityForm.status === '10') {
+          this.$router.push({
+            path: `/mine/activity/edit`,
+            query: {
+              activityId: id
+            }
+          });
+        } else {
+          this.$router.push(`/mine/activity/ticket/data/${id}`);
+        }
       } else {
-        this.$router.push(`/mine/activity/ticket/data/${id}`);
+        this.$router.push(`/activity/detail/${id}`);
       }
-    } else {
-      this.$router.push(`/activity/detail/${id}`);
     }
   }
 }

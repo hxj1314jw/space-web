@@ -48,6 +48,9 @@ export default class NoticeCard extends Vue {
       case '1':
         this.$router.push(`/mine/reserve/detail/${id}`);
         break;
+      case '2':
+        this.$router.push(`/mine/activity`);
+        break;
       case '4':
         this.$router.push(`/mine/ticket/detail/${id}`);
         break;
