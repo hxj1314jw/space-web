@@ -103,6 +103,8 @@
 
     private onSearch() {
       this.spaceList = [];
+      this.loading = true;
+      this.finished = false;
       this.fetchSpace();
     }
   }

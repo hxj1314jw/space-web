@@ -116,6 +116,8 @@
     private onSearch() {
       this.activityList = [];
       this.fetchActivity();
+      this.finished = false;
+      this.loading = true;
     }
   }
 </script>
