@@ -55,8 +55,8 @@
     ];
     public statusOption: any = [
       {text: "全部状态", value: ""},
-      {text: "正在进行", value: "0"},
-      {text: "报名截止", value: "1"}
+      {text: "正在进行", value: "3"},
+      {text: "报名截止", value: "4"}
     ];
     public currentPage: number = 1;
     public total: number = 0;
@@ -93,7 +93,8 @@
         size: this.size,
         activityTypeId: this.type,
         isFreeFlag: this.price,
-        searchName: this.search
+        searchName: this.search,
+        hotStatus: this.status
       });
       this.loading = false;
       for (const item of res.data.data.rows) {

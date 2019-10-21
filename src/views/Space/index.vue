@@ -53,9 +53,10 @@
     ];
     public methodOption: any = [
       {text: '全部方式', value: ""},
-      {text: '按年缴纳', value: "1"},
-      {text: '按月缴纳', value: "2"},
-      {text: '按时缴纳', value: "3"}
+      {text: '按时缴纳', value: "1"},
+      {text: '按日缴纳', value: "2"},
+      {text: '按月缴纳', value: "3"},
+      {text: '按年缴纳', value: "4"},
     ];
     public currentPage: number = 1;
     public total: number = 0;
@@ -80,7 +81,8 @@
         page: this.currentPage,
         size: this.size,
         type: this.type,
-        searchName: this.search
+        searchName: this.search,
+        chargeMethod: this.method
       });
       this.loading = false;
       for (const item of res.data.data.rows) {
