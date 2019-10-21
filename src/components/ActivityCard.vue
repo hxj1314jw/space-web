@@ -58,6 +58,13 @@ export default class ActivityCard extends Vue {
       } else {
         this.$router.push(`/activity/detail/${id}`);
       }
+    } else {
+      this.$router.push({
+        path: `/mine/activity/edit`,
+        query: {
+          activityId: id
+        }
+      });
     }
   }
 }
