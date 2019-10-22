@@ -258,7 +258,7 @@ export default class EditActivity extends Vue {
   }
 
   private async fetchOrder() {
-    const res = await getOrderList({page: 1, size: 100, states: '2,3'});
+    const res = await getOrderList({page: 1, size: 100, states: '2,3', orderType: '2'});
     this.orderList = res.data.data.rows;
   }
 

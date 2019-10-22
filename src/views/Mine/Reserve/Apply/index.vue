@@ -97,6 +97,7 @@ export default class ApplyOrder extends Vue {
       id: this.$route.params.id
     });
     this.reserveForm = res.data.data;
+    this.beginTime = res.data.data.retainingStartTime;
     vm.$toast.clear();
   }
 
