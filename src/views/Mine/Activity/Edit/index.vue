@@ -93,8 +93,14 @@
             </van-radio>
           </template>
         </van-radio-group>
+        <div v-if="orderList.length === 0" style="margin-top: 15px;">
+          <span style="font-size: x-small; color: #969799;">
+            温馨提示 :<br>
+            提交活动审核前请确保您至少有一个可使用的活动场地
+          </span>
+        </div>
         <div v-if="orderList.length === 0" style="text-align: center;">
-          <van-button @click="toActivitySpace()" round type="primary" style="margin: 15px 0; width: 100%;">立即预约</van-button>
+          <van-button @click="toActivitySpace()" type="primary" style="margin: 15px 0; width: 100%;">立即预约</van-button>
         </div>
       </div>   
     </van-popup>
