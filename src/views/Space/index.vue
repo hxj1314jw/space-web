@@ -65,6 +65,9 @@
     public finished: boolean = false;
 
     public created() {
+      if (this.$route.query.type) {
+        this.type = String(this.$route.query.type);
+      }
       this.fetchSpace();
     }
 

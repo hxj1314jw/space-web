@@ -93,6 +93,9 @@
             </van-radio>
           </template>
         </van-radio-group>
+        <div v-if="orderList.length === 0" style="text-align: center;">
+          <van-button @click="toActivitySpace()" round type="primary" style="margin: 15px 0; width: 100%;">立即预约</van-button>
+        </div>
       </div>   
     </van-popup>
 
@@ -288,6 +291,15 @@ export default class EditActivity extends Vue {
     data.append('file', file.file);
     const res = await addActivityImage(data);
     this.activityForm.image = res.data.data.url;
+  }
+
+  private toActivitySpace() {
+    this.$router.push({
+      path: '/space',
+      query: {
+        type: '5'
+      }
+    });
   }
 
   private onChange(picker: any, value: any, index: any) {

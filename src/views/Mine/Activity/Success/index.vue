@@ -7,7 +7,7 @@
         </template>
         <template slot="text">
           <div style="text-align: center; margin-top: 20px; line-height: 1.5em;">
-            <span style="color: #333333; font-size: large">提交成功</span><br>
+            <span style="color: #333333; font-size: large">提交完成</span><br>
             <span style="color: #969799; font-size: small;">
               您已成功提交活动，进入<a href="/mine/activity">我的活动</a>查看活动信息<br>
               请耐心等待审核

@@ -7,10 +7,10 @@
         </template>
         <template slot="text">
           <div style="text-align: center; margin-top: 20px; line-height: 1.5em;">
-            <span style="color: #333333; font-size: large">申请成功</span><br>
+            <span style="color: #333333; font-size: large">提交完成</span><br>
             <span style="color: #969799; font-size: small;">
-              您已成功申请，进入<a href="/mine/reserve">我的预约</a>查看参访信息<br>
-              请安排行程准时进行参访
+              您已提交完成，进入<a href="/mine/reserve">我的预约</a>查看参访信息<br>
+              请耐心等待审核，并安排行程准时进行参访
             </span>
 
             <div style="margin: 20px 0;">
