@@ -31,7 +31,11 @@
             <van-icon name="clock-o" style="line-height: inherit; margin-right: 0px;" color="#00B261"/>
             {{reserveForm.accessTime}}<br>
             <span style="color: #00B261; font-size: large">
-              ￥{{reserveForm.price}}
+              ￥{{reserveForm.price}}/
+              <span v-if="reserveForm.chargeMethod === '1'">小时</span>
+              <span v-if="reserveForm.chargeMethod === '2'">日</span>
+              <span v-if="reserveForm.chargeMethod === '3'">月</span>
+              <span v-if="reserveForm.chargeMethod === '4'">年</span>
             </span>
             <span style="float: right">x{{ reserveForm.useNum }}</span>
           </span>
