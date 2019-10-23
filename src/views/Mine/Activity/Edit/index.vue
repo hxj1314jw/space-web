@@ -7,6 +7,7 @@
       </van-uploader>
 
       <van-cell-group>
+        <van-field label="选择订单" @click="showOrder = true" required is-link readonly/>
         <van-field label="标题" required v-model="activityForm.name" placeholder="请输入标题(不超过35字)" input-align="right" rows="1" type="textarea" autosize/>
         <van-field label="人数" type="number" required v-model="activityForm.count" placeholder="请输入人数" input-align="right"/>
         <van-field @click="showBeginTime = true" label="开始时间" required v-model="beginTime" placeholder="请选择开始时间" input-align="right" is-link disabled/>
@@ -20,7 +21,6 @@
         <van-field @click="showType = true" label="活动分类" required v-model="activityType" placeholder="请选择活动分类" input-align="right" is-link disabled/>
         <van-field @click="showTags = true" label="标签" required v-model="tagText" placeholder="请选择标签" input-align="right" is-link disabled/>
         <van-field label="活动详情" @click="showContent = true" required is-link readonly/>
-        <van-field label="选择订单" @click="showOrder = true" required is-link readonly/>
       </van-cell-group>
 
       <div style="margin-top: 10px; text-align: center">
@@ -74,7 +74,7 @@
       </van-button>
     </div>
 
-    <van-popup v-model="showOrder" position="bottom" style="min-height: 70%; max-height: 100%" :safe-area-inset-bottom="true">
+    <van-popup v-model="showOrder" position="bottom" style="max-height: 70%;" :safe-area-inset-bottom="true">
       <div style="padding: 10px 16px;">
         <van-radio-group v-model="orderRadio">
           <template v-for="(order, index) in orderList">
