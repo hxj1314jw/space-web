@@ -4,7 +4,6 @@
       <van-cell-group>
         <van-cell title="姓名"/>
         <van-cell title="手机"/>
-        <van-cell title="邮箱"/>
         
         <template v-for="(field, index) in fieldList">
           <van-cell :key="index" v-if="field.isCheck">
