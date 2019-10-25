@@ -30,7 +30,7 @@
             <span v-if="activityForm.status === '8'">已取消</span>
             <span v-if="activityForm.status === '9'">已拒绝</span>
             <span v-if="activityForm.status === '10'">草稿箱</span>
-            <span v-else>报名截止</span>
+            <span v-if="activityForm.status === '3'">报名截止</span>
           </van-button>
         </div>
       </div>
