@@ -77,7 +77,7 @@
 
     <div style="position: fixed; bottom: 0; height: 50px;">
       <van-button @click="reserve()" type="primary" style="width: 100vw; margin: 0; padding: 0; height: 100%;">
-        <span class="center van-icon" >立即预约</span>
+        <span class="center van-icon" >立即下单</span>
       </van-button>
     </div>
 
