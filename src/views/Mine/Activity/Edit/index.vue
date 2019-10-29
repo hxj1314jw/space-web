@@ -87,7 +87,7 @@
                   <van-icon name="location-o" style="line-height: inherit; margin-right: 0px;" color="#00B261"/>
                   {{order.address}}<br>
                   <van-icon name="clock-o" style="line-height: inherit; margin-right: 0px;" color="#00B261"/>
-                  {{order.purchaseBeginTime | dateFmt('YYYY.MM.DD')}}<br>
+                  {{order.purchaseBeginTime | dateFmt('YYYY.MM.DD HH:mm')}} - {{order.purchaseEndTime | dateFmt('YYYY.MM.DD HH:mm')}}<br>
                 </div>
               </div>
             </van-radio>

@@ -37,7 +37,7 @@
       <van-radio-group v-model="radio" style="padding: 10px 16px;">
           <van-radio name="1" checked-color="#00B261" icon-size="20" style="margin: 0;">
             <van-cell style="width: 80vw; border-radius: 5px">
-              <span style="font-weight: bold;">个人预约</span><br>
+              <span style="font-weight: bold;">个人</span><br>
               <span style="color: #999999; font-size: smaller;">
                 <van-icon slot="icon" name="user-o" style="line-height: inherit; margin-right: 3px;" color="#00B261"/>
                 姓名：{{ name }}
