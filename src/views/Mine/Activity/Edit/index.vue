@@ -263,6 +263,7 @@ export default class EditActivity extends Vue {
       this.enrollBeginTime = this.activityForm.enrollBeginTime;
       this.enrollEndTime = this.activityForm.enrollEndTime;
       this.orderRadio = this.activityForm.orderId;
+      this.tagList = this.activityForm.tags.split(',');
       document.title = this.activityForm.name;
       Toast.clear();
     });
