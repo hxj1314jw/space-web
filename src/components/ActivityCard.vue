@@ -21,8 +21,10 @@
         </span>
         <div v-if="!hidden" style="text-align: right; font-weight: bold; color: #00B261; padding-right: 3px;">￥{{activityForm.price}} 起</div>
         <div v-if="!hidden" style="width: 100%; text-align: right">
-          <van-button plain type="primary" size="mini" style="width: 70px; margin-top: 3px;">
-            <span v-if="activityForm.status === '6' || activityForm.status === '2'">立即报名</span>
+          <van-button v-if="activityForm.status === '6' || activityForm.status === '2'" plain type="primary" size="mini" style="width: 70px; margin-top: 3px;">
+            <span>立即报名</span>
+          </van-button>
+          <van-button v-else plain type="warning" size="mini" style="width: 70px; margin-top: 3px;">
             <span v-if="activityForm.status === '1'">等待报名</span>
             <span v-if="activityForm.status === '4'">报名已满</span>
             <span v-if="activityForm.status === '5'">正在审核</span>

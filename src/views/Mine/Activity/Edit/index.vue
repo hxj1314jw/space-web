@@ -7,7 +7,7 @@
       </van-uploader>
 
       <van-cell-group>
-        <van-field label="选择订单" @click="showOrder = true" required is-link readonly/>
+        <van-field label="选择订单" v-model="orderName" placeholder="请选择订单" @click="showOrder = true" required is-link readonly input-align="right" disabled/>
         <van-field label="标题" required v-model="activityForm.name" placeholder="请输入标题(不超过35字)" input-align="right" rows="1" type="textarea" autosize/>
         <van-field label="人数" type="number" required v-model="activityForm.count" placeholder="请输入人数" input-align="right"/>
         <van-field @click="showBeginTime = true" label="开始时间" required v-model="beginTime" placeholder="请选择开始时间" input-align="right" is-link disabled/>
@@ -76,7 +76,7 @@
 
     <van-popup v-model="showOrder" position="bottom" style="max-height: 70%;" :safe-area-inset-bottom="true">
       <div style="padding: 10px 16px;">
-        <van-radio-group v-model="orderRadio">
+        <van-radio-group v-model="orderRadio" @change="onOrderChanged">
           <template v-for="(order, index) in orderList">
             <van-radio :key="index" :name="order.id" checked-color="#00B261" icon-size="20" style="margin: 0; margin-top: 10px;">
               <div style="background-color: #f3f3f3; padding: 10px 16px; width: 70vw; border-radius: 5px;">
@@ -209,6 +209,7 @@ export default class EditActivity extends Vue {
   public endTime: string = '';
   public enrollBeginTime: string = '';
   public enrollEndTime: string = '';
+  public orderName: string = '';
 
   public created() {
     this.activityId = this.$route.query.activityId;
@@ -240,6 +241,15 @@ export default class EditActivity extends Vue {
     this.tagList.splice(index, 1);
   }
 
+  private onOrderChanged(id: any) {
+    for (const item of this.orderList) {
+      if (item.id === id) {
+        this.orderName = item.productName;
+        break;
+      }
+    }
+  }
+
   private fetchActivity() {
     Toast.loading({
       mask: true,
@@ -252,6 +262,7 @@ export default class EditActivity extends Vue {
       this.endTime = this.activityForm.endTime;
       this.enrollBeginTime = this.activityForm.enrollBeginTime;
       this.enrollEndTime = this.activityForm.enrollEndTime;
+      this.orderRadio = this.activityForm.orderId;
       document.title = this.activityForm.name;
       Toast.clear();
     });
