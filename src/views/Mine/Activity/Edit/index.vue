@@ -114,7 +114,7 @@
     </van-popup>
 
     <van-popup v-model="showBeginTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmBeginTime" @cancel="showBeginTime = false; beginTime = moment(today).format('YYYY-MM-DD HH:mm:SS');"
+      <van-datetime-picker cancel-button-text="重置" @confirm="confirmBeginTime" @cancel="showBeginTime = false; beginTime = moment(today).format('YYYY-MM-DD HH:mm');"
         v-model="activityForm.beginTime"
         type="datetime"
         :min-date="today"
@@ -122,7 +122,7 @@
     </van-popup>
 
     <van-popup v-model="showEndTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEndTime" @cancel="showEndTime = false; endTime = moment(today).format('YYYY-MM-DD HH:mm:SS');"
+      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEndTime" @cancel="showEndTime = false; endTime = moment(today).format('YYYY-MM-DD HH:mm');"
         v-model="activityForm.endTime"
         type="datetime"
         :min-date="today"
@@ -130,7 +130,7 @@
     </van-popup>
 
     <van-popup v-model="showEnrollBeginTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEnrollBeginTime" @cancel="showEnrollBeginTime = false; enrollBeginTime = moment(today).format('YYYY-MM-DD HH:mm:SS');"
+      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEnrollBeginTime" @cancel="showEnrollBeginTime = false; enrollBeginTime = moment(today).format('YYYY-MM-DD HH:mm');"
         v-model="activityForm.enrollBeginTime"
         type="datetime"
         :min-date="today"
@@ -138,7 +138,7 @@
     </van-popup>
 
     <van-popup v-model="showEnrollEndTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEnrollEndTime" @cancel="showEnrollEndTime = false; enrollEndTime = moment(today).format('YYYY-MM-DD HH:mm:SS');"
+      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEnrollEndTime" @cancel="showEnrollEndTime = false; enrollEndTime = moment(today).format('YYYY-MM-DD HH:mm');"
         v-model="activityForm.enrollEndTime"
         type="datetime"
         :min-date="today"
@@ -265,6 +265,7 @@ export default class EditActivity extends Vue {
       this.orderRadio = this.activityForm.orderId;
       this.tagList = this.activityForm.tags.split(',');
       document.title = this.activityForm.name;
+      this.fetchOrder();
       Toast.clear();
     });
   }
@@ -272,6 +273,7 @@ export default class EditActivity extends Vue {
   private async fetchOrder() {
     const res = await getOrderList({page: 1, size: 100, states: '2,3', orderType: '2'});
     this.orderList = res.data.data.rows;
+    this.onOrderChanged(this.orderRadio);
   }
 
   private async fetchActivityType() {
@@ -325,25 +327,25 @@ export default class EditActivity extends Vue {
   }
 
   private confirmBeginTime(value: any) {
-    this.beginTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
+    this.beginTime = moment(value).format('YYYY-MM-DD HH:mm');
     this.activityForm.beginTime = moment(value).valueOf();
     this.showBeginTime = false;
   }
 
   private confirmEndTime(value: any) {
-    this.endTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
+    this.endTime = moment(value).format('YYYY-MM-DD HH:mm');
     this.activityForm.endTime = moment(value).valueOf();
     this.showEndTime = false;
   }
 
   private confirmEnrollBeginTime(value: any) {
-    this.enrollBeginTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
+    this.enrollBeginTime = moment(value).format('YYYY-MM-DD HH:mm');
     this.activityForm.enrollBeginTime = moment(value).valueOf();
     this.showEnrollBeginTime = false;
   }
 
   private confirmEnrollEndTime(value: any) {
-    this.enrollEndTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
+    this.enrollEndTime = moment(value).format('YYYY-MM-DD HH:mm');
     this.activityForm.enrollEndTime = moment(value).valueOf();
     this.showEnrollEndTime = false;
   }
@@ -372,7 +374,7 @@ export default class EditActivity extends Vue {
     this.activityForm.publisherName = this.name;
     this.activityForm.publisherPhone = this.phone;
     this.activityForm.orderId = this.orderRadio;
-    this.toTimeZone();
+    // this.toTimeZone();
     this.activityForm.tags = this.tagText;
     if (this.$route.query.activityId) {
       editActivity(this.activityForm).then((res: any) => {
