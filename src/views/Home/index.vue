@@ -336,7 +336,8 @@
     }
 
     private toActivityDetail(id: string) {
-      this.$router.push(`/activity/detail/${id}`);
+      // this.$router.push(`/activity/detail/${id}`);
+      window.location.href = `/activity/detail/${id}`;
     }
 
     private toActivityList() {

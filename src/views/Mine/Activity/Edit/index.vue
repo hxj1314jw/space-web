@@ -374,7 +374,7 @@ export default class EditActivity extends Vue {
     this.activityForm.publisherName = this.name;
     this.activityForm.publisherPhone = this.phone;
     this.activityForm.orderId = this.orderRadio;
-    // this.toTimeZone();
+    this.toTimeZone();
     this.activityForm.tags = this.tagText;
     if (this.$route.query.activityId) {
       editActivity(this.activityForm).then((res: any) => {
