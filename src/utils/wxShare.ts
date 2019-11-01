@@ -15,7 +15,7 @@ export function wxChatShare(param: any) {
         if (res.code === 200) {
             // 接口返回配置信息
             wx.config({
-                debug: true,
+                debug: false,
                 appId: res.data.appId,
                 timestamp: res.data.timestamp, // 必填，生成签名的时间戳
                 nonceStr: res.data.nonceStr, // 必填，生成签名的随机串
