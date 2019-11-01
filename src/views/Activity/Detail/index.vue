@@ -104,7 +104,7 @@ export default class ActivityDetail extends Vue {
     let param = {
       url: window.location.href.split('#')[0], // 当前页面url
       title: this.activityForm.name, // 分享数据配置 主标题
-      desc: this.activityForm.tags, // 分享数据配置 副标题
+      desc: '【'+this.activityForm.tags+'】 我在有空发现了一个不错的活动，赶紧来看看吧', // 分享数据配置 副标题
       link: process.env.VUE_APP_URL + '/activity/detail/' + this.activityForm.id + '?zoneId=' + this.activityForm.zoneId, // 分享数据配置
       imgUrl: this.activityForm.image, // 分享数据配置 －－ 全路径
       type: "link", // 分享类型,music、video或link，不填默认为link
