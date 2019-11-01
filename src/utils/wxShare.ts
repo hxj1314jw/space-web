@@ -6,18 +6,13 @@ const wx = require('weixin-js-sdk');
 
 export function wxChatShare(param: any) {
     if (!isWxBrowser()) {
-        alert(2222);
         return;
     }
     const url = param.url;
     const params = {url: url};
     request({url: "/wx/sdk", method: 'get', params}).then((result: any) => {
         const res = result.data;
-        alert("1");
-        alert(params.url);
-        alert(JSON.stringify(res.data));
         if (res.code === 200) {
-            alert("2");
             // 接口返回配置信息
             wx.config({
                 debug: true,
