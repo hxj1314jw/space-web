@@ -35,7 +35,7 @@
             <van-icon name="clock-o" style="line-height: inherit; margin-right: 0px;" color="#00B261"/>
             {{orderForm.purchaseBeginTime | dateFmt('YYYY.MM.DD')}}<br>
             <span style="color: #00B261; font-size: large">
-              ￥{{orderForm.amount || orderForm.price}} /
+              ￥{{orderForm.price || orderForm.amount }} /
               <span v-if="orderForm.chargeMethod === '1'">小时</span>
               <span v-if="orderForm.chargeMethod === '2'">日</span>
               <span v-if="orderForm.chargeMethod === '3'">月</span>
