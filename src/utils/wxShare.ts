@@ -1,19 +1,24 @@
 import axios from 'axios';
 import {isWxBrowser} from '@/utils/commonUtils';
+import request from '@/utils/request';
 // import {wx} from 'weixin-js-sdk';
 const wx = require('weixin-js-sdk');
 
 export function wxChatShare(param: any) {
     if (!isWxBrowser()) {
+        alert(2222);
         return;
     }
     const url = param.url;
-    axios.get("/wx/sdk", { params: { url: url} }).then((res: any) => {
+    const params =  {url: url};
+    request({url:"/wx/sdk", method: 'get',params}).then((res: any) => {
             const code = res.code;
+            alert("1");
             if (code === 200) {
+                alert("2");
                 // 接口返回配置信息
                 wx.config({
-                    debug: false,
+                    debug: true,
                     appId: res.data.appId,
                     timestamp: res.data.timestamp, // 必填，生成签名的时间戳
                     nonceStr: res.data.nonceStr, // 必填，生成签名的随机串
@@ -86,5 +91,7 @@ export function wxChatShare(param: any) {
             } else {
                 console.log(res.data.message);
             }
-        })
+        }).catch((err:any)=>{
+            alert(err);
+    })
 }

@@ -100,6 +100,7 @@ export default class ActivityDetail extends Vue {
   }
 
   private settingShare(){
+    console.log("11111");
     let param = {
       url: window.location.href.split('#')[0], // 当前页面url
       title: this.activityForm.name, // 分享数据配置 主标题
