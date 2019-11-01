@@ -81,7 +81,6 @@ export default class ActivityDetail extends Vue {
   public created() {
     this.fetchActivity();
     this.fetchSurplus();
-    this.settingShare();
   }
 
   private fetchActivity() {
@@ -96,6 +95,7 @@ export default class ActivityDetail extends Vue {
       document.title = this.activityForm.name;
       this.activityDate = moment(this.activityForm.beginTime).format("YYYY.MM.DD") + ' - ' + moment(this.activityForm.endTime).format("YYYY.MM.DD");
       Toast.clear();
+      this.settingShare();
     });
   }
 
@@ -109,7 +109,8 @@ export default class ActivityDetail extends Vue {
       imgUrl: this.activityForm.image, // 分享数据配置 －－ 全路径
       type: "link", // 分享类型,music、video或link，不填默认为link
       dataUrl: " ", // 如果type是music或video，则要提供数据链接，默认为空
-    }
+    };
+    console.log(param)
     wxChatShare(param);
   }
 
