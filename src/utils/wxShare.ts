@@ -11,11 +11,12 @@ export function wxChatShare(param: any) {
     }
     const url = param.url;
     const params =  {url: url};
-    request({url:"/wx/sdk", method: 'get',params}).then((res: any) => {
-            const code = res.data.code;
+    request({url:"/wx/sdk", method: 'get',params}).then((result: any) => {
+            const res = result.data;
             alert("1");
             alert(params.url);
-            if (code === 200) {
+            alert(res.data);
+            if (res.code === 200) {
                 alert("2");
                 // 接口返回配置信息
                 wx.config({
