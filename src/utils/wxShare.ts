@@ -14,6 +14,7 @@ export function wxChatShare(param: any) {
     request({url:"/wx/sdk", method: 'get',params}).then((res: any) => {
             const code = res.data.code;
             alert("1");
+            alert(params.url);
             if (code === 200) {
                 alert("2");
                 // 接口返回配置信息
