@@ -12,7 +12,7 @@ export function wxChatShare(param: any) {
     const url = param.url;
     const params =  {url: url};
     request({url:"/wx/sdk", method: 'get',params}).then((res: any) => {
-            const code = res.code;
+            const code = res.data.code;
             alert("1");
             if (code === 200) {
                 alert("2");
