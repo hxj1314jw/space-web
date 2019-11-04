@@ -9,7 +9,7 @@ export function wxChatShare(param: any) {
         return;
     }
     const url = param.url;
-    const params = {url: url};
+    const params = {url};
     request({url: "/wx/sdk", method: 'get', params}).then((result: any) => {
         const res = result.data;
         if (res.code === 200) {
@@ -24,40 +24,40 @@ export function wxChatShare(param: any) {
                     'updateAppMessageShareData', 'updateTimelineShareData', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ'
                 ]
             });
-            wx.ready(function () {
-                //分享到朋友圈
+            wx.ready(() => {
+                // 分享到朋友圈
 
                 wx.updateTimelineShareData({
                     title: param.title, // 分享标题
                     link: param.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                     imgUrl: param.imgUrl, // 分享图标
-                    success: function () {
+                    success() {
                         // 设置成功
                         console.log("分享到朋友圈成功返回的信息为:", res);
                     }
-                })
+                });
 
                 wx.onMenuShareTimeline({
                     title: param.title, // 分享标题
                     link: param.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                     imgUrl: param.imgUrl, // 分享图标
-                    success: function () {
+                    success() {
                         // 用户点击了分享后执行的回调函数
                     },
-                })
+                });
 
-                //分享给朋友
+                // 分享给朋友
 
                 wx.updateAppMessageShareData({
                     title: param.title, // 分享标题
                     desc: param.desc, // 分享描述
                     link: param.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                     imgUrl: param.imgUrl, // 分享图标
-                    success: function () {
+                    success() {
                         // 设置成功
                         console.log("分享到朋友圈成功返回的信息为:", res);
                     }
-                })
+                });
                 wx.onMenuShareAppMessage({
                     title: param.title, // 分享标题
                     desc: param.desc, // 分享描述
@@ -65,7 +65,7 @@ export function wxChatShare(param: any) {
                     imgUrl: param.imgUrl, // 分享图标
                     type: param.type, // 分享类型,music、video或link，不填默认为link
                     dataUrl: param.dataUrl, // 如果type是music或video，则要提供数据链接，默认为空
-                    success: function () {
+                    success() {
                         // 用户点击了分享后执行的回调函数
                     }
                 });
@@ -74,21 +74,21 @@ export function wxChatShare(param: any) {
                     desc: param.desc, // 分享描述
                     link: param.link, // 分享链接
                     imgUrl: param.imgUrl, // 分享图标
-                    success: function () {
+                    success() {
                         // 用户确认分享后执行的回调函数
                     },
-                    cancel: function () {
+                    cancel() {
                         // 用户取消分享后执行的回调函数
                     }
                 });
             });
-            wx.error(function (res: any) {
-                console.log('验证失败返回的信息:', res);
+            wx.error((err: any) => {
+                console.log('验证失败返回的信息:', err);
             });
         } else {
             console.log(res.data.message);
         }
     }).catch((err: any) => {
         alert(err);
-    })
+    });
 }
