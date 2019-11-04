@@ -65,7 +65,8 @@ export default class ActivityCard extends Vue {
           this.$router.push(`/mine/activity/ticket/data/${id}`);
         }
       } else {
-        this.$router.push(`/activity/detail/${id}`);
+        // this.$router.push(`/activity/detail/${id}`);
+        window.location.href = `/activity/detail/${id}`;
       }
     } else {
       this.$router.push({

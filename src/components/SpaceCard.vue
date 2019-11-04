@@ -66,7 +66,8 @@ export default class SpaceCard extends Vue {
   }
 
   private toSpaceDetail(id: any) {
-    this.$router.push(`/space/detail/${id}`);
+    // this.$router.push(`/space/detail/${id}`);
+    window.location.href = `/space/detail/${id}`;
   }
 }
 </script>
