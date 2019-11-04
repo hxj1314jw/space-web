@@ -189,7 +189,7 @@ export default class SpaceDetail extends Vue {
       url: window.location.href.split('#')[0], // 当前页面url
       title: this.spaceForm.productName, // 分享数据配置 主标题
       desc: '【' + this.spaceForm.tags + '】我在有空发现了一个空间，赶紧来看看吧。', // 分享数据配置 副标题
-      link: process.env.VUE_APP_URL + '/activity/detail/' + this.spaceForm.id + '?zoneId=' + getZoneId(), // 分享数据配置
+      link: process.env.VUE_APP_URL + '/space/detail/' + this.spaceForm.id + '?zoneId=' + getZoneId(), // 分享数据配置
       imgUrl: this.spaceForm.bannerImage, // 分享数据配置 －－ 全路径
       type: "link", // 分享类型,music、video或link，不填默认为link
       dataUrl: " ", // 如果type是music或video，则要提供数据链接，默认为空
