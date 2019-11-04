@@ -138,8 +138,10 @@ import { Component, Vue } from "vue-property-decorator";
 import { UserModule } from '@/store/modules/user';
 import moment from 'moment';
 import { getSpaceDetail, collectSpace, deleteCollectSpace } from '@/api/space';
+import {wxChatShare} from '@/utils/wxShare';
 
 import { Image, Dialog, Field, Toast, Cell, CellGroup, Tag, Button, Icon, Grid, GridItem } from 'vant';
+import { getZoneId } from '../../../utils/zone';
 Vue.use(Image).use(Field).use(Toast).use(Cell).use(CellGroup).use(Dialog).use(Tag).use(Button).use(Icon).use(Grid).use(GridItem);
 
 @Component({
@@ -177,8 +179,22 @@ export default class SpaceDetail extends Vue {
       }
       document.title = this.spaceForm.productName;
       this.initAbleList();
+      this.settingShare();
       Toast.clear();
     });
+  }
+
+  private settingShare() {
+    const param = {
+      url: window.location.href.split('#')[0], // 当前页面url
+      title: this.spaceForm.productName, // 分享数据配置 主标题
+      desc: '【' + this.spaceForm.tags + '】我在有空发现了一个空间，赶紧来看看吧。', // 分享数据配置 副标题
+      link: process.env.VUE_APP_URL + '/activity/detail/' + this.spaceForm.id + '?zoneId=' + getZoneId(), // 分享数据配置
+      imgUrl: this.spaceForm.bannerImage, // 分享数据配置 －－ 全路径
+      type: "link", // 分享类型,music、video或link，不填默认为link
+      dataUrl: " ", // 如果type是music或video，则要提供数据链接，默认为空
+    };
+    wxChatShare(param);
   }
 
   private toMap() {
