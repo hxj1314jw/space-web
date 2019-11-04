@@ -332,7 +332,8 @@
     }
 
     private toSpaceDetail(id: string) {
-      this.$router.push(`/space/detail/${id}`);
+      // this.$router.push(`/space/detail/${id}`);
+      window.location.href = `/space/detail/${id}`;
     }
 
     private toActivityDetail(id: string) {
