@@ -73,19 +73,19 @@
         <div style="font-weight: bold;">发票</div>
         <div style="font-size: smaller; margin-top: 20px;">发票类型</div>
         <van-radio-group v-model="invoiceForm.invoiceType" style="width: 100%;">
-          <van-radio name="1" style="float: left; margin-right: 7px; height: 37px;">
+          <van-radio name="1" style="float: left; margin-right: 7px; height: 37px;" v-if="invoiceList.indexOf('1') >= 0">
             <template slot="icon">
               <van-tag v-if="invoiceForm.invoiceType === '1'" color="rgba(193,255,182,.31)" text-color="#07c160" round size="medium">电子普通发票</van-tag>
               <van-tag v-else round color="#f3f3f3" text-color="#999999" size="medium">电子普通发票</van-tag>
             </template>
           </van-radio>
-          <van-radio name="2"  style="float: left; margin-right: 7px; height: 37px;">
+          <van-radio name="2"  style="float: left; margin-right: 7px; height: 37px;" v-if="invoiceList.indexOf('2') >= 0">
             <template slot="icon">
               <van-tag v-if="invoiceForm.invoiceType === '2'" color="rgba(193,255,182,.31)" text-color="#07c160" round size="medium">增值税普通发票</van-tag>
               <van-tag v-else round color="#f3f3f3" text-color="#999999" size="medium">增值税普通发票</van-tag>
             </template>
           </van-radio>
-          <van-radio name="3"  style="margin-right: 7px; height: 37px;">
+          <van-radio name="3"  style="margin-right: 7px; height: 37px;" v-if="invoiceList.indexOf('3') >= 0">
             <template slot="icon">
               <van-tag v-if="invoiceForm.invoiceType === '3'" color="rgba(193,255,182,.31)" text-color="#07c160" round size="medium">增值税专用发票</van-tag>
               <van-tag v-else color="#f3f3f3" text-color="#999999" round size="medium">增值税专用发票</van-tag>
@@ -164,6 +164,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { getSubOrderList, cancelSubOrder, addInvoice } from '@/api/mine';
+import { getZoneDetail } from '@/api/home';
 import OrderCard from '@/components/OrderCard.vue';
 
 import { Toast, Cell, CellGroup, Button, List, Popup, Dialog, RadioGroup, Radio, Tag, Divider, Field } from 'vant';
@@ -193,6 +194,7 @@ export default class SubOrderDetail extends Vue {
     phone: '',
     title: ''
   };
+  public invoiceList: string = '';
   public invoiceText: string = '请选择发票类型';
   public finishedNum: number = 1;
   public showList: boolean = false;
@@ -202,6 +204,7 @@ export default class SubOrderDetail extends Vue {
   public created() {
     this.invoiceForm.orderId = this.$route.params.id;
     this.fetchSubOrder();
+    this.getInvoice();
   }
 
   @Watch("invoiceForm.invoiceType")
@@ -234,6 +237,13 @@ export default class SubOrderDetail extends Vue {
       default:
         break;
     }
+  }
+
+  private getInvoice() {
+    getZoneDetail({id: this.$route.params.id}).then((res: any) => {
+      this.invoiceList = res.data.data.invoices;
+      // this.invoiceList = '1,2'
+    });
   }
 
 
