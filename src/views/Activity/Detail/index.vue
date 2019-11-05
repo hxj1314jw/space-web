@@ -63,6 +63,8 @@ import { Component, Vue } from "vue-property-decorator";
 import { UserModule } from '@/store/modules/user';
 import moment from 'moment';
 import { getActivityDetail, getActivitySurplus, collectActivity, deleteCollectActivity } from '@/api/activity';
+import {wxChatShare} from '@/utils/wxShare';
+
 
 import { Image, Dialog, Field, Toast, Cell, CellGroup, Tag, Button, Icon } from 'vant';
 Vue.use(Image).use(Field).use(Toast).use(Cell).use(CellGroup).use(Dialog).use(Tag).use(Button).use(Icon);
@@ -93,7 +95,21 @@ export default class ActivityDetail extends Vue {
       document.title = this.activityForm.name;
       this.activityDate = moment(this.activityForm.beginTime).format("YYYY.MM.DD") + ' - ' + moment(this.activityForm.endTime).format("YYYY.MM.DD");
       Toast.clear();
+      this.settingShare();
     });
+  }
+
+  private settingShare() {
+    const param = {
+      url: window.location.href.split('#')[0], // 当前页面url
+      title: this.activityForm.name, // 分享数据配置 主标题
+      desc: '【' + this.activityForm.tags + '】我在有空发现了一个不错的活动，赶紧来看看吧。', // 分享数据配置 副标题
+      link: process.env.VUE_APP_URL + '/activity/detail/' + this.activityForm.id + '?zoneId=' + this.activityForm.zoneId, // 分享数据配置
+      imgUrl: this.activityForm.image, // 分享数据配置 －－ 全路径
+      type: "link", // 分享类型,music、video或link，不填默认为link
+      dataUrl: " ", // 如果type是music或video，则要提供数据链接，默认为空
+    };
+    wxChatShare(param);
   }
 
   private fetchSurplus() {

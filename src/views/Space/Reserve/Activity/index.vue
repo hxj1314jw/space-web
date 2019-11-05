@@ -192,7 +192,7 @@ export default class ActivitySpaceReserve extends Vue {
       retainingStartTime: this.beginTime.valueOf(),
       reserveTime: this.reserveTime
     });
-    this.desc = `该时段已有${res.data.data}人预约`;
+    this.desc = `该时段已有${res.data.data}人预约看场地`;
   }
 
   private async reserve() {

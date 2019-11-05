@@ -7,6 +7,7 @@
       </van-uploader>
 
       <van-cell-group>
+        <van-field label="选择订单" v-model="orderName" placeholder="请选择订单" @click="showOrder = true" required is-link readonly input-align="right" disabled/>
         <van-field label="标题" required v-model="activityForm.name" placeholder="请输入标题(不超过35字)" input-align="right" rows="1" type="textarea" autosize/>
         <van-field label="人数" type="number" required v-model="activityForm.count" placeholder="请输入人数" input-align="right"/>
         <van-field @click="showBeginTime = true" label="开始时间" required v-model="beginTime" placeholder="请选择开始时间" input-align="right" is-link disabled/>
@@ -20,7 +21,6 @@
         <van-field @click="showType = true" label="活动分类" required v-model="activityType" placeholder="请选择活动分类" input-align="right" is-link disabled/>
         <van-field @click="showTags = true" label="标签" required v-model="tagText" placeholder="请选择标签" input-align="right" is-link disabled/>
         <van-field label="活动详情" @click="showContent = true" required is-link readonly/>
-        <van-field label="选择订单" @click="showOrder = true" required is-link readonly/>
       </van-cell-group>
 
       <div style="margin-top: 10px; text-align: center">
@@ -74,9 +74,9 @@
       </van-button>
     </div>
 
-    <van-popup v-model="showOrder" position="bottom" style="min-height: 70%; max-height: 100%" :safe-area-inset-bottom="true">
+    <van-popup v-model="showOrder" position="bottom" style="max-height: 70%;" :safe-area-inset-bottom="true">
       <div style="padding: 10px 16px;">
-        <van-radio-group v-model="orderRadio">
+        <van-radio-group v-model="orderRadio" @change="onOrderChanged">
           <template v-for="(order, index) in orderList">
             <van-radio :key="index" :name="order.id" checked-color="#00B261" icon-size="20" style="margin: 0; margin-top: 10px;">
               <div style="background-color: #f3f3f3; padding: 10px 16px; width: 70vw; border-radius: 5px;">
@@ -87,12 +87,21 @@
                   <van-icon name="location-o" style="line-height: inherit; margin-right: 0px;" color="#00B261"/>
                   {{order.address}}<br>
                   <van-icon name="clock-o" style="line-height: inherit; margin-right: 0px;" color="#00B261"/>
-                  {{order.purchaseBeginTime | dateFmt('YYYY.MM.DD')}}<br>
+                  {{order.purchaseBeginTime | dateFmt('YYYY.MM.DD HH:mm')}} - {{order.purchaseEndTime | dateFmt('YYYY.MM.DD HH:mm')}}<br>
                 </div>
               </div>
             </van-radio>
           </template>
         </van-radio-group>
+        <div v-if="orderList.length === 0" style="margin-top: 15px;">
+          <span style="font-size: x-small; color: #969799;">
+            温馨提示 :<br>
+            提交活动审核前请确保您至少有一个可使用的活动场地
+          </span>
+        </div>
+        <div v-if="orderList.length === 0" style="text-align: center;">
+          <van-button @click="toActivitySpace()" type="primary" style="margin: 15px 0; width: 100%;">立即预约</van-button>
+        </div>
       </div>   
     </van-popup>
 
@@ -105,7 +114,7 @@
     </van-popup>
 
     <van-popup v-model="showBeginTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmBeginTime" @cancel="showBeginTime = false; beginTime = moment(today).format('YYYY-MM-DD HH:mm:SS');"
+      <van-datetime-picker cancel-button-text="重置" @confirm="confirmBeginTime" @cancel="showBeginTime = false; beginTime = moment(today).format('YYYY-MM-DD HH:mm');"
         v-model="activityForm.beginTime"
         type="datetime"
         :min-date="today"
@@ -113,7 +122,7 @@
     </van-popup>
 
     <van-popup v-model="showEndTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEndTime" @cancel="showEndTime = false; endTime = moment(today).format('YYYY-MM-DD HH:mm:SS');"
+      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEndTime" @cancel="showEndTime = false; endTime = moment(today).format('YYYY-MM-DD HH:mm');"
         v-model="activityForm.endTime"
         type="datetime"
         :min-date="today"
@@ -121,7 +130,7 @@
     </van-popup>
 
     <van-popup v-model="showEnrollBeginTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEnrollBeginTime" @cancel="showEnrollBeginTime = false; enrollBeginTime = moment(today).format('YYYY-MM-DD HH:mm:SS');"
+      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEnrollBeginTime" @cancel="showEnrollBeginTime = false; enrollBeginTime = moment(today).format('YYYY-MM-DD HH:mm');"
         v-model="activityForm.enrollBeginTime"
         type="datetime"
         :min-date="today"
@@ -129,7 +138,7 @@
     </van-popup>
 
     <van-popup v-model="showEnrollEndTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEnrollEndTime" @cancel="showEnrollEndTime = false; enrollEndTime = moment(today).format('YYYY-MM-DD HH:mm:SS');"
+      <van-datetime-picker cancel-button-text="重置" @confirm="confirmEnrollEndTime" @cancel="showEnrollEndTime = false; enrollEndTime = moment(today).format('YYYY-MM-DD HH:mm');"
         v-model="activityForm.enrollEndTime"
         type="datetime"
         :min-date="today"
@@ -200,6 +209,7 @@ export default class EditActivity extends Vue {
   public endTime: string = '';
   public enrollBeginTime: string = '';
   public enrollEndTime: string = '';
+  public orderName: string = '';
 
   public created() {
     this.activityId = this.$route.query.activityId;
@@ -231,6 +241,15 @@ export default class EditActivity extends Vue {
     this.tagList.splice(index, 1);
   }
 
+  private onOrderChanged(id: any) {
+    for (const item of this.orderList) {
+      if (item.id === id) {
+        this.orderName = item.productName;
+        break;
+      }
+    }
+  }
+
   private fetchActivity() {
     Toast.loading({
       mask: true,
@@ -243,14 +262,18 @@ export default class EditActivity extends Vue {
       this.endTime = this.activityForm.endTime;
       this.enrollBeginTime = this.activityForm.enrollBeginTime;
       this.enrollEndTime = this.activityForm.enrollEndTime;
+      this.orderRadio = this.activityForm.orderId;
+      this.tagList = this.activityForm.tags.split(',');
       document.title = this.activityForm.name;
+      this.fetchOrder();
       Toast.clear();
     });
   }
 
   private async fetchOrder() {
-    const res = await getOrderList({page: 1, size: 100, states: '2,3'});
+    const res = await getOrderList({page: 1, size: 100, states: '2,3', orderType: '2'});
     this.orderList = res.data.data.rows;
+    this.onOrderChanged(this.orderRadio);
   }
 
   private async fetchActivityType() {
@@ -290,30 +313,39 @@ export default class EditActivity extends Vue {
     this.activityForm.image = res.data.data.url;
   }
 
+  private toActivitySpace() {
+    this.$router.push({
+      path: '/space',
+      query: {
+        type: '5'
+      }
+    });
+  }
+
   private onChange(picker: any, value: any, index: any) {
     this.activityType = value;
   }
 
   private confirmBeginTime(value: any) {
-    this.beginTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
+    this.beginTime = moment(value).format('YYYY-MM-DD HH:mm');
     this.activityForm.beginTime = moment(value).valueOf();
     this.showBeginTime = false;
   }
 
   private confirmEndTime(value: any) {
-    this.endTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
+    this.endTime = moment(value).format('YYYY-MM-DD HH:mm');
     this.activityForm.endTime = moment(value).valueOf();
     this.showEndTime = false;
   }
 
   private confirmEnrollBeginTime(value: any) {
-    this.enrollBeginTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
+    this.enrollBeginTime = moment(value).format('YYYY-MM-DD HH:mm');
     this.activityForm.enrollBeginTime = moment(value).valueOf();
     this.showEnrollBeginTime = false;
   }
 
   private confirmEnrollEndTime(value: any) {
-    this.enrollEndTime = moment(value).format('YYYY-MM-DD HH:mm:SS');
+    this.enrollEndTime = moment(value).format('YYYY-MM-DD HH:mm');
     this.activityForm.enrollEndTime = moment(value).valueOf();
     this.showEnrollEndTime = false;
   }

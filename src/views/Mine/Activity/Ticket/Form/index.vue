@@ -4,7 +4,6 @@
       <van-cell-group>
         <van-cell title="姓名"/>
         <van-cell title="手机"/>
-        <van-cell title="邮箱"/>
         
         <template v-for="(field, index) in fieldList">
           <van-cell :key="index" v-if="field.isCheck">
@@ -58,6 +57,8 @@ export default class EditActivityForm extends Vue {
     { name: '生日', fieldName: 'birthday', type: '3', requireStatus: false, isCheck: false },
     { name: 'qq号', fieldName: 'qqInfo', type: '1', requireStatus: false, isCheck: false },
     { name: '微信号', fieldName: 'wxInfo', type: '1', requireStatus: false, isCheck: false},
+    { name: '所在社区', fieldName: 'community', type: '1', requireStatus: false, isCheck: false},
+    { name: '参与形式', fieldName: 'joinWay', type: '1', requireStatus: false, isCheck: false},
     { name: '公司名称', fieldName: 'company', type: '1', requireStatus: false, isCheck: false },
     { name: '职位', fieldName: 'position', type: '1', requireStatus: false, isCheck: false },
     { name: '部门', fieldName: 'dept', type: '1', requireStatus: false, isCheck: false },

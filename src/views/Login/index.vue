@@ -151,6 +151,7 @@ export default class Login extends Vue {
       if (vm.second === 0) {
         clearInterval(tim);
         this.disabled = false;
+        this.second = 60;
       }
     }, 1000);
   }

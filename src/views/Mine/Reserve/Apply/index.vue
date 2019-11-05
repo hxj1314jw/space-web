@@ -97,6 +97,7 @@ export default class ApplyOrder extends Vue {
       id: this.$route.params.id
     });
     this.reserveForm = res.data.data;
+    this.beginTime = res.data.data.retainingStartTime;
     vm.$toast.clear();
   }
 
@@ -107,7 +108,7 @@ export default class ApplyOrder extends Vue {
 
   private async addOrder() {
     if (this.isValid) {
-      this.reserveForm.startDate = moment(this.reserveForm.retainingStartTime).valueOf();
+      this.reserveForm.startDate = moment(this.beginTime).valueOf();
       this.reserveForm.retainingStartTime = moment(this.beginTime).format('YYYY-MM-DD HH:mm:SS');
       this.reserveForm.rentNum = String(this.rentNum);
       this.reserveForm.amount = String(this.amount);
