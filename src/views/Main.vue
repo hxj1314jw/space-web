@@ -7,10 +7,10 @@
       <van-tabbar-item name="首页" to="/home" icon="home-o" replace>首页</van-tabbar-item>
       <van-tabbar-item name="空间" to="/space" icon="hotel-o" replace>空间</van-tabbar-item>
       <van-tabbar-item name="活动" to="/activity" icon="orders-o" replace>活动</van-tabbar-item>
-      <van-tabbar-item name="我的" to="/mine" icon="user-o" replace>我的</van-tabbar-item>
+      <van-tabbar-item name="我的" to="/mine" icon="user-o":info="msgNum" replace>我的</van-tabbar-item>
     </van-tabbar>
     <div class="router-view" :style="isWeixin ? 'top: 0;' : 'top: 46px;'">
-      <router-view/>
+      <router-view @func="getMsgNum"></router-view>
     </div>
   </div>
 </template>
@@ -18,6 +18,7 @@
 <script lang="ts">
   import {Component, Vue, Watch} from "vue-property-decorator";
   import { getZoneId } from '@/utils/zone';
+  import { getMsgNum } from '@/api/mine';
   import { NavBar, Tabbar, TabbarItem } from 'vant';
   import { getFromUrl, getToUrl } from '../utils/url';
   Vue.use(NavBar).use(Tabbar).use(TabbarItem);
@@ -29,6 +30,7 @@
   export default class Main extends Vue {
     public selected: string = "";
     public title: string = "";
+    public msgNum: string = "";
     public zoneId: string = getZoneId() || '';
     public isTabbar: boolean = true;
     public isArrow: boolean = false;
@@ -46,7 +48,18 @@
       this.selected = String(this.$route.meta.title);
       this.title = this.selected;
       this.isShow();
+      this.fetch();
     }
+
+    public async fetch() {
+      const res: any = await getMsgNum();
+      this.msgNum = res.data.data;
+    }
+
+    public getMsgNum(msgNum: any) {
+      this.msgNum = msgNum;
+    }
+
 
     private isShow() {
       if (this.$route.path === '/home' || this.$route.path === '/space' || this.$route.path === '/activity' || this.$route.path === '/mine') {

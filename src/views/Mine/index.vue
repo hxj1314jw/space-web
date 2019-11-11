@@ -14,7 +14,7 @@
     <van-grid>
       <van-grid-item to="/mine/ticket" icon="paid" text="我的票卷"/>
       <van-grid-item to="/mine/collect" icon="star-o" text="我的收藏"/>
-      <van-grid-item to="/mine/notice" icon="comment-o" text="我的通知"/>
+      <van-grid-item to="/mine/notice" icon="comment-o" text="我的通知" :info='msgNum'/>
       <van-grid-item to="/mine/reserve" icon="notes-o" text="我的预约"/>
     </van-grid>
 
@@ -37,7 +37,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import { UserModule } from '@/store/modules/user';
 import { getUserInfo } from '@/api/user';
-import { updateAvatar, editUserInfo } from '@/api/mine';
+import { updateAvatar, editUserInfo, getMsgNum } from '@/api/mine';
 import { Cell, CellGroup, Button, Image, Grid, GridItem, Uploader } from 'vant';
 import {setName} from "@/utils/auth";
 Vue.use(Cell).use(CellGroup).use(Button).use(Image).use(Grid).use(GridItem).use(Uploader);
@@ -47,6 +47,8 @@ Vue.use(Cell).use(CellGroup).use(Button).use(Image).use(Grid).use(GridItem).use(
 })
 export default class Mine extends Vue {
   public userForm: any = {};
+
+  public msgNum: string = '';
 
   public created() {
     this.fetchInfo();
@@ -59,10 +61,17 @@ export default class Mine extends Vue {
       forbidClick: true,
       message: "加载中..."
     });
+    this.getMsgNum();
     const res: any = await getUserInfo();
     this.userForm = res.data.data;
     setName(this.userForm.name);
     vm.$toast.clear();
+  }
+
+  private async getMsgNum() {
+    const res: any = await getMsgNum();
+    this.msgNum = res.data.data;
+    this.$emit('func', this.msgNum);
   }
 
   private async logout() {

@@ -34,6 +34,11 @@ export const getNoticeList = (params: any) =>
     method: 'get',
     params
   });
+export const getMsgNum = () =>
+    request({
+        url: '/msg/msgNum',
+        method: 'get',
+    });
 
 export const editNotice = (params: any) =>
   request({
