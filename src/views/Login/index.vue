@@ -27,7 +27,7 @@
       <div style="margin-top: 10px; text-align: center">
         <span style="color: #969799; font-size: small">
           继续表示您同意
-          <a href="#">《用户注册协议》</a>
+          <a href="agreement">《用户注册协议》</a>
         </span>
       </div>
     </div>

@@ -7,6 +7,7 @@ export default new Router({
   mode: 'history',
   routes: [
     { path: '/login', name: 'login', component: () => import('./views/Login/index.vue'), meta: { title: '登陆' } },
+    { path: '/agreement', name: 'agreement', component: () => import('./views/Login/userAgreement.vue'), meta: { title: '用户协议' } },
     {
       path: '/',
       name: 'main',
