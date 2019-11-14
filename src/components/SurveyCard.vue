@@ -1,9 +1,9 @@
 <template>
-  <van-cell-group style="margin-top: 10px;">
+  <van-cell-group style="margin-top: 10px;" to="">
     <van-cell>
       <span>
-        {{ surveyForm }}
-        <van-tag color="rgba(193,255,182,.31)" text-color="#07c160">活动1</van-tag>
+        {{ surveyForm.name }}
+        <van-tag color="rgba(193,255,182,.31)" text-color="#07c160">{{ surveyForm.activityName }}</van-tag>
       </span>
     </van-cell>
   </van-cell-group>

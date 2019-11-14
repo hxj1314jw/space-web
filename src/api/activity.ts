@@ -1,11 +1,11 @@
 import request from '@/utils/request';
 
 export const getActivityList = (params: any) =>
-  request({
-    url: '/activity/list',
-    method: 'get',
-    params
-  });
+    request({
+        url: '/activity/list',
+        method: 'get',
+        params
+    });
 
 export const getActivityTypeList = () =>
   request({
