@@ -93,7 +93,7 @@ export default class ActivityDetail extends Vue {
       this.activityForm = res.data.data.activityDetail;
       this.isCollect = res.data.data.isCollect;
       document.title = this.activityForm.name;
-      this.activityDate = moment(this.activityForm.beginTime).format("YYYY.MM.DD") + ' - ' + moment(this.activityForm.endTime).format("YYYY.MM.DD");
+      this.activityDate = moment(this.activityForm.beginTime).format("MM.DD HH:mm") + ' - ' + moment(this.activityForm.endTime).format("MM.DD HH:mm");
       Toast.clear();
       this.settingShare();
     });

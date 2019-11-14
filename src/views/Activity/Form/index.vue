@@ -87,27 +87,22 @@ export default class ActivityTicketForm extends Vue {
 
   private async confirmSubmit() {
     const data: any = {};
-    let flag = false;
-    this.fieldList.map((field: any) => {
+    for (const field of this.fieldList) {
       data[field.fieldName] = field.textStr;
       if (field.requireStatus && !field.textStr) {
         Notify({type: 'danger', message: field.name + '不能为空'});
-        flag = false;
-      } else {
-        flag = true;
+        return;
       }
-    });
-    if (flag) {
-      data.activityId = this.activityId;
-      data.ticketId = this.ticketId;
-      data.ticketNum = this.ticketNum;
-      const res = await addTicket(data);
-      if (res.data.code === 200) {
-        if (res.data.data.isFreeFlag === 0) {
-          this.$router.push('/activity/success');
-        } else {
-          this.$router.push(`/activity/order/${res.data.data.id}`);
-        }
+    }
+    data.activityId = this.activityId;
+    data.ticketId = this.ticketId;
+    data.ticketNum = this.ticketNum;
+    const res = await addTicket(data);
+    if (res.data.code === 200) {
+      if (res.data.data.isFreeFlag === 0) {
+        this.$router.push('/activity/success');
+      } else {
+        this.$router.push(`/activity/order/${res.data.data.id}`);
       }
     }
   }
