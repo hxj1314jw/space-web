@@ -30,7 +30,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import ActivityCard from '@/components/ActivityCard.vue';
 import { getActivityDetail, getTicketFieldList, addTicket } from '@/api/activity';
-import { CellGroup, Button, Toast, Field, Step, Steps } from 'vant';
+import {CellGroup, Button, Toast, Field, Step, Steps, Notify} from 'vant';
 Vue.use(CellGroup).use(Button).use(Toast).use(Field).use(Step).use(Steps);
 
 @Component({
@@ -87,18 +87,27 @@ export default class ActivityTicketForm extends Vue {
 
   private async confirmSubmit() {
     const data: any = {};
+    let flag = false;
     this.fieldList.map((field: any) => {
       data[field.fieldName] = field.textStr;
-    });
-    data.activityId = this.activityId;
-    data.ticketId = this.ticketId;
-    data.ticketNum = this.ticketNum;
-    const res = await addTicket(data);
-    if (res.data.code === 200) {
-      if (res.data.data.isFreeFlag === 0) {
-        this.$router.push('/activity/success');
+      if (field.requireStatus && !field.textStr) {
+        Notify({type: 'danger', message: field.name + '不能为空'});
+        flag = false;
       } else {
-        this.$router.push(`/activity/order/${res.data.data.id}`);
+        flag = true;
+      }
+    });
+    if (flag) {
+      data.activityId = this.activityId;
+      data.ticketId = this.ticketId;
+      data.ticketNum = this.ticketNum;
+      const res = await addTicket(data);
+      if (res.data.code === 200) {
+        if (res.data.data.isFreeFlag === 0) {
+          this.$router.push('/activity/success');
+        } else {
+          this.$router.push(`/activity/order/${res.data.data.id}`);
+        }
       }
     }
   }
