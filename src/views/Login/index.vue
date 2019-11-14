@@ -22,7 +22,7 @@
         </van-field>
       </van-cell-group>
 
-      <van-button type="primary" style="margin-left: 2.5vw; width: 95vw; margin-top: 15px;" @click.prevent="login()">登陆</van-button>
+      <van-button :loading="loading" type="primary" style="margin-left: 2.5vw; width: 95vw; margin-top: 15px;" @click.prevent="login()">登陆</van-button>
 
       <div style="margin-top: 10px; text-align: center">
         <span style="color: #969799; font-size: small">
@@ -56,6 +56,7 @@ export default class Login extends Vue {
   public codeErrMsg: string = "";
   public isValid: boolean = false;
   public disabled: boolean = false;
+  public loading: boolean = false;
   public second: number = 60;
 
   get isWeixin(): boolean {
@@ -158,16 +159,14 @@ export default class Login extends Vue {
 
   private login() {
     if (this.isValid && this.onPhoneFocusOut() && this.onCodeFocusOut()) {
+      this.loading = true;
       const vm: any = this;
       UserModule.Login({
         phone: this.phone,
         code: this.code,
         openId: localStorage.openId
       }).then((res: any) => {
-        // Notify({
-        //   message: '登陆成功',
-        //   background: '#07c160'
-        // });
+        this.loading = false;
         this.$router.push(getToUrl());
       }, (err: any) => {
         Notify({

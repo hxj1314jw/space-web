@@ -3,7 +3,7 @@
     <van-cell>
       <span>
         {{ surveyForm }}
-        <van-tag color="rgba(193,255,182,.31)" text-color="#07c160" >活动1</van-tag>
+        <van-tag color="rgba(193,255,182,.31)" text-color="#07c160">活动1</van-tag>
       </span>
     </van-cell>
   </van-cell-group>
