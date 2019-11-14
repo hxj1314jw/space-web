@@ -223,7 +223,7 @@ export default class SpaceDetail extends Vue {
         case '6':
           this.ableList.push('六');
           break;
-        case '0':
+        case '7':
           this.ableList.push('日');
           break;
       }
