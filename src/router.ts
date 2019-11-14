@@ -69,7 +69,10 @@ export default new Router({
         { path: '/mine/organization/join', name: 'joinOrganization', component: () => import('./views/Mine/Organization/JoinOrg/index.vue'), meta: { title: '加入机构', login: 'true' } },
         { path: '/mine/organization/edit', name: 'editOrganization', component: () => import('./views/Mine/Organization/Edit/index.vue'), meta: { title: '编辑机构', login: 'true' } },
         { path: '/mine/organization/member/:id', name: 'editOrganizationMember', component: () => import('./views/Mine/Organization/Member/index.vue'), meta: { title: '机构成员', login: 'true' } },
-        { path: '/mine/organization/success', name: 'addOrganizationSuccess', component: () => import('./views/Mine/Organization/Success/index.vue'), meta: { title: '申请成功', login: 'true' } }
+        { path: '/mine/organization/success', name: 'addOrganizationSuccess', component: () => import('./views/Mine/Organization/Success/index.vue'), meta: { title: '申请成功', login: 'true' } },
+
+        { path: '/mine/survey', name: 'mineSurvey', component: () => import('./views/Mine/Survey/index.vue'), meta: { title: '我的问卷', login: 'true' } },
+        { path: '/mine/survey/detail/:id', name: 'surveyDetail', component: () => import('./views/Mine/Survey/Detail/index.vue'), meta: { title: '填写问卷', login: 'true' } },
 
       ]
     }
