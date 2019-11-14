@@ -14,7 +14,7 @@
     <van-grid>
       <van-grid-item to="/mine/ticket" icon="paid" text="我的票卷"/>
       <van-grid-item to="/mine/collect" icon="star-o" text="我的收藏"/>
-      <van-grid-item to="/mine/notice" icon="comment-o" text="我的通知" :info='msgNum'/>
+      <van-grid-item to="/mine/notice" icon="comment-o" text="我的通知" :info='msgNum===0?"":msgNum'/>
       <van-grid-item to="/mine/reserve" icon="notes-o" text="我的预约"/>
     </van-grid>
 

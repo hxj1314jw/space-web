@@ -7,7 +7,7 @@
       <van-tabbar-item name="首页" to="/home" icon="home-o" replace>首页</van-tabbar-item>
       <van-tabbar-item name="空间" to="/space" icon="hotel-o" replace>空间</van-tabbar-item>
       <van-tabbar-item name="活动" to="/activity" icon="orders-o" replace>活动</van-tabbar-item>
-      <van-tabbar-item name="我的" to="/mine" icon="user-o":info="msgNum" replace>我的</van-tabbar-item>
+      <van-tabbar-item name="我的" to="/mine" icon="user-o":info="msgNum ===0?'':msgNum" replace>我的</van-tabbar-item>
     </van-tabbar>
     <div class="router-view" :style="isWeixin ? 'top: 0;' : 'top: 46px;'">
       <router-view @func="getMsgNum"></router-view>
@@ -21,6 +21,7 @@
   import { getMsgNum } from '@/api/mine';
   import { NavBar, Tabbar, TabbarItem } from 'vant';
   import { getFromUrl, getToUrl } from '../utils/url';
+  import {getToken} from "@/utils/auth";
   Vue.use(NavBar).use(Tabbar).use(TabbarItem);
 
   @Component({
@@ -52,8 +53,10 @@
     }
 
     public async fetch() {
-      const res: any = await getMsgNum();
-      this.msgNum = res.data.data;
+      if (getToken()) {
+        const res: any = await getMsgNum();
+        this.msgNum = res.data.data;
+      }
     }
 
     public getMsgNum(msgNum: any) {
