@@ -29,8 +29,8 @@ export default new Router({
 
         { path: '/space/detail/:id', name: 'spaceDetail', component: () => import('./views/Space/Detail/index.vue'), meta: { title: '空间详情' } },
         { path: '/space/order/:id', name: 'spaceOrder', component: () => import('./views/Space/Order/Station/index.vue'), meta: { title: '空间订单', login: 'true' } },
-        { path: '/space/reserve/work/:id', name: 'spaceReserve', component: () => import('./views/Space/Reserve/Work/index.vue'), meta: { title: '办公预约', login: 'true' } },
-        { path: '/space/reserve/activity/:id', name: 'activityReserve', component: () => import('./views/Space/Reserve/Activity/index.vue'), meta: { title: '活动预约', login: 'true' } },
+        { path: '/space/reserve/work/:id', name: 'spaceReserve', component: () => import('./views/Space/Reserve/Work/index.vue'), meta: { title: '场地预约', login: 'true' } },
+        { path: '/space/reserve/activity/:id', name: 'activityReserve', component: () => import('./views/Space/Reserve/Activity/index.vue'), meta: { title: '场地预约', login: 'true' } },
         { path: '/space/reserve/success', name: 'reserveSuccess', component: () => import('./views/Space/Reserve/Success/index.vue'), meta: { title: '预约成功', login: 'true' } },
 
         { path: '/activity/detail/:id', name: 'activityDetail', component: () => import('./views/Activity/Detail/index.vue'), meta: { title: '活动详情' } },
