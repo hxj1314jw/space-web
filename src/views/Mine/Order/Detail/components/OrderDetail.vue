@@ -11,7 +11,7 @@
         <van-cell title="单价" :value="'￥' + orderForm.price" />
         <van-cell title="数量" :value="'x ' + orderForm.useNum" />
         <van-cell title="起租日期" :value="orderForm.purchaseBeginTime | dateFmt('YYYY-MM-DD HH:mm')" />
-        <van-cell title="起租时长">
+        <van-cell title="租用时长">
           <span>{{orderForm.rentNum}}</span>
           <span v-if="orderForm.chargeMethod === '1'">小时</span>
           <span v-if="orderForm.chargeMethod === '2'">日</span>
