@@ -12,8 +12,6 @@
       </van-tab>
 
 
-
-
       <van-tab title="已填写" :name="1">
         <SurveyCard/>
       </van-tab>

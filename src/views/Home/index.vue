@@ -153,7 +153,7 @@
       </template>
     </van-cell>
 
-    <van-cell style="padding: 0; margin-top: 10px">
+    <van-cell style="padding: 0; margin-top: 10px" v-if="projectList.length !== 0">
       <template slot="title">
         <h3 style="margin: 0; padding: 10px 16px; padding-bottom: 0">发现更多</h3>
       </template>
@@ -186,7 +186,7 @@
 
     <van-cell style="margin-top: 10px; padding: 10px; height: 90px;" to="/home/introduce">
       <img width="100%" src="../../assets/about.png" height="90px" style="object-fit: cover;"/>
-      <span class="about-title">关于我们</span>
+      <span class="about-title">品牌故事</span>
     </van-cell>
   </div>
 </template>
