@@ -11,6 +11,7 @@
           <span v-if="orderForm.orderStates === '2'">待使用</span>
           <span v-if="orderForm.orderStates === '3'">使用中</span>
           <span v-if="orderForm.orderStates === '4'">已退款</span>
+          <span v-if="orderForm.orderStates === '5'">已完成</span>
           <span v-if="orderForm.orderStates === '6'">已取消</span>
           <span v-if="orderForm.orderStates === '7'">退款中</span>
           <span v-if="orderForm.orderStates === '8'">已过期</span>
