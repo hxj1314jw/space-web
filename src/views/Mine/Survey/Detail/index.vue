@@ -1,15 +1,15 @@
 <template>
   <div>
-    <span style="font-size:20px; margin: 600px 20px 10px;">{{ surveyName }}</span><br>
-    <span style="font-size:10px; margin: 15px 20px 10px;" v-html="surveyContent"></span>
+    <span style="font-size:20px; margin: 600px 20px 10px; padding-top: 60px">{{ surveyName }}</span><br>
+<!--    <span style="font-size:10px; margin: 15px 20px 10px;" v-html="surveyContent"></span>-->
 
     <div class="question-card" v-for="(question, index) in questList">
-      <span>{{ index + 1 }}.{{ question.questName }}</span><br>
+      <span class="quest-style">{{ index + 1 }}.{{ question.questName }}</span><br>
 
       <template v-if="question.questType == 1" style="margin: 20px">
         <div v-for="(answer, i) in question.answers">
           <van-radio-group v-model="objStatus[index].radio" @change="change">
-            <van-radio :name="answer.id + '//' + answer.answerName + '//' + index">{{ answer.answerName }}</van-radio>
+            <van-radio :name="answer.id + '//' + answer.answerName + '//' + index" style="padding: 3px 10px" icon-size="10px">{{ answer.answerName }}</van-radio>
           </van-radio-group>
         </div>
       </template>
@@ -54,7 +54,7 @@
 
     private content(index: any) {
       // 主观题
-      this.submitList[index].answercontent = this.objStatus[index].content;
+      this.submitList[index].answerContent = this.objStatus[index].content;
       // console.log(this.submitList[index].answercontent);
     }
 
@@ -103,5 +103,9 @@
 <style>
 .question-card {
   margin: 10px;
+}
+.quest-style {
+  font-size: 15px;
+  padding: 5px 10px;
 }
 </style>

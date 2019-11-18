@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-list v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
-      <div style="margin-top: -10px;">
+      <div style="margin-top: 60px;">
         <template v-for="(survey, index) in surveyList">
           <SurveyCard :key="index" :surveyForm="survey"/>
           <div style="position: relative; bottom: 50px; float: right; right: 10px;">
@@ -12,8 +12,6 @@
     </van-list>
   </div>
 </template>
-
-
 
 
 <script lang="ts">
