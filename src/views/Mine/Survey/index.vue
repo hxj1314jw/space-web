@@ -1,21 +1,15 @@
 <template>
   <div>
-    <van-tabs v-model="activeName">
-      <van-tab title="未填写" :name="0">
-        <van-list v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
-          <div style="margin-top: -10px;">
-            <template v-for="(survey, index) in surveyList">
-              <SurveyCard :key="index" :surveyForm="survey"/>
-            </template>
+    <van-list v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
+      <div style="margin-top: -10px;">
+        <template v-for="(survey, index) in surveyList">
+          <SurveyCard :key="index" :surveyForm="survey"/>
+          <div style="position: relative; bottom: 50px; float: right; right: 10px;">
+            <van-icon @click="toSurveyDetail(survey.id)" color="#07C160" name="edit" size="20px" style="margin: 0 5px;"/>
           </div>
-        </van-list>
-      </van-tab>
-
-
-      <van-tab title="已填写" :name="1">
-        <SurveyCard/>
-      </van-tab>
-    </van-tabs>
+        </template>
+      </div>
+    </van-list>
   </div>
 </template>
 
@@ -60,7 +54,6 @@
       const res = await getUserSurvey({
         page: this.currentPage,
         size: this.size,
-        type: this.activeName
       });
       this.loading = false;
       for (const item of res.data.data.rows) {
@@ -73,10 +66,16 @@
       vm.$toast.clear();
     }
 
+
+
     private onLoad() {
       this.loading = true;
       this.currentPage++;
       this.getUserSurvey();
+    }
+
+    private toSurveyDetail(surveyId: any) {
+      this.$router.push(`/mine/survey/detail/${surveyId}`);
     }
   }
 

@@ -12,7 +12,7 @@
     </van-cell>
 
     <van-grid>
-      <van-grid-item to="/mine/ticket" icon="paid" text="我的票卷"/>
+      <van-grid-item to="/mine/ticket" icon="paid" text="我的票券"/>
       <van-grid-item to="/mine/collect" icon="star-o" text="我的收藏"/>
       <van-grid-item to="/mine/notice" icon="comment-o" text="我的通知" :info='msgNum===0?"":msgNum'/>
       <van-grid-item to="/mine/reserve" icon="notes-o" text="我的预约"/>
@@ -23,7 +23,7 @@
       <van-cell title="我的订单" to="/mine/order" is-link/>
       <van-cell title="我的活动" to="/mine/activity" is-link />
       <van-cell title="我的机构" to="/mine/organization" is-link />
-      <!--<van-cell title="我的问卷" to="/mine/survey" is-link />-->
+      <van-cell title="我的问卷" to="/mine/survey" is-link />
     </van-cell-group>
 
     <van-button

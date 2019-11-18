@@ -13,3 +13,10 @@ export const getUserSurvey = (params: any) =>
         method: 'get',
         params
     });
+
+export const addSurvey = (data: any) =>
+    request({
+      url: 'survey/add',
+      method: 'post',
+      data
+    });
