@@ -28,7 +28,6 @@
   })
 
   export default class MineSurvey extends Vue {
-    public activeName: number = 0;
     public surveyList: any = [];
     public loading: boolean = false;
     public currentPage: number = 1;

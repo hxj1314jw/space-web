@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin: 0 10px">
     <span style="font-size:20px; margin: 600px 20px 10px; padding-top: 60px">{{ surveyName }}</span><br>
 <!--    <span style="font-size:10px; margin: 15px 20px 10px;" v-html="surveyContent"></span>-->
 
@@ -9,18 +9,29 @@
       <template v-if="question.questType == 1" style="margin: 20px">
         <div v-for="(answer, i) in question.answers">
           <van-radio-group v-model="objStatus[index].radio" @change="change">
-            <van-radio :name="answer.id + '//' + answer.answerName + '//' + index" style="padding: 3px 10px" icon-size="10px">{{ answer.answerName }}</van-radio>
+            <van-radio :name="answer.id + '//' + answer.answerName + '//' + index" style="padding: 3px 0; font-size: 10px" icon-size="10px">{{ answer.answerName }}</van-radio>
           </van-radio-group>
         </div>
       </template>
 
       <template v-if="question.questType == 3" style="margin: 60px">
-        <van-field v-model="objStatus[index].content" placeholder="请输入答案" :input="content(index)"/>
+        <van-field
+          v-model="objStatus[index].content"
+          rows="2"
+          placeholder="请输入答案"
+          :input="content(index)"
+          type="textarea"
+          autosize
+          style="padding: 5px 0; margin: 10px 50px 10px 10px;"
+          show-word-limit
+          maxlength="50"/>
+
+
       </template>
 
     </div>
 
-    <van-button type="primary" @click="submit()">完成</van-button>
+    <van-button style="float: left" type="primary" @click="submit()">完 成</van-button>
 
   </div>
 </template>
@@ -106,6 +117,6 @@
 }
 .quest-style {
   font-size: 15px;
-  padding: 5px 10px;
+  padding: 5px 0;
 }
 </style>
