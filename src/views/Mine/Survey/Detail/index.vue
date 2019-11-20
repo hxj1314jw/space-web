@@ -1,20 +1,49 @@
 <template>
-  <div style="margin: 0 10px">
-    <span style="font-size:20px; margin: 600px 20px 10px; padding-top: 60px">{{ surveyName }}</span><br>
+  <div>
+    <div class="survey-title">
+      <span style="font-size:20px; font-weight: bolder; padding-top: 60px">{{ surveyName }}</span><br>
+    </div>
 <!--    <span style="font-size:10px; margin: 15px 20px 10px;" v-html="surveyContent"></span>-->
-
+    
     <div class="question-card" v-for="(question, index) in questList">
-      <span class="quest-style">{{ index + 1 }}.{{ question.questName }}</span><br>
+      <div class="questtitle-div" slot="header">
+        <span class="quest-title">{{ index + 1 }}.{{ question.questName }}</span><br>
+      </div>
 
-      <template v-if="question.questType == 1" style="margin: 20px">
+      <template v-if="question.questType == 1">
         <div v-for="(answer, i) in question.answers">
           <van-radio-group v-model="objStatus[index].radio" @change="change">
-            <van-radio :name="answer.id + '//' + answer.answerName + '//' + index" style="padding: 3px 0; font-size: 10px" icon-size="10px">{{ answer.answerName }}</van-radio>
+            <van-cell-group>
+              <van-cell v-if="answer.answerType == 1" class="cell-style" clickable>
+                <van-radio :name="answer.id + '//' + answer.answerName + '//' + index" style="font-size: 15px;" icon-size="17px" checked-color="#07C160">{{ answer.answerName }}</van-radio>
+              </van-cell>
+              <template v-if="answer.answerType == 2">
+                <van-cell class="cell-style" clickable @click="openChanger">
+                  <van-radio :name="answer.id + '//' + answer.answerName + '//' + index" style="font-size: 15px;" icon-size="17px" checked-color="#07C160">
+                    <span v-if="answer.answerName.length == 0" style="color: #07C160;">其他</span>
+                    <span v-if="answer.answerName.length !== 0" style="color: #07C160;">{{ answer.answerName }}(其他)</span>
+                  </van-radio>
+                </van-cell>
+                <van-field
+                  v-if="answer.answerType == 2 && answerChanger == true"
+                  v-model="question.answers[i].answerName"
+                  rows="1"
+                  placeholder="请输入你的答案"
+                  type="textarea"
+                  autosize
+                  style="padding: 7px 7px; font-size: 15px;">
+                  <!--                <van-button slot="button" size="small" type="primary">确认</van-button>&lt;!&ndash;@click="editAnswerDone(answer)"&ndash;&gt;-->
+                </van-field>
+              </template>
+
+            </van-cell-group>
           </van-radio-group>
         </div>
+
       </template>
 
-      <template v-if="question.questType == 3" style="margin: 60px">
+
+      <template v-if="question.questType == 3">
         <van-field
           v-model="objStatus[index].content"
           rows="2"
@@ -22,16 +51,19 @@
           :input="content(index)"
           type="textarea"
           autosize
-          style="padding: 5px 0; margin: 10px 50px 10px 10px;"
+          style="padding: 7px 7px; font-size: 15px;"
           show-word-limit
-          maxlength="50"/>
-
-
+          maxlength="1000"/>
       </template>
-
     </div>
+    
+    <van-button
+      type="primary"
+      @click="submit()"
+      style="margin: 30px 0; width: 95vw; margin-left: 2.5vw"
+    >填写完了</van-button>
 
-    <van-button style="float: left" type="primary" @click="submit()">完 成</van-button>
+    <!--<van-button style="float: left" type="primary" @click="submit()">完 成</van-button>-->
 
   </div>
 </template>
@@ -40,14 +72,15 @@
 <script lang="ts">
   import { Component, Vue, Prop } from "vue-property-decorator";
   import { getSurveyInfo, addSurvey } from '@/api/survey';
-  import { RadioGroup, Radio, Button, Field } from 'vant';
-  Vue.use(RadioGroup).use(Radio).use(Button).use(Field);
+  import { RadioGroup, Radio, Button, Field, Cell, CellGroup, Popup } from 'vant';
+  Vue.use(RadioGroup).use(Radio).use(Button).use(Field).use(Cell).use(CellGroup).use(Popup);
 
   @Component({
     components: {}
   })
   export default class SurveyDetail extends Vue {
     public objStatus: any = [];
+    public answerChanger: any = false;
     public surveyName: any = '';
     public surveyContent: any = '';
     public questList: any = [];
@@ -76,8 +109,13 @@
       this.submitList[arr[2]].answerContent = arr[1];
     }
 
+    private openChanger() {
+      this.answerChanger = true;
+    }
+
     private submit() {
       // 提交
+      console.log(this.submitList);
       addSurvey({
         surveyId: this.$route.params.id,
         questions: this.submitList,
@@ -90,10 +128,22 @@
         vm.questList = res.data.data.questions;
         vm.surveyName = res.data.data.name;
         vm.surveyContent = res.data.data.content;
-        for (let i = 0; i < vm.questList.length; i++) {
+      //   for (let i = 0; i < vm.questList.length; i++) {
+        //     vm.submitList.push({
+        //       questId: vm.questList[i].id,
+        //       questName: vm.questList[i].questName,
+        //       answerId: '',
+        //       answerContent: '',
+        //     });
+        //     vm.objStatus.push({
+        //       radio: '',
+        //       content: '',
+        //     });
+        //   }
+        for (const item of vm.questList) {
           vm.submitList.push({
-            questId: vm.questList[i].id,
-            questName: vm.questList[i].questName,
+            questId: item.id,
+            questName: item.questName,
             answerId: '',
             answerContent: '',
           });
@@ -113,10 +163,29 @@
 
 <style>
 .question-card {
-  margin: 10px;
+
+}
+.survey-title {
+  margin: 15px 5px;
+}
+.questtitle-div {
+  margin: 10px 5px 3px;
+}
+.quest-title {
+  font-size: 100%;
+  width: 97%;
+  height: 19px;
+  color: black;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  bottom: 100px;
 }
 .quest-style {
   font-size: 15px;
   padding: 5px 0;
+}
+.cell-style {
+  height: 35px;
+  padding: 8px 0 5px 5px;
 }
 </style>
