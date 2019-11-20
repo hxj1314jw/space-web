@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div><!--style="position: relative; top: 0; bottom: 0; width: 100vw; background-color: #fff; height: 100vh;"-->
     <div class="survey-title">
       <span style="font-size:20px; font-weight: bolder; padding-top: 60px">{{ surveyName }}</span><br>
     </div>
@@ -20,22 +20,22 @@
               <template v-if="answer.answerType == 2">
                 <van-cell class="cell-style" clickable @click="openChanger">
                   <van-radio :name="answer.id + '//' + answer.answerName + '//' + index" style="font-size: 15px;" icon-size="17px" checked-color="#07C160">
-                    <span v-if="answer.answerName.length == 0" style="color: #07C160;">其他</span>
-                    <span v-if="answer.answerName.length !== 0" style="color: #07C160;">{{ answer.answerName }}(其他)</span>
+                    <span v-if="answer.answerName.length == 0">其他</span>
+                    <span v-if="answer.answerName.length !== 0">{{ answer.answerName }}(其他)</span>
                   </van-radio>
                 </van-cell>
                 <van-field
-                  v-if="answer.answerType == 2 && answerChanger == true"
+                  v-if="answer.answerType == 2"
                   v-model="question.answers[i].answerName"
                   rows="1"
                   placeholder="请输入你的答案"
                   type="textarea"
                   autosize
+                  maxlength="30"
                   style="padding: 7px 7px; font-size: 15px;">
                   <!--                <van-button slot="button" size="small" type="primary">确认</van-button>&lt;!&ndash;@click="editAnswerDone(answer)"&ndash;&gt;-->
                 </van-field>
               </template>
-
             </van-cell-group>
           </van-radio-group>
         </div>
@@ -85,12 +85,6 @@
     public surveyContent: any = '';
     public questList: any = [];
     public submitList: any = [];
-    // public submitObj: any = {
-    //   questId: '',
-    //   questName: '',
-    //   answerId: '',
-    //   answerContent: '',
-    // };
 
     public created() {
       this.getSurveyInfo();
@@ -128,18 +122,6 @@
         vm.questList = res.data.data.questions;
         vm.surveyName = res.data.data.name;
         vm.surveyContent = res.data.data.content;
-      //   for (let i = 0; i < vm.questList.length; i++) {
-        //     vm.submitList.push({
-        //       questId: vm.questList[i].id,
-        //       questName: vm.questList[i].questName,
-        //       answerId: '',
-        //       answerContent: '',
-        //     });
-        //     vm.objStatus.push({
-        //       radio: '',
-        //       content: '',
-        //     });
-        //   }
         for (const item of vm.questList) {
           vm.submitList.push({
             questId: item.id,
@@ -169,7 +151,7 @@
   margin: 15px 5px;
 }
 .questtitle-div {
-  margin: 10px 5px 3px;
+  margin: 13px 5px 3px;
 }
 .quest-title {
   font-size: 100%;
@@ -185,6 +167,7 @@
   padding: 5px 0;
 }
 .cell-style {
+  background-color: #f7f2f2;
   height: 35px;
   padding: 8px 0 5px 5px;
 }
