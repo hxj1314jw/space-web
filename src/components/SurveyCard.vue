@@ -1,19 +1,15 @@
 <template>
-  <van-cell-group class="survey-card">
-    <van-cell>
-      <div>
-        <span style="font-size: larger" color="#07C160">{{ surveyForm.name }}</span><br>
-        <span color="rgba(193,255,182,.31)" text-color="#07c160" style="font-size: 60%">{{ surveyForm.activityName }}</span>
-        <van-tag v-if="surveyForm.type == 0">未填写</van-tag>
-        <van-tag v-if="surveyForm.type == 1">已填写</van-tag>
-      </div>
-    </van-cell>
-  </van-cell-group>
-<!--  <van-card style="background-color: white; margin-top: 0">-->
-<!--    <div slot="thumb" style="width: 35vw">-->
-<!--      <van-image width="100%" height="5rem" radius="1" fit="cover" :src="ossImageUrl(orderForm.bannerImage)" class="box-shadow"/>-->
-<!--    </div>-->
-<!--  </van-card>-->
+  <van-cell style="margin: 0 0 10px">
+    <div style="border: 60px">
+      <span style="font-size: 110%; font-weight: bolder;" color="#07C160">{{ surveyForm.name }}</span><br>
+      <span color="rgba(193,255,182,.31)" text-color="#07c160" style="font-size: 60%;">{{ surveyForm.activityName }}</span><br>
+      <span v-if="surveyForm.type == 1" style="font-size: 0.3em; color: #07c160">已填写</span>
+      <span v-if="surveyForm.type == 0" style="font-size: 0.3em;">未填写</span>
+<!--      <van-tag color="rgba(193,255,182,.31)" text-color="#07c160" v-if="surveyForm.type == 1">已填写</van-tag>-->
+<!--      <van-tag color="rgba(193,255,182,.31)" text-color="#07c160" v-if="surveyForm.type == 0">未填写</van-tag>-->
+      <van-icon @click="toSurveyDetail(surveyForm.id)" v-if="surveyForm.type == 0" color="#07C160" name="edit" size="25px" style="position: relative; bottom: 23px; float: right; right: 6px;"/>
+    </div>
+  </van-cell>
 </template>
 
 
@@ -21,12 +17,16 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Cell, CellGroup, Tag, Icon, Collapse, CollapseItem, Card } from 'vant';
-Vue.use(Cell).use(CellGroup).use(Tag).use(Icon).use(Collapse).use(CollapseItem).use(Card);
+import { Cell, CellGroup, Tag, Icon, Card } from 'vant';
+Vue.use(Cell).use(CellGroup).use(Tag).use(Icon).use(Card);
 
 @Component
 export default class SurveyCard extends Vue {
   @Prop() public surveyForm!: any;
+
+  private toSurveyDetail(surveyId: any) {
+    window.location.href = `/mine/survey/detail/${surveyId}`;
+  }
 
 
 
