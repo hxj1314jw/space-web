@@ -14,7 +14,7 @@
             </div>
             <van-tabs v-model="queryDate" @click="onClick">
                 <van-tab v-for="(item,index) in timeSec" :key="index" :title="item.day" :name="item.date">
-                    <van-row v-if="intervalList" gutter="15" style="margin: 30px 16px">
+                    <van-row v-if="intervalList && intervalList.length > 0" gutter="15" style="margin: 30px 16px">
                         <van-col v-for="(item,index)  in intervalList" :key="index" span="8">
                             <div class="time" :class="{time_disabled: item.type === '1'}">{{item.beginHour}}-{{item.endHour}}</div>
                         </van-col>
