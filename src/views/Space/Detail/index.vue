@@ -123,16 +123,22 @@
         <van-icon v-if="isCollect" name="star" color="#ffb11a" size="25" class="center"/>
         <van-icon v-else name="star-o" size="25" class="center"/>
       </van-button>
-      <van-button v-if="spaceForm.type === '2' || spaceForm.type === '4'" type="primary" @click="toAddOrder()" style="width: 60vw; margin: 0; padding: 0; height: 100%;">
-        <span class="center van-icon">立即下单</span>
-      </van-button>
-      <van-button v-else type="primary" @click="toSpaceReserve()" style="width: 60vw; margin: 0; padding: 0; height: 100%;">
-        <span class="center van-icon">立即预定</span>
-      </van-button>
+      <template v-if="spaceForm.type === '1' || spaceForm.type === '3' || spaceForm.type === '5'">
+        <van-button  type="primary" @click="toSpaceReserve()" style="width: 30vw; margin: 0; padding: 0; height: 100%;">
+          <span class="center van-icon">看场地</span>
+        </van-button>
+        <van-button type="danger" @click="toAddOrder()" style="width: 30vw; margin: 0; padding: 0; height: 100%;">
+          <span class="center van-icon">订场地</span>
+        </van-button>
+      </template>
+      <template v-else>
+        <van-button type="danger" @click="toAddOrder()" style="width: 60vw; margin: 0; padding: 0; height: 100%;">
+          <span class="center van-icon">订场地</span>
+        </van-button>
+      </template>
     </div>
   </div>
 </template>
-
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { UserModule } from '@/store/modules/user';
@@ -140,7 +146,21 @@ import moment from 'moment';
 import { getSpaceDetail, collectSpace, deleteCollectSpace } from '@/api/space';
 import {wxChatShare} from '@/utils/wxShare';
 
-import { Image, Dialog, Field, Toast, Cell, CellGroup, Tag, Button, Icon, Grid, GridItem } from 'vant';
+import {
+  Image,
+  Dialog,
+  Field,
+  Toast,
+  Cell,
+  CellGroup,
+  Tag,
+  Button,
+  Icon,
+  Grid,
+  GridItem,
+  GoodsAction,
+  GoodsActionIcon, GoodsActionButton
+} from 'vant';
 import { getZoneId } from '../../../utils/zone';
 Vue.use(Image).use(Field).use(Toast).use(Cell).use(CellGroup).use(Dialog).use(Tag).use(Button).use(Icon).use(Grid).use(GridItem);
 
