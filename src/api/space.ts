@@ -48,3 +48,12 @@ export const getReserveNum = (params: any) =>
     method: 'get',
     params
   });
+
+
+export const getProductInfo = (params: any) =>
+    request({
+        url: '/product/info',
+        method: 'get',
+        params
+    });
+
