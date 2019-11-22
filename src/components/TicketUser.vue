@@ -3,7 +3,8 @@
     <van-cell>
       <van-tag v-if="userForm.audit === 1" color="#fff7e8" text-color="#ffb11a" >待审核</van-tag>
       <van-tag v-if="userForm.audit === 2" color="rgba(193,255,182,.31)" text-color="#07c160" >通过</van-tag>
-      <van-tag v-if="userForm.audit === 3" color="rgba(255,182,193,.31)" text-color="#f08080" >拒绝</van-tag>
+      <van-tag v-if="userForm.audit === 3" color="rgba(255,182,193,.31)" text-color="#f08080" >取消</van-tag>
+      <van-tag v-if="userForm.audit === 0" color="rgba(255,182,193,.31)" text-color="#f08080" >拒绝</van-tag>
       {{ userForm.name }}
       <span style="color: #999999; font-size: smaller;">
         （{{ userForm.phone }}）

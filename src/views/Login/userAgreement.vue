@@ -827,7 +827,7 @@
         <p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:等线; font-size:10.5pt">11.</span><span
                 style="font-family:等线; font-size:10.5pt">5</span><span style="font-family:等线; font-size:10.5pt"> </span><span
                 style="font-family:等线; font-size:10.5pt">本服务协议的最终解释权归</span><span
-                style="background-color:#ffff00; font-family:等线; font-size:10.5pt">正道</span><span
+                style="font-size:10.5pt">正道</span><span
                 style="font-family:等线; font-size:10.5pt">所有。</span></p>
         <p style="margin:0pt; orphans:0; text-align:justify; widows:0"><span style="font-family:等线; font-size:10.5pt">&nbsp;</span>
         </p>

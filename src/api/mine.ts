@@ -129,3 +129,16 @@ export const getMineActivity = (params: any) =>
     method: 'get',
     params
   });
+
+export const getNextSevenData = () =>
+    request({
+        url: '/product/time',
+        method: 'get'
+    });
+
+export const getInterval = (params: any) =>
+    request({
+        url: '/product/interval',
+        method: 'get',
+        params
+    });

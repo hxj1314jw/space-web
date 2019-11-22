@@ -8,8 +8,26 @@
           <van-step>交易完成</van-step>
         </van-steps>
       </div>
-
-      <van-cell-group>
+      <div>
+        <van-tag mark type="success">已预约时段</van-tag>
+      </div>
+      <van-tabs v-model="queryDate" @click="onClick">
+        <van-tab v-for="(item,index) in timeSec":key="index" :title="item.day" :name="item.date">
+          <!--<van-list v-if="intervalList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">-->
+            <!--<van-cell-->
+                    <!--v-for="(item,index) in intervalList"-->
+                    <!--:key="index"-->
+                    <!--:value="item.beginHour +'-'+item.endHour"-->
+            <!--/>-->
+          <!--</van-list>-->
+          <van-row gutter="20">
+            <van-col span="8" style="background-color: gold">span: 8</van-col>
+            <van-col span="8">span: 8</van-col>
+            <van-col span="8">span: 8</van-col>
+          </van-row>
+        </van-tab>
+      </van-tabs>
+        <van-cell-group>
         <van-cell>
           <template slot="title">
             <span>数量</span>
@@ -94,10 +112,30 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { getOrganization } from '@/api/space';
-import { addOrder } from '@/api/mine';
+import { addOrder, getNextSevenData, getInterval } from '@/api/mine';
 
-import { Step, Steps, Cell, CellGroup, Field, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker, Toast, Notify, Stepper } from 'vant';
-Vue.use(Step).use(Steps).use(Cell).use(CellGroup).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Field).use(Toast).use(Notify).use(Stepper);
+import {
+  Step,
+  Steps,
+  Cell,
+  CellGroup,
+  Field,
+  RadioGroup,
+  Radio,
+  Icon,
+  Divider,
+  Button,
+  Popup,
+  DatetimePicker,
+  Toast,
+  Notify,
+  Stepper,
+  Tab, Tabs, Tag, List, Row, Col
+} from 'vant';
+import moment from "moment";
+Vue.use(Step).use(Steps).use(Cell).use(CellGroup).use(RadioGroup).use(Radio).use(Icon)
+        .use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Field).use(Toast)
+        .use(Notify).use(Stepper).use(Tab).use(Tabs).use(Tag).use(List).use(Row).use(Col);
 
 @Component({
   components: {}
@@ -114,9 +152,15 @@ export default class StationSpaceOrder extends Vue {
   public isValid: boolean = false;
   public today: Date = new Date();
   public beginTime: Date = new Date();
+  public timeSec: any = [];
+  public intervalList: any = [];
+  public loading: boolean = false;
+  public finished: boolean = false;
+  public queryDate: string = '';
 
   public created() {
     this.fetchOrg();
+    this.timeSection();
   }
 
   @Watch("beginTime")
@@ -206,10 +250,33 @@ export default class StationSpaceOrder extends Vue {
       this.onBeginTimeFocusOut();
     }
   }
-
+  private onLoad() {
+    this.loading = true;
+    this.interval("");
+  }
   private confirmBeginTime(value: any) {
     this.beginTime = value;
     this.showBeginTime = false;
+  }
+
+  private async timeSection() {
+    const res = await getNextSevenData();
+    this.timeSec = res.data.data;
+    this.interval(this.timeSec[0].date);
+  }
+
+  private async interval(value: any) {
+    const res = await getInterval({
+      id: this.$route.params.id,
+      type: this.$route.query.type,
+      date: value
+    });
+    this.intervalList = res.data.data;
+  }
+
+  private onClick() {
+    console.log(this.queryDate);
+    this.interval(this.queryDate);
   }
 }
 </script>

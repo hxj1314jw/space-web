@@ -15,6 +15,8 @@
           <span v-if="orderForm.orderStates === '6'">已取消</span>
           <span v-if="orderForm.orderStates === '7'">退款中</span>
           <span v-if="orderForm.orderStates === '8'">已过期</span>
+          <span v-if="orderForm.orderStates === '9'">待审核</span>
+          <span v-if="orderForm.orderStates === '10'">已拒绝</span>
         </span>
       </template>
     </van-cell>
