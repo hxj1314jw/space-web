@@ -172,6 +172,7 @@ export default class Login extends Vue {
         Notify({
           message: '验证码错误'
         });
+        this.loading = false;
       });
     } else {
       this.onPhoneFocusOut();
