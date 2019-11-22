@@ -4,11 +4,14 @@
     <van-image v-if="!surveyImage" style="margin: 0; padding: 0" width="100%" height="230" :src="require('@/assets/survey.jpg')"/>
     <div style="padding: 5px 20px;">
       <div class="survey-title">
-        <span style="font-size:20px; padding-top: 60px;">{{ surveyName }}</span><br>
+        <span style="font-size:20px;">{{ surveyName }}</span><br>
+      </div>
+      <div style="margin: 2px 0 8px; padding-left: 5px;">
+        <span v-html="surveyContent" style="color: #999999; font-size:5px;"/>
       </div>
       <!--    <span style="font-size:10px; margin: 15px 20px 10px;" v-html="surveyContent"></span>-->
 
-      <div class="question-card" v-for="(question, index) in questList">
+      <div v-for="(question, index) in questList">
         <div class="questtitle-div" v-if="question.questType == 1" slot="header">
           <span class="quest-title">{{ question.questName }}(单选)</span><br>
         </div>
@@ -92,9 +95,6 @@
             </van-checkbox-group>
           </div>
         </template>
-
-
-
       </div>
 
         <van-button
@@ -208,14 +208,11 @@
 
 
 <style>
-.question-card {
-
-}
 .survey-title {
-  margin: 10px 5px 20px;
+  margin: 10px 5px 3px;
 }
 .questtitle-div {
-  margin: 13px 5px 10px;
+  margin: 20px 5px 10px;
 }
 .quest-title {
   font-size: 100%;

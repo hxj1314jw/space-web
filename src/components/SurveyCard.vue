@@ -1,12 +1,10 @@
 <template>
-  <van-cell style="margin: 0 0 10px">
-    <div style="border: 60px">
+  <van-cell>
+    <div class="survey-card">
       <span style="font-size: 110%; font-weight: bolder;" color="#07C160">{{ surveyForm.name }}</span><br>
       <span color="rgba(193,255,182,.31)" text-color="#07c160" style="font-size: 60%;">{{ surveyForm.activityName }}</span><br>
       <span v-if="surveyForm.type == 1" style="font-size: 0.3em; color: #07c160">已填写</span>
       <span v-if="surveyForm.type == 0" style="font-size: 0.3em;">未填写</span>
-<!--      <van-tag color="rgba(193,255,182,.31)" text-color="#07c160" v-if="surveyForm.type == 1">已填写</van-tag>-->
-<!--      <van-tag color="rgba(193,255,182,.31)" text-color="#07c160" v-if="surveyForm.type == 0">未填写</van-tag>-->
       <van-icon @click="toSurveyDetail(surveyForm.id)" v-if="surveyForm.type == 0" color="#07C160" name="edit" size="25px" style="position: relative; bottom: 23px; float: right; right: 6px;"/>
     </div>
   </van-cell>
@@ -41,8 +39,8 @@ export default class SurveyCard extends Vue {
     top: 50%;
   }
   .survey-card {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    padding-top: -5px;
+    padding-bottom: -5px;
   }
 </style>
 
