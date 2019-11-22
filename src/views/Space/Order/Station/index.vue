@@ -16,6 +16,7 @@
           <van-row v-if="intervalList.length !== 0" gutter="15" style="margin: 10px 16px">
             <van-col v-for="(item,index)  in intervalList" :key="index" span="8"><div style="background-color: #1ab84d; color: white; text-align: center; padding: 1px 3px; border-radius: 4px">{{item.beginHour}}-{{item.endHour}}</div></van-col>
           </van-row>
+          <van-row v-else style="margin: 10px 16px; text-align: center; color: #333333; font-size: 14px;">{{item.day}}全时段无预约</van-row>
         </van-tab>
       </van-tabs>
         <van-cell-group>
