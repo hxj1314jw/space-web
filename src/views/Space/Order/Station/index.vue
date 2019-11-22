@@ -13,13 +13,18 @@
       </div>
       <van-tabs v-model="queryDate" @click="onClick">
         <van-tab v-for="(item,index) in timeSec":key="index" :title="item.day" :name="item.date">
-          <van-list v-if="intervalList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
-            <van-cell
-                    v-for="(item,index) in intervalList"
-                    :key="index"
-                    :value="item.beginHour +'-'+item.endHour"
-            />
-          </van-list>
+          <!--<van-list v-if="intervalList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">-->
+            <!--<van-cell-->
+                    <!--v-for="(item,index) in intervalList"-->
+                    <!--:key="index"-->
+                    <!--:value="item.beginHour +'-'+item.endHour"-->
+            <!--/>-->
+          <!--</van-list>-->
+          <van-row gutter="20">
+            <van-col span="8" style="background-color: gold">span: 8</van-col>
+            <van-col span="8">span: 8</van-col>
+            <van-col span="8">span: 8</van-col>
+          </van-row>
         </van-tab>
       </van-tabs>
         <van-cell-group>
@@ -125,12 +130,12 @@ import {
   Toast,
   Notify,
   Stepper,
-  Tab, Tabs, Tag, List
+  Tab, Tabs, Tag, List, Row, Col
 } from 'vant';
 import moment from "moment";
 Vue.use(Step).use(Steps).use(Cell).use(CellGroup).use(RadioGroup).use(Radio).use(Icon)
         .use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Field).use(Toast)
-        .use(Notify).use(Stepper).use(Tab).use(Tabs).use(Tag).use(List);
+        .use(Notify).use(Stepper).use(Tab).use(Tabs).use(Tag).use(List).use(Row).use(Col);
 
 @Component({
   components: {}
