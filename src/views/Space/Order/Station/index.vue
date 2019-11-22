@@ -13,17 +13,8 @@
       </div>
       <van-tabs v-model="queryDate" @click="onClick">
         <van-tab v-for="(item,index) in timeSec":key="index" :title="item.day" :name="item.date">
-          <!--<van-list v-if="intervalList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">-->
-            <!--<van-cell-->
-                    <!--v-for="(item,index) in intervalList"-->
-                    <!--:key="index"-->
-                    <!--:value="item.beginHour +'-'+item.endHour"-->
-            <!--/>-->
-          <!--</van-list>-->
-          <van-row gutter="20">
-            <van-col span="8" style="background-color: gold">span: 8</van-col>
-            <van-col span="8">span: 8</van-col>
-            <van-col span="8">span: 8</van-col>
+          <van-row v-if="intervalList.length !== 0" gutter="15" style="margin: 10px 16px">
+            <van-col v-for="(item,index)  in intervalList" :key="index" span="8"><div style="background-color: #1ab84d; color: white; text-align: center; padding: 1px 3px; border-radius: 4px">{{item.beginHour}}-{{item.endHour}}</div></van-col>
           </van-row>
         </van-tab>
       </van-tabs>

@@ -32,7 +32,10 @@ router.beforeEach((to, from, next) => {
       const token = getToken();
       if (!token) {
         UserModule.SetToUrl(to.path);
-        next('/login');
+        next({
+          path: '/login',
+          query: to.query
+        });
       } else {
         next();
       }

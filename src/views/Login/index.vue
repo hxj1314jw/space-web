@@ -167,7 +167,7 @@ export default class Login extends Vue {
         openId: localStorage.openId
       }).then((res: any) => {
         this.loading = false;
-        this.$router.push(getToUrl());
+        this.$router.push({ path: getToUrl(), query: this.$route.query});
       }, (err: any) => {
         Notify({
           message: '验证码错误'
