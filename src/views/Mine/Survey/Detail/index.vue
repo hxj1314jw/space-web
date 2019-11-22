@@ -9,7 +9,13 @@
       <!--    <span style="font-size:10px; margin: 15px 20px 10px;" v-html="surveyContent"></span>-->
 
       <div class="question-card" v-for="(question, index) in questList">
-        <div class="questtitle-div" slot="header">
+        <div class="questtitle-div" v-if="question.questType == 1" slot="header">
+          <span class="quest-title">{{ question.questName }}(单选)</span><br>
+        </div>
+        <div class="questtitle-div" v-if="question.questType == 2" slot="header">
+          <span class="quest-title">{{ question.questName }}(多选)</span><br>
+        </div>
+        <div class="questtitle-div" v-if="question.questType == 3" slot="header">
           <span class="quest-title">{{ question.questName }}</span><br>
         </div>
 
@@ -76,6 +82,19 @@
             style="padding: 6px 6px; font-size: 15px; border-radius: 5px;"
             maxlength="1000"/>
         </div>
+
+        <template v-if="question.questType == 2">
+          <div v-for="(answer, i) in question.answers">
+            <van-checkbox-group v-model="result" @change="checkbox">
+              <div>
+                <van-checkbox :name="answer" style="font-size: 15px; padding: 7px 0 5px 9px;" icon-size="17px" checked-color="#07C160" shape="square">{{ answer.answerName }}</van-checkbox>
+              </div>
+            </van-checkbox-group>
+          </div>
+        </template>
+
+
+
       </div>
 
         <van-button
@@ -92,14 +111,15 @@
 <script lang="ts">
   import { Component, Vue, Prop } from "vue-property-decorator";
   import { getSurveyInfo, addSurvey } from '@/api/survey';
-  import { RadioGroup, Radio, Button, Field, Cell, CellGroup, Popup, Image, Card } from 'vant';
-  Vue.use(RadioGroup).use(Radio).use(Button).use(Field).use(Cell).use(CellGroup).use(Popup).use(Image).use(Card);
+  import { RadioGroup, Radio, Button, Field, Cell, CellGroup, Popup, Image, Checkbox, CheckboxGroup } from 'vant';
+  Vue.use(RadioGroup).use(Radio).use(Button).use(Field).use(Cell).use(CellGroup).use(Popup).use(Image).use(Checkbox).use(CheckboxGroup);
 
   @Component({
     components: {}
   })
   export default class SurveyDetail extends Vue {
     public objStatus: any = [];
+    public result: any = [];
     public answerChanger: any = false;
     public surveyImage: any = '';
     public surveyName: any = '';
@@ -114,8 +134,6 @@
     private content(index: any) {
       // 主观题
       this.submitList[index].answerContent = this.objStatus[index].content;
-      // this.submitList[index].answerId = this.questList
-      // console.log(this.submitList[index].answercontent);
     }
 
     private change(value: any) {
@@ -123,6 +141,10 @@
       const arr = value.split('//');
       this.submitList[arr[2]].answerId = arr[0];
       this.submitList[arr[2]].answerContent = arr[1];
+    }
+
+    private checkbox(value: any) {
+      // console.log(this);
     }
 
     private openChanger() {
@@ -139,10 +161,19 @@
 
     private submit() {
       // 提交
-      console.log(this.submitList);
+      for (const item of this.result) {
+        this.submitList.push({
+          questId: item.questId,
+          questName: item.questName,
+          answerId: item.id,
+          answerContent: item.answerName,
+        });
+      }
       addSurvey({
         surveyId: this.$route.params.id,
         questions: this.submitList,
+      }).then(() => {
+        this.$router.push('/mine/survey');
       });
     }
 
@@ -159,6 +190,7 @@
             questName: item.questName,
             answerId: '',
             answerContent: '',
+            checkboxResult: [],
           });
           vm.objStatus.push({
             radio: '',
