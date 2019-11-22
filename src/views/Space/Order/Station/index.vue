@@ -12,7 +12,7 @@
               <van-tag type="success">可预定</van-tag>
               <van-tag >已预定</van-tag>
             </div>
-            <van-tabs v-model="queryDate" @click="onClick">
+            <van-tabs v-model="queryDate" @click="onClick" color="#1ab84d">
                 <van-tab v-for="(item,index) in timeSec" :key="index" :title="item.day" :name="item.date">
                     <van-row v-if="intervalList && intervalList.length > 0" gutter="15" style="margin: 30px 16px">
                         <van-col v-for="(item,index)  in intervalList" :key="index" span="8">
@@ -20,7 +20,7 @@
                         </van-col>
                     </van-row>
                     <van-row v-else style="margin: 30px 16px; text-align: center; color: #333333; font-size: 14px;">
-                        {{item.day}}全时段可预约
+                        {{item.day}}全时段可预定
                     </van-row>
                 </van-tab>
             </van-tabs>
@@ -56,7 +56,7 @@
             </van-cell-group>
 
             <div style="margin-top: 10px; text-align: center">
-                <span style="color: #999999; font-size: x-small">请选择以下身份进行预约</span>
+                <span style="color: #999999; font-size: x-small">请选择以下身份进行预定</span>
             </div>
 
             <van-radio-group v-model="radio" style="padding: 10px 16px;">
