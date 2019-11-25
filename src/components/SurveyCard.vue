@@ -1,10 +1,15 @@
 <template>
   <van-cell>
     <div class="survey-card">
-      <span style="font-size: 110%; font-weight: bolder;" color="#07C160">{{ surveyForm.name }}</span><br>
-      <span color="rgba(193,255,182,.31)" text-color="#07c160" style="font-size: 60%;">{{ surveyForm.activityName }}</span><br>
-      <span v-if="surveyForm.type == 1" style="font-size: 0.3em; color: #07c160">已填写</span>
-      <span v-if="surveyForm.type == 0" style="font-size: 0.3em;">未填写</span>
+      <div v-if="surveyForm.type == 1">
+        <span style="font-size: 110%; font-weight: bolder;" color="#07C160">{{ surveyForm.name }}</span>
+        <van-tag color="rgba(193,255,182,.31)" text-color="#07c160" style="margin-left: 8px;">已填写</van-tag><br>
+      </div>
+      <div v-if="surveyForm.type == 0">
+        <span style="font-size: 110%; font-weight: bolder;" color="#07C160">{{ surveyForm.name }}</span>
+        <van-tag color="rgba(193,255,182,.31)" text-color="#07c160" style="margin-left: 8px;">未填写</van-tag><br>
+      </div>
+      <span style="font-size: small;">{{ surveyForm.activityName }}</span><br>
       <van-icon @click="toSurveyDetail(surveyForm.id)" v-if="surveyForm.type == 0" color="#07C160" name="edit" size="25px" style="position: relative; bottom: 23px; float: right; right: 6px;"/>
     </div>
   </van-cell>
