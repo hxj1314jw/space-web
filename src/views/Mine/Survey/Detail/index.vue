@@ -49,6 +49,7 @@
                   placeholder="请输入你的答案"
                   type="textarea"
                   autosize
+                  @input="redirect(index, answer)"
                   maxlength="30"
                   style="padding: 7px 7px; font-size: 15px; border-radius: 0 5px 0 5px;">
                 </van-field>
@@ -157,6 +158,11 @@
 
     private blur(index: any) {
       this.objStatus[index].ischecked = false;
+    }
+
+    private redirect(index: any, answer: any) {
+      // 重新指向其它
+      this.objStatus[index].radio = answer.id + '//' + answer.answerName + '//' + index;
     }
 
     private submit() {

@@ -32,6 +32,19 @@
         <van-cell title="联系方式" :value="orderForm.consumerPhone" />
       </van-cell-group>
 
+      <van-cell-group style="margin-top: 10px;">
+        <van-cell title="协议" is-link/>
+        <van-field
+          v-if="orderForm.orderStates === '1'"
+          v-model="buyerInfo"
+          type="text"
+          label="乙方信息"
+          placeholder="请输入乙方信息"
+          input-align="right"
+          required
+        />
+      </van-cell-group>
+
       <div style="padding: 10px 16px; text-align: center">
         <span style="font-size: x-small; color: #969799;">
           下单时间：{{ orderForm.createDate }}
@@ -177,6 +190,7 @@ export default class OrderDetail extends Vue {
   };
   public invoiceList: string = '';
   public invoiceText: string = '请选择发票类型';
+  public buyerInfo: string = this.$store.state.user.name;
   public finishedNum: number = 1;
   public showList: boolean = false;
   public showInvoice: boolean = false;
