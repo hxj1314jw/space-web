@@ -32,8 +32,8 @@
         <van-cell title="联系方式" :value="orderForm.consumerPhone" />
       </van-cell-group>
 
-      <van-cell-group style="margin-top: 10px;">
-        <van-cell title="协议" is-link/>
+      <van-cell-group v-if="agreement == 1" style="margin-top: 10px;">
+        <van-cell title="协议" is-link :url="contactInfo"/>
         <van-field
           v-if="orderForm.orderStates === '1'"
           v-model="buyerInfo"
@@ -158,7 +158,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { cancelOrder, addInvoice } from '@/api/mine';
+import { cancelOrder, addInvoice, getOrderContact } from '@/api/mine';
 import { getZoneDetail } from '@/api/home';
 import OrderCard from '@/components/OrderCard.vue';
 
@@ -195,10 +195,12 @@ export default class OrderDetail extends Vue {
   public showList: boolean = false;
   public showInvoice: boolean = false;
   public loading: boolean = false;
+  public agreement: any = 0;
+  public contactInfo: string = '';
 
   public created() {
     this.invoiceForm.orderId = this.$route.params.id;
-    this.getInvoice();
+    this.getOrderContact();
   }
 
   @Watch("invoiceForm.invoiceType")
@@ -233,9 +235,24 @@ export default class OrderDetail extends Vue {
     }
   }
 
+  private getOrderContact() {
+    const vm: any = this;
+    vm.$toast.loading({
+      mask: true,
+      forbidClick: true,
+      message: "加载中..."
+    });
+    getOrderContact({orderId: vm.invoiceForm.orderId, secondParty: vm.$store.state.user.name}).then((res: any) => {
+      vm.contactInfo = res.data.data;
+      console.log(vm.contactInfo);
+      vm.getInvoice();
+    });
+  }
+
   private getInvoice() {
     getZoneDetail({id: this.$route.params.id}).then((res: any) => {
       this.invoiceList = res.data.data.invoices;
+      this.agreement = res.data.data.agreement;
     });
   }
 

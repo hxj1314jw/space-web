@@ -9,7 +9,7 @@ import router from '@/router';
 let service: any = {};
 service = axios.create({
     baseURL: process.env.VUE_APP_API,
-    timeout: 3000,
+    timeout: 10000,
 });
 
 

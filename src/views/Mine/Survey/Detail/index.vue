@@ -50,7 +50,7 @@
                   type="textarea"
                   autosize
                   @input="redirect(index, answer)"
-                  maxlength="30"
+                  maxlength="20"
                   style="padding: 7px 7px; font-size: 15px; border-radius: 0 5px 0 5px;">
                 </van-field>
               </div>
@@ -112,8 +112,8 @@
 <script lang="ts">
   import { Component, Vue, Prop } from "vue-property-decorator";
   import { getSurveyInfo, addSurvey } from '@/api/survey';
-  import { RadioGroup, Radio, Button, Field, Cell, CellGroup, Popup, Image, Checkbox, CheckboxGroup } from 'vant';
-  Vue.use(RadioGroup).use(Radio).use(Button).use(Field).use(Cell).use(CellGroup).use(Popup).use(Image).use(Checkbox).use(CheckboxGroup);
+  import { RadioGroup, Radio, Button, Field, Cell, CellGroup, Image, Checkbox, CheckboxGroup, Notify } from 'vant';
+  Vue.use(RadioGroup).use(Radio).use(Button).use(Field).use(Cell).use(CellGroup).use(Image).use(Checkbox).use(CheckboxGroup).use(Notify);
 
   @Component({
     components: {}
@@ -179,6 +179,12 @@
         surveyId: this.$route.params.id,
         questions: this.submitList,
       }).then(() => {
+        Notify({
+          message: '完成！',
+          duration: 1000,
+          color: '#07C160',
+          background: 'rgba(193,255,182,.31)',
+        });
         this.$router.push('/mine/survey');
       });
     }
@@ -207,10 +213,8 @@
       });
     }
 
-
   }
 </script>
-
 
 
 <style>
