@@ -244,8 +244,8 @@ export default class OrderDetail extends Vue {
     });
     getOrderContact({orderId: vm.invoiceForm.orderId, secondParty: vm.$store.state.user.name}).then((res: any) => {
       vm.contactInfo = res.data.data;
-      console.log(vm.contactInfo);
       vm.getInvoice();
+      vm.$toast.clear();
     });
   }
 
