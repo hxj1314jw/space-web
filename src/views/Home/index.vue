@@ -86,6 +86,7 @@
                   <div style="font-weight: bold; text-align: right; color: #00B261; padding-right: 3px;">￥{{activity.price}} 起</div>
                   <div style="width: 100%; text-align: right">
                     <van-button v-if="activity.status === '6' || activity.status === '2'" plain type="primary" size="mini" style="width: 70px; margin-top: 3px;">立即报名</van-button>
+                    <van-button v-else-if="activity.status === '1'" plain type="warning" size="mini" style="width: 70px; margin-top: 3px;">等待报名</van-button>
                     <van-button v-else plain type="warning" size="mini" style="width: 70px; float: right; margin-top: 3px;">报名截止</van-button>
                   </div>
                 </div>

@@ -51,6 +51,9 @@
       <van-button v-if="activityForm.status === '6' || activityForm.status === '2'" @click="chooseTicket()" type="primary" style="width: 60vw; margin: 0; padding: 0; height: 100%;">
         <span class="center van-icon">立即报名</span>
       </van-button>
+      <van-button v-else-if="activityForm.status === '1'" @click="chooseTicket()" type="danger" style="width: 60vw; margin: 0; padding: 0; height: 100%;">
+        <span class="center van-icon">等待报名</span>
+      </van-button>
       <van-button v-else type="danger" style="width: 60vw; margin: 0; padding: 0; height: 100%;" :disabled="true">
         <span class="center van-icon">报名截止</span>
       </van-button>
