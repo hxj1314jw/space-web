@@ -158,7 +158,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { cancelOrder, addInvoice, getOrderContact } from '@/api/mine';
+import { cancelOrder, addInvoice, getOrderContact, getOrderInfo } from '@/api/mine';
 import { getZoneDetail } from '@/api/home';
 import OrderCard from '@/components/OrderCard.vue';
 
@@ -197,10 +197,19 @@ export default class OrderDetail extends Vue {
   public loading: boolean = false;
   public agreement: any = 0;
   public contactInfo: string = '';
+  public orderType: any = '';
 
   public created() {
     this.invoiceForm.orderId = this.$route.params.id;
     this.getOrderContact();
+    this.getOrderInfo();
+  }
+
+  public async getOrderInfo() {
+    const res = await getOrderInfo({
+      orderId: this.$route.params.id
+    });
+    this.orderType = res.data.data.orderType;
   }
 
   @Watch("invoiceForm.invoiceType")
@@ -278,11 +287,14 @@ export default class OrderDetail extends Vue {
   }
 
   private payOrder() {
+    console.log(this.orderType);
     this.loading = true;
     const zoneId: any = this.$route.query.zoneId;
     const callback = encodeURIComponent(process.env.VUE_APP_URL + '/mine/order/success');
-    window.location.href = process.env.VUE_APP_WX_PAY + `?callbackUrl=${callback}&orderId=${this.$route.params.id}&payType=1&zoneId=${zoneId}`;
+    window.location.href = process.env.VUE_APP_WX_PAY + `?callbackUrl=${callback}&orderId=${this.$route.params.id}&payType=1&zoneId=${zoneId}&orderType=${this.orderType}`;
   }
+
+
 }
 </script>
 
