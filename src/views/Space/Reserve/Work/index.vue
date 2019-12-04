@@ -28,7 +28,7 @@
               <span style="font-weight: bold;">个人预约</span><br>
               <span style="color: #999999; font-size: smaller;">
                 <van-icon slot="icon" name="user-o" style="line-height: inherit; margin-right: 3px;" color="#00B261"/>
-                姓名：{{ name }}
+                姓名：<span>{{ name === 'null' ? '' : name }}</span>
               </span><br>
               <span style="color: #999999; font-size: smaller;">
                 <van-icon slot="icon" name="phone-o" style="line-height: inherit; margin-right: 3px;" color="#00B261"/>
@@ -110,7 +110,7 @@ export default class SpaceReserve extends Vue {
   public radio: string = '1';
   public endTimeErrMsg: string = '';
   public reserveTimeErrMsg: string = '';
-  public name: string = this.$store.state.user.name;
+  public name: any = this.$store.state.user.name;
   public phone: string = this.$store.state.user.phone;
   public showBeginTime: boolean = false;
   public showEndTime: boolean = false;
@@ -123,6 +123,7 @@ export default class SpaceReserve extends Vue {
 
   public created() {
     this.fetchOrg();
+    console.log(this.name);
   }
 
   @Watch("beginTime")
