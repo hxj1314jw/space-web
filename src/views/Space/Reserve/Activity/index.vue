@@ -37,7 +37,7 @@
               <span style="font-weight: bold;">个人预约</span><br>
               <span style="color: #999999; font-size: smaller;">
                 <van-icon slot="icon" name="user-o" style="line-height: inherit; margin-right: 3px;" color="#00B261"/>
-                姓名：{{ name }}
+                姓名：{{ name === 'null' ? '' : name }}
               </span><br>
               <span style="color: #999999; font-size: smaller;">
                 <van-icon slot="icon" name="phone-o" style="line-height: inherit; margin-right: 3px;" color="#00B261"/>
@@ -110,13 +110,13 @@ export default class ActivitySpaceReserve extends Vue {
   public orgList: any = [];
   public radio: string = '1';
   public beginTimeErrMsg: string = '';
-  public endTimeErrMsg: string = '';
+  // public endTimeErrMsg: string = '';
   public accessTimeErrMsg: string = '';
   public desc: string = '';
   public name: string = this.$store.state.user.name;
   public phone: string = this.$store.state.user.phone;
   public showBeginTime: boolean = false;
-  public showEndTime: boolean = false;
+  // public showEndTime: boolean = false;
   public showAccessTime: boolean = false;
   public isValid: boolean = false;
   public today: Date = new Date();

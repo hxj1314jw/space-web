@@ -28,7 +28,7 @@
               <span style="font-weight: bold;">个人预约</span><br>
               <span style="color: #999999; font-size: smaller;">
                 <van-icon slot="icon" name="user-o" style="line-height: inherit; margin-right: 3px;" color="#00B261"/>
-                姓名：<span>{{ name === 'null' ? '' : name }}</span>
+                姓名：{{ name === 'null' ? '' : name }}
               </span><br>
               <span style="color: #999999; font-size: smaller;">
                 <van-icon slot="icon" name="phone-o" style="line-height: inherit; margin-right: 3px;" color="#00B261"/>
