@@ -275,6 +275,7 @@
     private async fetchZone() {
       const res = await getZoneInfo();
       this.orgForm = res.data.data;
+      this.settingShare();
     }
 
     private async fetchProject() {
