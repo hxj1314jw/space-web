@@ -48,7 +48,7 @@
     <van-grid :column-num="4">
       <van-grid-item to="/home/top" icon="fire-o" text="人气榜"/>
       <van-grid-item to="/home/calendar" icon="calender-o" text="活动日历"/>
-      <van-grid-item to="/home/choiceness" icon="award-o" text="空间优选"/>
+      <van-grid-item to="/home/choiceness" icon="award-o" text="优选精品"/>
       <van-grid-item to="/mine/ticket" icon="paid" text="我的票券"/>
       <!-- <van-grid-item to="/home/introduce" icon="diamond-o" text="关于我们"/> -->
     </van-grid>

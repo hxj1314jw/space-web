@@ -9,6 +9,16 @@
             </template>
           </div>
         </van-list>
+        <NoData v-else/>`
+      </van-tab>
+      <van-tab title="待审核" name="unverify">
+        <van-list v-if="orderList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
+          <div style="margin-top: -10px;">
+            <template v-for="(order, index) in orderList">
+              <OrderCard :key="index" :orderForm="order"/>
+            </template>
+          </div>
+        </van-list>
         <NoData v-else/>
       </van-tab>
       <van-tab title="待支付" name="unpaid">
@@ -51,6 +61,16 @@
         </van-list>
         <NoData v-else/>
       </van-tab>
+      <van-tab title="已拒绝" name="rejected">
+        <van-list v-if="orderList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
+          <div style="margin-top: -10px;">
+            <template v-for="(order, index) in orderList">
+              <OrderCard :key="index" :orderForm="order"/>
+            </template>
+          </div>
+        </van-list>
+        <NoData v-else/>
+      </van-tab>
       <van-tab title="已退单" name="deleted">
         <van-list v-if="orderList.length !== 0" v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
           <div style="margin-top: -10px;">
@@ -82,6 +102,7 @@ Vue.use(List).use(Tab).use(Tabs);
 export default class MineOrder extends Vue {
   public orderList: any = [];
   public states: string = '';
+  public orderStates: string = '';
   public activeName: string = 'all';
   public total: number = 0;
   public page: number = 1;
@@ -103,7 +124,7 @@ export default class MineOrder extends Vue {
     const res: any = await getOrderList({
       page: this.page,
       size: this.size,
-      states: this.states
+      states: this.orderStates
     });
     this.loading = false;
     this.total = Number(res.data.data.total);
@@ -127,22 +148,28 @@ export default class MineOrder extends Vue {
     this.orderList = [];
     switch (this.activeName) {
       case 'all':
-        this.states = '';
+        this.orderStates = '';
         break;
       case 'unpaid':
-        this.states = '1';
+        this.orderStates = '1';
         break;
       case 'unused':
-        this.states = '2';
-        break;
-      case 'used':
-        this.states = '5';
-        break;
-      case 'canceled':
-        this.states = '6';
+        this.orderStates = '2';
         break;
       case 'deleted':
-        this.states = '7';
+        this.orderStates = '4';
+        break;
+      case 'used':
+        this.orderStates = '5';
+        break;
+      case 'canceled':
+        this.orderStates = '6';
+        break;
+      case 'unverify':
+        this.orderStates = '9';
+        break;
+      case 'rejected':
+        this.orderStates = '10';
         break;
     }
     this.fetchOrder();
