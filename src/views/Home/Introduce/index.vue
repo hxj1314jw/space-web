@@ -44,7 +44,12 @@
             <span style="color: #666666" v-html="ZoneForm.remark"/>
           </van-cell>
         </van-cell-group>
-        <div v-html="ZoneForm.teamremark"></div>
+        <van-cell-group style="margin-top: 10px; ">
+          <van-cell>
+            <span style="font-weight: bold">团队简介</span><br>
+            <span style="color: #666666" v-html="ZoneForm.teamRemark"/>
+          </van-cell>
+        </van-cell-group>
       </van-tab>
       <van-tab title="品牌" name="brand">
         <van-image style="margin: 0; padding: 0; background-color: white" width="100%" height="230" fit="contain" :src="ossImageUrl(Brand.imageUrl)" />

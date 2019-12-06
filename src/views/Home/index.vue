@@ -408,7 +408,7 @@
       const param = {
         url: window.location.href.split('#')[0], // 当前页面url
         title: this.orgForm.name, // 分享数据配置 主标题
-        desc: '我在'+this.orgForm.name+'发现了一个不错的活动，赶紧来看看吧。', // 分享数据配置 副标题
+        desc: '我在' + this.orgForm.name + '发现了一个不错的活动，赶紧来看看吧。', // 分享数据配置 副标题
         link: process.env.VUE_APP_URL + '/home/?zoneId=' + this.orgForm.id, // 分享数据配置
         imgUrl: this.orgForm.imageUrl, // 分享数据配置 －－ 全路径
         type: "link", // 分享类型,music、video或link，不填默认为link
