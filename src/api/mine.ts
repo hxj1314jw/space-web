@@ -142,3 +142,19 @@ export const getInterval = (params: any) =>
         method: 'get',
         params
     });
+
+
+export const orderPayEdit = (params: any) =>
+    request({
+        url: '/order/payEdit',
+        method: 'get',
+        params
+    });
+
+
+export const orderSubPayEdit = (params: any) =>
+    request({
+        url: '/order/subPayEdit',
+        method: 'get',
+        params
+    });

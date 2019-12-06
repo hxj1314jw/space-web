@@ -32,7 +32,7 @@ export default class OrderInfo extends Vue {
       orderId: this.$route.params.id
     });
     this.orderForm = res.data.data;
-    if (this.orderForm.states === '1' || this.orderForm.states === '5') {
+    if ((this.orderForm.states === '1' || this.orderForm.states === '5') && (this.orderForm.payType !== '2')) {
       this.isAble = true;
     }
   }

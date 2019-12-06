@@ -32,12 +32,23 @@
         <van-cell title="联系方式" :value="orderForm.consumerPhone" />
       </van-cell-group>
 
+      <van-radio-group v-model="orderForm.payType" style="margin-top: 10px;" checked-color="#07c160">
+        <van-cell-group>
+          <van-cell title="在线支付" clickable @click="orderForm.payType = '1'">
+            <van-radio slot="right-icon" name="1" />
+          </van-cell>
+          <van-cell title="线下支付" clickable @click="orderForm.payType = '2'">
+            <van-radio slot="right-icon" name="2" />
+          </van-cell>
+        </van-cell-group>
+      </van-radio-group>
+
       <div style="padding: 10px 16px; text-align: center">
         <span style="font-size: x-small; color: #969799;">
           下单时间：{{ orderForm.createDate }}
         </span>
       </div>
-      
+
       <p v-if="isAble" style="width: 100vw; height: 50px; margin: 0;"></p>
     </div>
 
@@ -45,8 +56,9 @@
       <van-button @click="cancelOrder()" type="default" plain hairline style="width: 40vw; margin: 0; padding: 0; height: 100%;">
         <span class="center van-icon">取消订单</span>
       </van-button>
-      <van-button @click="payOrder()" :loading="loading" loading-text="支付中..."  type="primary" style="width: 60vw; margin: 0; padding: 0; height: 100%;">
-        <span class="center van-icon">立即支付</span>
+      <van-button @click="payOrder()" :loading="loading" :loading-text="orderForm.payType === '1' ? '支付中...' : '确定'"  type="primary" style="width: 60vw; margin: 0; padding: 0; height: 100%;">
+        <span class="center van-icon">{{orderForm.payType
+          === '1' ? '立即支付' : '确定'}}</span>
       </van-button>
     </div>
 
@@ -145,7 +157,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { cancelOrder, addInvoice } from '@/api/mine';
+import { cancelOrder, addInvoice, orderPayEdit } from '@/api/mine';
 import { getZoneDetail } from '@/api/home';
 import OrderCard from '@/components/OrderCard.vue';
 
@@ -248,9 +260,18 @@ export default class OrderDetail extends Vue {
 
   private payOrder() {
     this.loading = true;
-    const zoneId: any = this.$route.query.zoneId;
-    const callback = encodeURIComponent(process.env.VUE_APP_URL + '/mine/order/success');
-    window.location.href = process.env.VUE_APP_WX_PAY + `?callbackUrl=${callback}&orderId=${this.$route.params.id}&payType=1&zoneId=${zoneId}`;
+    if (this.orderForm.payType === '1') {
+      const zoneId: any = this.$route.query.zoneId;
+      const callback = encodeURIComponent(process.env.VUE_APP_URL + '/mine/order/success');
+      window.location.href = process.env.VUE_APP_WX_PAY + `?callbackUrl=${callback}&orderId=${this.$route.params.id}&payType=1&zoneId=${zoneId}`;
+    } else {
+      orderPayEdit({orderId: this.$route.params.id}).then(() => {
+        this.isAble = false;
+        this.loading = false;
+      }).catch(() => {
+        this.loading = false;
+      });
+    }
   }
 }
 </script>
