@@ -32,6 +32,19 @@
         <van-cell title="联系方式" :value="orderForm.consumerPhone" />
       </van-cell-group>
 
+      <van-cell-group v-if="agreement == 1" style="margin-top: 10px;">
+        <van-cell title="协议" is-link :url="contactInfo"/>
+        <van-field
+          v-if="orderForm.orderStates === '1'"
+          v-model="buyerInfo"
+          type="text"
+          label="乙方信息"
+          placeholder="请输入乙方信息"
+          input-align="right"
+          required
+        />
+      </van-cell-group>
+
       <van-radio-group v-model="orderForm.payType" style="margin-top: 10px;" checked-color="#07c160">
         <van-cell-group>
           <van-cell title="在线支付" clickable @click="orderForm.payType = '1'">
@@ -157,7 +170,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { cancelOrder, addInvoice, orderPayEdit } from '@/api/mine';
+import { cancelOrder, addInvoice, orderPayEdit, getOrderContact, getOrderInfo } from '@/api/mine';
 import { getZoneDetail } from '@/api/home';
 import OrderCard from '@/components/OrderCard.vue';
 
@@ -189,14 +202,26 @@ export default class OrderDetail extends Vue {
   };
   public invoiceList: string = '';
   public invoiceText: string = '请选择发票类型';
+  public buyerInfo: string = this.$store.state.user.name;
   public finishedNum: number = 1;
   public showList: boolean = false;
   public showInvoice: boolean = false;
   public loading: boolean = false;
+  public agreement: any = 0;
+  public contactInfo: string = '';
+  public orderType: any = '';
 
   public created() {
     this.invoiceForm.orderId = this.$route.params.id;
-    this.getInvoice();
+    this.getOrderContact();
+    this.getOrderInfo();
+  }
+
+  public async getOrderInfo() {
+    const res = await getOrderInfo({
+      orderId: this.$route.params.id
+    });
+    this.orderType = res.data.data.orderType;
   }
 
   @Watch("invoiceForm.invoiceType")
@@ -231,9 +256,24 @@ export default class OrderDetail extends Vue {
     }
   }
 
+  private getOrderContact() {
+    const vm: any = this;
+    vm.$toast.loading({
+      mask: true,
+      forbidClick: true,
+      message: "加载中..."
+    });
+    getOrderContact({orderId: vm.invoiceForm.orderId, secondParty: vm.$store.state.user.name}).then((res: any) => {
+      vm.contactInfo = res.data.data;
+      vm.getInvoice();
+      vm.$toast.clear();
+    });
+  }
+
   private getInvoice() {
     getZoneDetail({id: this.$route.params.id}).then((res: any) => {
       this.invoiceList = res.data.data.invoices;
+      this.agreement = res.data.data.agreement;
     });
   }
 
@@ -263,7 +303,7 @@ export default class OrderDetail extends Vue {
     if (this.orderForm.payType === '1') {
       const zoneId: any = this.$route.query.zoneId;
       const callback = encodeURIComponent(process.env.VUE_APP_URL + '/mine/order/success');
-      window.location.href = process.env.VUE_APP_WX_PAY + `?callbackUrl=${callback}&orderId=${this.$route.params.id}&payType=1&zoneId=${zoneId}`;
+      window.location.href = process.env.VUE_APP_WX_PAY + `?callbackUrl=${callback}&orderId=${this.$route.params.id}&payType=1&zoneId=${zoneId}&orderType=${this.orderType}`;
     } else {
       orderPayEdit({orderId: this.$route.params.id}).then(() => {
         this.isAble = false;
@@ -273,6 +313,8 @@ export default class OrderDetail extends Vue {
       });
     }
   }
+
+
 }
 </script>
 

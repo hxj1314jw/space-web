@@ -3,7 +3,7 @@
     <div style="width: 100%; position: absolute; top: 0; bottom: 0; overflow-y: auto; -webkit-overflow-scrolling: touch">
       <van-cell-group>
         <van-field v-model="ticketForm.name" label="票种名称" placeholder="请输入票种名称" input-align="right"/>
-        <van-cell @click="showType = true" title="票种类型" :value="freeText" is-link />
+        <van-cell @click="showType = true" title="票种类型" :value="freeText" is-link/>
         <van-cell>
           <template slot="title">
             <span>票种数量</span>
@@ -46,7 +46,7 @@ export default class AddActivityTicket extends Vue {
     price: 0,
     totalCount: 1
   };
-  public freeText: string = '免费';
+  public freeText: string = '';
   public checked: boolean = false;
   public showType: boolean = false;
   public defaultIndex: number = 0;
@@ -59,6 +59,14 @@ export default class AddActivityTicket extends Vue {
 
   private async fetchTicket() {
     const res = await getTicketInfo({id: this.$route.query.ticketId});
+    switch (res.data.data.isFreeFlag) {
+      case 0:
+        this.freeText = '免费';
+        break;
+      case 1:
+        this.freeText = '收费';
+        break;
+    }
     this.ticketForm = res.data.data;
     this.ticketForm.price = 0;
     this.ticketForm.isFreeFlag = 0;

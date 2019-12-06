@@ -6,6 +6,7 @@
         <img v-else src="../../../../assets/upload.png"  style="object-fit: cover; width: 100vw; height: 230px;"/>
       </van-uploader>
 
+
       <van-cell-group>
         <van-field label="选择订单" v-model="orderName" placeholder="请选择订单" @click="showOrder = true" required is-link readonly input-align="right" disabled/>
         <van-field label="标题" required v-model="activityForm.name" placeholder="请输入标题(不超过35字)" input-align="right" rows="1" type="textarea" autosize/>
@@ -78,7 +79,7 @@
       <div style="padding: 10px 16px;">
         <van-radio-group v-model="orderRadio" @change="onOrderChanged">
           <template v-for="(order, index) in orderList">
-            <van-radio :key="index" :name="order.id" checked-color="#00B261" icon-size="20" style="margin: 0; margin-top: 10px;">
+            <van-radio :key="index" :name="order" checked-color="#00B261" icon-size="20" style="margin: 0; margin-top: 10px;">
               <div style="background-color: #f3f3f3; padding: 10px 16px; width: 70vw; border-radius: 5px;">
                 <span style="font-weight: bold; font-size: small">
                   {{order.productName}}
@@ -241,9 +242,11 @@ export default class EditActivity extends Vue {
     this.tagList.splice(index, 1);
   }
 
-  private onOrderChanged(id: any) {
+  private  onOrderChanged(order: any) {
+    this.beginTime = order.purchaseBeginTime;
+    this.endTime = order.purchaseEndTime;
     for (const item of this.orderList) {
-      if (item.id === id) {
+      if (item.id === order.id) {
         this.orderName = item.productName;
         break;
       }

@@ -95,6 +95,13 @@ export const getSubOrderList = (params: any) =>
     params
   });
 
+export const getOrderContact = (params: any) =>
+  request({
+    url: 'order/contact',
+    method: 'get',
+    params
+  });
+
 export const cancelSubOrder = (params: any) =>
   request({
     url: '/order/cancelSub',

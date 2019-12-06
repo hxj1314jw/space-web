@@ -15,6 +15,7 @@
             <div style="margin: 20px 0;">
               <van-button @click="toHome()" type="primary" size="small" style="margin: 0 5px; width: 80px">返回首页</van-button>
               <van-button @click="toMineOrder()" plain type="primary" size="small" style="margin: 0 5px; width: 80px">我的订单</van-button>
+              <van-button @click="toActivityEdit()" v-if="$route.query.orderType == '2'" plain type="primary" size="small" style="margin: 0 5px; width: 80px">发布活动</van-button>
             </div>
           </div>
         </template>
@@ -33,12 +34,17 @@ Vue.use(Grid).use(GridItem).use(Icon).use(Button);
   components: {}
 })
 export default class OrderPaidSuccessfully extends Vue {
+
   private toHome() {
     this.$router.push('/');
   }
 
   private toMineOrder() {
     this.$router.push('/mine/order');
+  }
+
+  private toActivityEdit() {
+    this.$router.push('/mine/activity/edit');
   }
 }
 </script>

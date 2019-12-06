@@ -63,7 +63,6 @@
       this.msgNum = msgNum;
     }
 
-
     private isShow() {
       if (this.$route.path === '/home' || this.$route.path === '/space' || this.$route.path === '/activity' || this.$route.path === '/mine') {
         this.isTabbar = true;

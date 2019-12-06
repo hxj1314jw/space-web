@@ -86,6 +86,7 @@
                   <div style="font-weight: bold; text-align: right; color: #00B261; padding-right: 3px;">￥{{activity.price}} 起</div>
                   <div style="width: 100%; text-align: right">
                     <van-button v-if="activity.status === '6' || activity.status === '2'" plain type="primary" size="mini" style="width: 70px; margin-top: 3px;">立即报名</van-button>
+                    <van-button v-else-if="activity.status === '1'" plain type="warning" size="mini" style="width: 70px; margin-top: 3px;">等待报名</van-button>
                     <van-button v-else plain type="warning" size="mini" style="width: 70px; float: right; margin-top: 3px;">报名截止</van-button>
                   </div>
                 </div>
@@ -196,6 +197,7 @@
   import { getBannerList, getProductList, getProjectList, getZoneInfo, getSearchTagList } from '@/api/home';
   import { getActivityList, getActivityTypeList } from '@/api/activity';
   import moment from 'moment';
+  import {wxChatShare} from '@/utils/wxShare';
   import { Search, Swipe, SwipeItem, Lazyload, Grid, GridItem, Cell, Toast, Image, Row, Col, Divider, Card, Button, Tag, Icon, Popup } from 'vant';
   Vue.use(Search).use(Swipe).use(SwipeItem).use(Lazyload).use(Grid).use(GridItem).use(Cell).use(Toast).use(Image).use(Row).use(Col).use(Divider).use(Card).use(Button).use(Popup).use(Tag).use(Icon);
 
@@ -273,6 +275,7 @@
     private async fetchZone() {
       const res = await getZoneInfo();
       this.orgForm = res.data.data;
+      this.settingShare();
     }
 
     private async fetchProject() {
@@ -399,6 +402,19 @@
 
     private toSearchActivityType(activityTypeId: string) {
       this.$router.push(`/home/type/${activityTypeId}`);
+    }
+
+    private settingShare() {
+      const param = {
+        url: window.location.href.split('#')[0], // 当前页面url
+        title: this.orgForm.name, // 分享数据配置 主标题
+        desc: '我在'+this.orgForm.name+'发现了一个不错的活动，赶紧来看看吧。', // 分享数据配置 副标题
+        link: process.env.VUE_APP_URL + '/home/?zoneId=' + this.orgForm.id, // 分享数据配置
+        imgUrl: this.orgForm.imageUrl, // 分享数据配置 －－ 全路径
+        type: "link", // 分享类型,music、video或link，不填默认为link
+        dataUrl: " ", // 如果type是music或video，则要提供数据链接，默认为空
+      };
+      wxChatShare(param);
     }
   }
 </script>

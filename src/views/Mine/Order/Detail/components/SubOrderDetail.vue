@@ -36,6 +36,19 @@
         <van-cell title="联系方式" :value="orderForm.consumerPhone" />
       </van-cell-group>
 
+      <van-cell-group v-if="agreement == 1" style="margin-top: 10px;">
+        <van-cell title="协议" is-link :url="contactInfo"/>
+        <van-field
+          v-if="orderForm.orderStates === '1'"
+          v-model="buyerInfo"
+          type="text"
+          label="乙方信息"
+          placeholder="请输入乙方信息"
+          input-align="right"
+          required
+        />
+      </van-cell-group>
+
       <van-radio-group v-model="orderForm.payType" style="margin-top: 10px;" checked-color="#07c160">
         <van-cell-group>
           <van-cell title="在线支付" clickable @click="orderForm.payType = '1'">
@@ -66,8 +79,8 @@
         </van-button>
       </template> -->
       <template>
-        <van-button @click="payOrder()" :loading="loading" :loading-text="orderForm.payType === '1' ? '支付中...' : '确定'" type="primary" style="width: 100vw; margin: 0; padding: 0; height: 100%;">
-          <span class="center van-icon">{{orderForm.payType === '1' ? '立即支付' : '确定'}}</span>
+        <van-button @click="payOrder()" :loading="loading" loading-text="支付中..."  type="primary" style="width: 100vw; margin: 0; padding: 0; height: 100%;">
+          <span class="center van-icon">立即支付</span>
         </van-button>
       </template>
     </div>
@@ -180,7 +193,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { getSubOrderList, cancelSubOrder, addInvoice, orderSubPayEdit } from '@/api/mine';
+import { getSubOrderList, cancelSubOrder, addInvoice, getOrderContact, orderSubPayEdit } from '@/api/mine';
 import { getZoneDetail } from '@/api/home';
 import OrderCard from '@/components/OrderCard.vue';
 
@@ -213,15 +226,18 @@ export default class SubOrderDetail extends Vue {
   };
   public invoiceList: string = '';
   public invoiceText: string = '请选择发票类型';
+  public buyerInfo: string = this.$store.state.user.name;
   public finishedNum: number = 1;
   public showList: boolean = false;
   public showInvoice: boolean = false;
   public loading: boolean = false;
+  public agreement: any = 0;
+  public contactInfo: string = '';
 
   public created() {
     this.invoiceForm.orderId = this.$route.params.id;
     this.fetchSubOrder();
-    this.getInvoice();
+    this.getOrderContact();
   }
 
   @Watch("invoiceForm.invoiceType")
@@ -256,9 +272,24 @@ export default class SubOrderDetail extends Vue {
     }
   }
 
+  private getOrderContact() {
+    const vm: any = this;
+    vm.$toast.loading({
+      mask: true,
+      forbidClick: true,
+      message: "加载中..."
+    });
+    getOrderContact({orderId: vm.invoiceForm.orderId, secondParty: vm.$store.state.user.name}).then((res: any) => {
+      vm.contactInfo = res.data.data;
+      vm.getInvoice();
+      vm.$toast.clear();
+    });
+  }
+
   private getInvoice() {
     getZoneDetail({id: this.$route.params.id}).then((res: any) => {
       this.invoiceList = res.data.data.invoices;
+      this.agreement = res.data.data.agreement;
       // this.invoiceList = '1,2'
     });
   }

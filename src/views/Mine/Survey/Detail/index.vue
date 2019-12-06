@@ -4,12 +4,21 @@
     <van-image v-if="!surveyImage" style="margin: 0; padding: 0" width="100%" height="230" :src="require('@/assets/survey.jpg')"/>
     <div style="padding: 5px 20px;">
       <div class="survey-title">
-        <span style="font-size:20px; padding-top: 60px;">{{ surveyName }}</span><br>
+        <span style="font-size:20px;">{{ surveyName }}</span><br>
+      </div>
+      <div style="margin: 2px 0 8px; padding-left: 5px;">
+        <span v-html="surveyContent" style="color: #999999; font-size:5px;"/>
       </div>
       <!--    <span style="font-size:10px; margin: 15px 20px 10px;" v-html="surveyContent"></span>-->
 
-      <div class="question-card" v-for="(question, index) in questList">
-        <div class="questtitle-div" slot="header">
+      <div v-for="(question, index) in questList">
+        <div class="questtitle-div" v-if="question.questType == 1" slot="header">
+          <span class="quest-title">{{ question.questName }}(单选)</span><br>
+        </div>
+        <div class="questtitle-div" v-if="question.questType == 2" slot="header">
+          <span class="quest-title">{{ question.questName }}(多选)</span><br>
+        </div>
+        <div class="questtitle-div" v-if="question.questType == 3" slot="header">
           <span class="quest-title">{{ question.questName }}</span><br>
         </div>
 
@@ -40,7 +49,8 @@
                   placeholder="请输入你的答案"
                   type="textarea"
                   autosize
-                  maxlength="30"
+                  @input="redirect(index, answer)"
+                  maxlength="20"
                   style="padding: 7px 7px; font-size: 15px; border-radius: 0 5px 0 5px;">
                 </van-field>
               </div>
@@ -76,6 +86,16 @@
             style="padding: 6px 6px; font-size: 15px; border-radius: 5px;"
             maxlength="1000"/>
         </div>
+
+        <template v-if="question.questType == 2">
+          <div v-for="(answer, i) in question.answers">
+            <van-checkbox-group v-model="result" @change="checkbox">
+              <div>
+                <van-checkbox :name="answer" style="font-size: 15px; padding: 7px 0 5px 9px;" icon-size="17px" checked-color="#07C160" shape="square">{{ answer.answerName }}</van-checkbox>
+              </div>
+            </van-checkbox-group>
+          </div>
+        </template>
       </div>
 
         <van-button
@@ -92,14 +112,15 @@
 <script lang="ts">
   import { Component, Vue, Prop } from "vue-property-decorator";
   import { getSurveyInfo, addSurvey } from '@/api/survey';
-  import { RadioGroup, Radio, Button, Field, Cell, CellGroup, Popup, Image, Card } from 'vant';
-  Vue.use(RadioGroup).use(Radio).use(Button).use(Field).use(Cell).use(CellGroup).use(Popup).use(Image).use(Card);
+  import { RadioGroup, Radio, Button, Field, Cell, CellGroup, Image, Checkbox, CheckboxGroup, Notify } from 'vant';
+  Vue.use(RadioGroup).use(Radio).use(Button).use(Field).use(Cell).use(CellGroup).use(Image).use(Checkbox).use(CheckboxGroup).use(Notify);
 
   @Component({
     components: {}
   })
   export default class SurveyDetail extends Vue {
     public objStatus: any = [];
+    public result: any = [];
     public answerChanger: any = false;
     public surveyImage: any = '';
     public surveyName: any = '';
@@ -114,8 +135,6 @@
     private content(index: any) {
       // 主观题
       this.submitList[index].answerContent = this.objStatus[index].content;
-      // this.submitList[index].answerId = this.questList
-      // console.log(this.submitList[index].answercontent);
     }
 
     private change(value: any) {
@@ -123,6 +142,10 @@
       const arr = value.split('//');
       this.submitList[arr[2]].answerId = arr[0];
       this.submitList[arr[2]].answerContent = arr[1];
+    }
+
+    private checkbox(value: any) {
+      // console.log(this);
     }
 
     private openChanger() {
@@ -137,12 +160,32 @@
       this.objStatus[index].ischecked = false;
     }
 
+    private redirect(index: any, answer: any) {
+      // 重新指向其它
+      this.objStatus[index].radio = answer.id + '//' + answer.answerName + '//' + index;
+    }
+
     private submit() {
       // 提交
-      console.log(this.submitList);
+      for (const item of this.result) {
+        this.submitList.push({
+          questId: item.questId,
+          questName: item.questName,
+          answerId: item.id,
+          answerContent: item.answerName,
+        });
+      }
       addSurvey({
         surveyId: this.$route.params.id,
         questions: this.submitList,
+      }).then(() => {
+        Notify({
+          message: '完成！',
+          duration: 1000,
+          color: '#07C160',
+          background: 'rgba(193,255,182,.31)',
+        });
+        this.$router.push('/mine/survey');
       });
     }
 
@@ -159,6 +202,7 @@
             questName: item.questName,
             answerId: '',
             answerContent: '',
+            checkboxResult: [],
           });
           vm.objStatus.push({
             radio: '',
@@ -169,21 +213,16 @@
       });
     }
 
-
   }
 </script>
 
 
-
 <style>
-.question-card {
-
-}
 .survey-title {
-  margin: 10px 5px 20px;
+  margin: 10px 5px 3px;
 }
 .questtitle-div {
-  margin: 13px 5px 10px;
+  margin: 20px 5px 10px;
 }
 .quest-title {
   font-size: 100%;

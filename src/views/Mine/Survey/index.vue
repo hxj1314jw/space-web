@@ -3,9 +3,6 @@
     <van-list v-model="loading" :immediate-check="false" :finished="finished" finished-text="没有更多了" @load="onLoad">
       <template v-for="(survey, index) in surveyList">
         <SurveyCard :key="index" :surveyForm="survey"/>
-<!--        <div style="position: relative; bottom: 50px; float: right; right: 10px;">-->
-<!--          <van-icon @click="toSurveyDetail(survey.id)" color="#07C160" name="edit" size="20px" style="margin: 0 5px;"/>-->
-<!--        </div>-->
       </template>
     </van-list>
   </div>

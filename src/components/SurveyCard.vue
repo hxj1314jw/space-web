@@ -1,13 +1,16 @@
 <template>
-  <van-cell style="margin: 0 0 10px">
-    <div style="border: 60px">
-      <span style="font-size: 110%; font-weight: bolder;" color="#07C160">{{ surveyForm.name }}</span><br>
-      <span color="rgba(193,255,182,.31)" text-color="#07c160" style="font-size: 60%;">{{ surveyForm.activityName }}</span><br>
-      <span v-if="surveyForm.type == 1" style="font-size: 0.3em; color: #07c160">已填写</span>
-      <span v-if="surveyForm.type == 0" style="font-size: 0.3em;">未填写</span>
-<!--      <van-tag color="rgba(193,255,182,.31)" text-color="#07c160" v-if="surveyForm.type == 1">已填写</van-tag>-->
-<!--      <van-tag color="rgba(193,255,182,.31)" text-color="#07c160" v-if="surveyForm.type == 0">未填写</van-tag>-->
-      <van-icon @click="toSurveyDetail(surveyForm.id)" v-if="surveyForm.type == 0" color="#07C160" name="edit" size="25px" style="position: relative; bottom: 23px; float: right; right: 6px;"/>
+  <van-cell style="padding: 3px 6px; margin-bottom: 5px;">
+    <div class="survey-card">
+      <div v-if="surveyForm.type == 1">
+        <span style="font-size: 110%; font-weight: bolder;" color="#07C160">{{ surveyForm.name }}</span>
+        <van-tag color="rgba(193,255,182,.31)" text-color="#07c160" style="margin-left: 8px;">已填写</van-tag><br>
+      </div>
+      <div v-if="surveyForm.type == 0">
+        <span style="font-size: 110%; font-weight: bolder;" color="#07C160">{{ surveyForm.name }}</span>
+        <van-tag color="rgba(193,255,182,.31)" text-color="#07c160" style="margin-left: 8px;">未填写</van-tag><br>
+      </div>
+      <span style="font-size: small;">{{ surveyForm.activityName }}</span>
+      <van-icon @click="toSurveyDetail(surveyForm.id)" v-if="surveyForm.type == 0" color="#07C160" name="edit" size="20px" style="position: relative; bottom: 10px; float: right; right: 6px;"/>
     </div>
   </van-cell>
 </template>
@@ -17,8 +20,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Cell, CellGroup, Tag, Icon, Card } from 'vant';
-Vue.use(Cell).use(CellGroup).use(Tag).use(Icon).use(Card);
+import { Cell, Tag, Icon } from 'vant';
+Vue.use(Cell).use(Tag).use(Icon);
 
 @Component
 export default class SurveyCard extends Vue {
@@ -41,8 +44,8 @@ export default class SurveyCard extends Vue {
     top: 50%;
   }
   .survey-card {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    padding-top: -5px;
+    padding-bottom: -5px;
   }
 </style>
 
