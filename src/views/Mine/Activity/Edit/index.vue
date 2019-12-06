@@ -211,6 +211,7 @@ export default class EditActivity extends Vue {
   public enrollBeginTime: string = '';
   public enrollEndTime: string = '';
   public orderName: string = '';
+  public orderId: string = '';
 
   public created() {
     this.activityId = this.$route.query.activityId;
@@ -242,9 +243,10 @@ export default class EditActivity extends Vue {
     this.tagList.splice(index, 1);
   }
 
-  private  onOrderChanged(order: any) {
+  private onOrderChanged(order: any) {
     this.beginTime = order.purchaseBeginTime;
     this.endTime = order.purchaseEndTime;
+    this.orderId = order.id;
     for (const item of this.orderList) {
       if (item.id === order.id) {
         this.orderName = item.productName;
@@ -376,7 +378,7 @@ export default class EditActivity extends Vue {
     this.activityForm.addType = 2;
     this.activityForm.publisherName = this.name;
     this.activityForm.publisherPhone = this.phone;
-    this.activityForm.orderId = this.orderRadio;
+    this.activityForm.orderId = this.orderId;
     this.toTimeZone();
     this.activityForm.tags = this.tagText;
     if (this.$route.query.activityId) {
