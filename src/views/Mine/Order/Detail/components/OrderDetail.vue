@@ -56,6 +56,15 @@
         </van-cell-group>
       </van-radio-group>
 
+      <van-cell-group v-if="orderForm.payType === '2'" style="margin-top: 10px;">
+        <van-cell title="纳税公司名称" :value="brandInfo.taxCompany" />
+        <van-cell title="税号" :value="brandInfo.duty" />
+        <van-cell title="纳税公司地址" :value="brandInfo.taxAddress" />
+        <van-cell title="纳税公司电话" :value="brandInfo.taxPhone" />
+        <van-cell title="银行名称" :value="brandInfo.bankName" />
+        <van-cell title="银行账号" :value="brandInfo.bankNo" />
+      </van-cell-group>
+
       <div style="padding: 10px 16px; text-align: center">
         <span style="font-size: x-small; color: #969799;">
           下单时间：{{ orderForm.createDate }}
@@ -171,7 +180,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { cancelOrder, addInvoice, orderPayEdit, getOrderContact, getOrderInfo } from '@/api/mine';
-import { getZoneDetail } from '@/api/home';
+import { getBrandDetail, getZoneDetail } from '@/api/home';
 import OrderCard from '@/components/OrderCard.vue';
 
 import { Toast, Cell, CellGroup, Button, List, Popup, Dialog, RadioGroup, Radio, Tag, Divider, Field } from 'vant';
@@ -203,6 +212,7 @@ export default class OrderDetail extends Vue {
   public invoiceList: string = '';
   public invoiceText: string = '请选择发票类型';
   public buyerInfo: string = this.$store.state.user.name;
+  public brandInfo: any = {};
   public finishedNum: number = 1;
   public showList: boolean = false;
   public showInvoice: boolean = false;
@@ -215,6 +225,13 @@ export default class OrderDetail extends Vue {
     this.invoiceForm.orderId = this.$route.params.id;
     this.getOrderContact();
     this.getOrderInfo();
+    this.getBrandInfo();
+  }
+
+  public async getBrandInfo() {
+    const res = await getBrandDetail({
+    });
+    this.brandInfo = res.data.data;
   }
 
   public async getOrderInfo() {
