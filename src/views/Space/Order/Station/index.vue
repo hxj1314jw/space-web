@@ -38,7 +38,7 @@
                            input-align="right" error-message-align="right" :error-message="beginTimeErrMsg"/>
                 <van-cell v-if="productInfo.timeType === '0'">
                     <template slot="title">
-                        <span>租用时长（小时）</span>
+                        <span>租用时长（{{charge}}）</span>
                     </template>
                     <template>
                         <van-stepper v-model="rentNum" min="1" integer/>
@@ -122,6 +122,7 @@
     import {Component, Vue, Watch} from "vue-property-decorator";
     import {getOrganization, getProductInfo} from '@/api/space';
     import {addOrder, getNextSevenData, getInterval} from '@/api/mine';
+    import {initChargeMethod } from '../../../../utils/zone';
 
     import {
         Step,
@@ -170,6 +171,7 @@
         public productInfo: any = {};
         public selectTime: any = {};
         public radioTime: number = 0;
+        public charge: string = '';
 
         public created() {
             this.fetchOrg();
@@ -180,12 +182,17 @@
         private getProductInfo() {
             getProductInfo({id: this.$route.params.id}).then((res: any) => {
                 this.productInfo = res.data.data;
+                this.getCharge();
                 if (this.productInfo.timeSection) {
                   this.selectTime = this.productInfo.timeSection[0];
                 }
             });
         }
-
+        private getCharge() {
+            const chargeMethod = this.productInfo.chargeMethod;
+            console.log(this.productInfo);
+            this.charge = initChargeMethod(chargeMethod);
+        }
         @Watch("beginTime")
         private onBeginTimeChanged(newVal: boolean, oldVal: boolean) {
             this.onBeginTimeFocusOut();

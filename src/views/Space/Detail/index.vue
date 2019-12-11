@@ -23,19 +23,16 @@
             <span v-if="spaceForm.priceStates === '1'">
               <s style="color: #999999;">
                 ￥{{spaceForm.price}} /
-                <span v-if="spaceForm.chargeMethod === '1'">小时</span>
-                <span v-if="spaceForm.chargeMethod === '3'">月</span>
+                <span>{{charge}}</span>
               </s><br>
               <span style="color: #F76C6C; font-size: large;">
                 ￥{{spaceForm.activityPrice}} /
-                <span v-if="spaceForm.chargeMethod === '1'">小时</span>
-                <span v-if="spaceForm.chargeMethod === '3'">月</span>
+                <span>{{charge}}</span>
               </span>
             </span>
             <span v-else style="color: #00B261; font-size: large;">
               ￥{{spaceForm.price}} /
-              <span v-if="spaceForm.chargeMethod === '1'">小时</span>
-              <span v-if="spaceForm.chargeMethod === '3'">月</span>
+              <span>{{charge}}</span>
             </span>
           </div>
         </van-cell>
@@ -161,7 +158,7 @@ import {
   GoodsAction,
   GoodsActionIcon, GoodsActionButton
 } from 'vant';
-import { getZoneId } from '../../../utils/zone';
+import { getZoneId, initChargeMethod } from '../../../utils/zone';
 Vue.use(Image).use(Field).use(Toast).use(Cell).use(CellGroup).use(Dialog).use(Tag).use(Button).use(Icon).use(Grid).use(GridItem);
 
 @Component({
@@ -174,7 +171,7 @@ export default class SpaceDetail extends Vue {
   public chargeDeviceList: any = [];
   public ableList: any = [];
   public isCollect: boolean = false;
-  public mapUrl: string = '';
+  public charge: string = '';
 
   public created() {
     this.fetchSpace();
@@ -200,10 +197,15 @@ export default class SpaceDetail extends Vue {
       document.title = this.spaceForm.productName;
       this.initAbleList();
       this.settingShare();
+      this.getCharge();
       Toast.clear();
     });
   }
 
+  private getCharge() {
+    const chargeMethod = this.spaceForm.chargeMethod;
+    this.charge = initChargeMethod(chargeMethod);
+  }
   private settingShare() {
     const param = {
       url: window.location.href.split('#')[0], // 当前页面url
