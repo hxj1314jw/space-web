@@ -21,7 +21,7 @@ export default new Router({
 
         { path: '/home/top', name: 'top', component: () => import('./views/Home/Top/index.vue'), meta: { title: '人气榜' } },
         { path: '/home/calendar', name: 'calendar', component: () => import('./views/Home/Calendar/index.vue'), meta: { title: '活动日历' } },
-        { path: '/home/choiceness', name: 'choiceness', component: () => import('./views/Home/Choiceness/index.vue'), meta: { title: '空间优选' } },
+        { path: '/home/choiceness', name: 'choiceness', component: () => import('./views/Home/Choiceness/index.vue'), meta: { title: '优选精品' } },
         { path: '/home/introduce', name: 'introduce', component: () => import('./views/Home/Introduce/index.vue'), meta: { title: '空间介绍' } },
         { path: '/home/search', name: 'search', component: () => import('./views/Home/Search/index.vue'), meta: { title: '搜索详情' } },
         { path: '/home/type/:id', name: 'type', component: () => import('./views/Home/Type/index.vue'), meta: { title: '精选榜单' } },
