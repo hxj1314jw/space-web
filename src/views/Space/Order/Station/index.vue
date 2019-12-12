@@ -25,6 +25,15 @@
                 </van-tab>
             </van-tabs>
             <van-cell-group>
+                <van-cell title="开放时间: ">
+                    <template slot="title">
+                        <span>价格</span>
+                    </template>
+                    <template>
+                        <span v-if="productInfo.priceStates ==='1'"style="color: #00B261; font-size: larger;">￥{{productInfo.activityPrice}}/{{charge}}</span>
+                        <span v-else style="color: #00B261; font-size: larger;">￥{{productInfo.price}}/{{charge}}</span>
+                    </template>
+                </van-cell>
                 <van-cell>
                     <template slot="title">
                         <span>数量</span>

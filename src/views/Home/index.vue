@@ -139,12 +139,17 @@
                   容纳{{ product.numberOfPeople}}人 {{ product.dimensions }}㎡
                 </span>
                 <span style="float: right; font-weight: bold;">
-                  <span v-if="product.priceStates === '1'" style="color: #f76c6c">
+                  <template v-if="product.showPrice === '0'">
+                    <span style="color: #f76c6c">￥有偿</span>
+                  </template>
+                  <template v-else>
+                    <span v-if="product.priceStates === '1'" style="color: #f76c6c">
                     ￥{{ product.activityPrice }}/<span v-if="product.chargeMethod === '1'">时</span><span v-if="product.chargeMethod === '2'">日</span><span v-if="product.chargeMethod === '3'">月</span><span v-if="product.chargeMethod === '4'">年</span>
                   </span>
                   <span v-else style="color: #00B261;">
                     ￥{{ product.price }}/<span v-if="product.chargeMethod === '1'">时</span><span v-if="product.chargeMethod === '2'">日</span><span v-if="product.chargeMethod === '3'">月</span><span v-if="product.chargeMethod === '4'">年</span>
                   </span>
+                  </template>
                 </span>
               </div>
               <van-divider v-if="index < 2" :hairline="false" style="margin: 10px 0;"/>

@@ -25,29 +25,24 @@
           容纳{{ spaceForm.numberOfPeople}}人 {{ spaceForm.dimensions }}㎡
         </span>
         <div style="float: right; text-align: right; margin-bottom: 10px;">
-          <span v-if="spaceForm.priceStates === '1'">
-            <s style="color: #999999">
-              ￥{{ spaceForm.price }} /
-              <span v-if="spaceForm.chargeMethod === '1'">小时</span>
-              <span v-if="spaceForm.chargeMethod === '2'">日</span>
-              <span v-if="spaceForm.chargeMethod === '3'">月</span>
-              <span v-if="spaceForm.chargeMethod === '4'">年</span>
-            </s><br>
-            <span style="color: #F76C6C; font-size: larger;">
-              ￥{{ spaceForm.activityPrice }} /
-              <span v-if="spaceForm.chargeMethod === '1'">小时</span>
-              <span v-if="spaceForm.chargeMethod === '2'">日</span>
-              <span v-if="spaceForm.chargeMethod === '3'">月</span>
-              <span v-if="spaceForm.chargeMethod === '4'">年</span>
+          <template v-if="spaceForm.showPrice === '0'">
+              <span style="color: #f76c6c; font-size: larger;">
+              ￥有偿
             </span>
-          </span>
-          <span v-else style="color: #00B261; font-size: larger;">
-            ￥{{ spaceForm.price }} /
-            <span v-if="spaceForm.chargeMethod === '1'">小时</span>
-            <span v-if="spaceForm.chargeMethod === '2'">日</span>
-            <span v-if="spaceForm.chargeMethod === '3'">月</span>
-            <span v-if="spaceForm.chargeMethod === '4'">年</span>
-          </span>
+          </template>
+          <template v-else>
+            <span v-if="spaceForm.priceStates === '1'">
+              <s style="color: #999999">
+                ￥{{ spaceForm.price }} / <span>{{charge}}</span>
+              </s><br>
+              <span style="color: #F76C6C; font-size: larger;">
+                ￥{{ spaceForm.activityPrice }} /<span>{{charge}}</span>
+              </span>
+            </span>
+            <span v-else style="color: #00B261; font-size: larger;">
+              ￥{{ spaceForm.price }} /<span>{{charge}}</span>
+            </span>
+          </template>
         </div>
       </div>
     </div>
@@ -57,15 +52,23 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Button, Tag, Image, Cell} from 'vant';
+import { initChargeMethod } from '../utils/zone';
 Vue.use(Cell).use(Button).use(Tag).use(Image);
 
 @Component
 export default class SpaceCard extends Vue {
   public tagList: any = [];
+  public charge: string = '';
   @Prop() public spaceForm!: any;
 
   public created() {
     this.tagList = this.spaceForm.tags.split(',');
+    this.getCharge();
+  }
+
+  private getCharge() {
+    const chargeMethod = this.spaceForm.chargeMethod;
+    this.charge = initChargeMethod(chargeMethod);
   }
 
   private toSpaceDetail(id: any) {

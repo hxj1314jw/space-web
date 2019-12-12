@@ -19,22 +19,29 @@
               容纳{{ spaceForm.numberOfPeople}}人 {{ spaceForm.dimensions }}㎡ | {{ spaceForm.counts }}个可预订
             </span>
           </span>
-          <div style="float: right; text-align: right">
-            <span v-if="spaceForm.priceStates === '1'">
-              <s style="color: #999999;">
-                ￥{{spaceForm.price}} /
-                <span>{{charge}}</span>
-              </s><br>
-              <span style="color: #F76C6C; font-size: large;">
-                ￥{{spaceForm.activityPrice}} /
-                <span>{{charge}}</span>
-              </span>
-            </span>
-            <span v-else style="color: #00B261; font-size: large;">
-              ￥{{spaceForm.price}} /
-              <span>{{charge}}</span>
-            </span>
-          </div>
+            <div style="float: right; text-align: right">
+                <template v-if="spaceForm.showPrice === '0'">
+                    <span  style="color: #f76c6c; font-size: large;">
+                      ￥<span>有偿</span>
+                    </span>
+                </template>
+                <template v-else>
+                    <span v-if="spaceForm.priceStates === '1'">
+                      <s style="color: #999999;">
+                        ￥{{spaceForm.price}} /
+                        <span>{{charge}}</span>
+                      </s><br>
+                      <span style="color: #F76C6C; font-size: large;">
+                        ￥{{spaceForm.activityPrice}} /
+                        <span>{{charge}}</span>
+                      </span>
+                  </span>
+                    <span v-else style="color: #00B261; font-size: large;">
+                      ￥{{spaceForm.price}} /
+                      <span>{{charge}}</span>
+                    </span>
+                </template>
+            </div>
         </van-cell>
         <van-cell @click="toMap()" title="地理位置: " :value="spaceForm.address" is-link>
           <van-icon slot="icon" name="location-o" style="line-height: inherit; margin-right: 7px;" color="#00B261"/>
