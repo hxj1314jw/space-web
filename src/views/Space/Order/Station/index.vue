@@ -30,8 +30,7 @@
                         <span>价格</span>
                     </template>
                     <template>
-                        <span v-if="productInfo.priceStates ==='1'"style="color: #00B261; font-size: larger;">￥{{productInfo.activityPrice}}/{{charge}}</span>
-                        <span v-else style="color: #00B261; font-size: larger;">￥{{productInfo.price}}/{{charge}}</span>
+                        <span style="color: #00B261; font-size: larger;">￥{{productInfo.price}}/{{charge}}</span>
                     </template>
                 </van-cell>
                 <van-cell>
@@ -57,7 +56,7 @@
                     <van-cell-group>
                         <van-cell v-for="(item,index) in productInfo.timeSection" :key=index
                                   :title="`${item.begin}-${item.end}`" clickable
-                                  @click="radioTime = index; selectTime = item">
+                                  @click="selectRadio(item,index)">
                             <van-radio slot="right-icon" :name="index" checked-color="#07c160"/>
                         </van-cell>
                     </van-cell-group>
@@ -194,6 +193,10 @@
                 this.getCharge();
                 if (this.productInfo.timeSection) {
                   this.selectTime = this.productInfo.timeSection[0];
+                  this.productInfo.price = this.productInfo.timeSection[0].price;
+                }
+                if (this.productInfo.priceStates === '1') {
+                    this.productInfo.price = this.productInfo.activityPrice;
                 }
             });
         }
@@ -217,6 +220,12 @@
                 this.beginTimeErrMsg = "";
                 return true;
             }
+        }
+
+        private selectRadio(item: any, index: number) {
+            this.radioTime = index;
+            this.selectTime = item;
+            this.productInfo.price = item.price;
         }
 
         private validate() {
@@ -256,6 +265,7 @@
                             consumerPhone: this.phone,
                             productType: this.$route.query.type,
                             purchaseMethod: '1',
+                            timePrice: this.productInfo.price,
                             rentNum: this.productInfo.timeType === '0' ? this.rentNum : moment.duration(moment(`${this.queryDate} ${this.selectTime.end}`).diff(moment(`${this.queryDate} ${this.selectTime.begin}`))).hours(),
                             startDate: this.productInfo.timeType === '0' ? this.beginTime.getTime() : moment(`${this.queryDate} ${this.selectTime.begin}`).unix() * 1000,
                             useNum: this.useNum,
@@ -277,6 +287,7 @@
                             rentNum: this.productInfo.timeType === '0' ? this.rentNum : moment.duration(moment(`${this.queryDate} ${this.selectTime.end}`).diff(moment(`${this.queryDate} ${this.selectTime.begin}`))).hours(),
                             startDate: this.productInfo.timeType === '0' ? this.beginTime.getTime() : moment(`${this.queryDate} ${this.selectTime.begin}`).unix() * 1000,
                             useNum: this.useNum,
+                            timePrice: this.productInfo.price,
                             zoneProductId: this.$route.params.id
                         }).then((res: any) => {
                             this.$router.push({
