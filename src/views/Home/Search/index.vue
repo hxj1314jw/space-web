@@ -101,7 +101,7 @@
         page: this.currentPage,
         size: this.size,
         searchName: this.search,
-        hotStatus: this.hotStatus
+        itemType: this.hotStatus
       });
       this.loadingSpace = false;
       for (const item of res.data.data.rows) {
