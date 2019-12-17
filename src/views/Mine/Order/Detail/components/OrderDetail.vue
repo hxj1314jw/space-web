@@ -223,9 +223,9 @@ export default class OrderDetail extends Vue {
 
   public created() {
     this.invoiceForm.orderId = this.$route.params.id;
-    this.getOrderContact();
     this.getOrderInfo();
     this.getBrandInfo();
+    this.getInvoice();
   }
 
   public async getBrandInfo() {
@@ -282,7 +282,6 @@ export default class OrderDetail extends Vue {
     });
     getOrderContact({orderId: vm.invoiceForm.orderId, secondParty: vm.$store.state.user.name}).then((res: any) => {
       vm.contactInfo = res.data.data;
-      vm.getInvoice();
       vm.$toast.clear();
     });
   }
@@ -291,6 +290,9 @@ export default class OrderDetail extends Vue {
     getZoneDetail({id: this.$route.params.id}).then((res: any) => {
       this.invoiceList = res.data.data.invoices;
       this.agreement = res.data.data.agreement;
+      if (this.agreement === '1') {
+        this.getOrderContact();
+      }
     });
   }
 
