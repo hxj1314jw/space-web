@@ -32,7 +32,7 @@
         <van-cell title="联系方式" :value="orderForm.consumerPhone" />
       </van-cell-group>
 
-      <van-cell-group v-if="agreement == 1" style="margin-top: 10px;">
+      <van-cell-group v-if="agreement == 1 && orderForm.amountReceived >0" style="margin-top: 10px;">
         <van-cell title="协议" is-link :url="contactInfo"/>
         <van-field
           v-if="orderForm.orderStates === '1'"
@@ -45,7 +45,7 @@
         />
       </van-cell-group>
 
-      <van-radio-group v-model="orderForm.payType" style="margin-top: 10px;" checked-color="#07c160">
+      <van-radio-group v-if="orderForm.amountReceived >0" v-model="orderForm.payType" style="margin-top: 10px;" checked-color="#07c160">
         <van-cell-group>
           <van-cell title="在线支付" clickable @click="orderForm.payType = '1'">
             <van-radio slot="right-icon" name="1" />
@@ -218,11 +218,13 @@ export default class OrderDetail extends Vue {
   public showInvoice: boolean = false;
   public loading: boolean = false;
   public agreement: any = 0;
+  public amountReceived: any = 0;
   public contactInfo: string = '';
   public orderType: any = '';
 
   public created() {
     this.invoiceForm.orderId = this.$route.params.id;
+    this.amountReceived = this.orderForm.amountReceived;
     this.getOrderInfo();
     this.getBrandInfo();
     this.getInvoice();
@@ -290,7 +292,7 @@ export default class OrderDetail extends Vue {
     getZoneDetail({id: this.$route.params.id}).then((res: any) => {
       this.invoiceList = res.data.data.invoices;
       this.agreement = res.data.data.agreement;
-      if (this.agreement === '1') {
+      if (this.agreement === '1' && this.amountReceived > 0) {
         this.getOrderContact();
       }
     });

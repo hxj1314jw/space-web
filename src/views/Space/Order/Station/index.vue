@@ -8,24 +8,28 @@
                     <van-step>交易完成</van-step>
                 </van-steps>
             </div>
-            <div style="display: flex; justify-content: flex-end">
-              <van-tag type="success">可预定</van-tag>
-              <van-tag >已预定</van-tag>
-            </div>
-            <van-tabs v-model="queryDate" @click="onClick" color="#1ab84d">
-                <van-tab v-for="(item,index) in timeSec" :key="index" :title="item.day" :name="item.date">
-                    <van-row v-if="intervalList && intervalList.length > 0" gutter="15" style="margin: 30px 16px">
-                        <van-col v-for="(item,index)  in intervalList" :key="index" span="8">
-                            <div class="time" :class="{time_disabled: item.type === '1'}">{{item.beginHour}}-{{item.endHour}}</div>
-                        </van-col>
-                    </van-row>
-                    <van-row v-else style="margin: 30px 16px; text-align: center; color: #333333; font-size: 14px;">
-                        {{item.day}}全时段可预定
-                    </van-row>
-                </van-tab>
-            </van-tabs>
+            <template v-if="productInfo.type ==='2' || productInfo.type ==='3'|| productInfo.type ==='5' ">
+                <div style="display: flex; justify-content: flex-end">
+                    <van-tag type="success">可预定</van-tag>
+                    <van-tag>已预定</van-tag>
+                </div>
+                <van-tabs v-model="queryDate" @click="onClick" color="#1ab84d">
+                    <van-tab v-for="(item,index) in timeSec" :key="index" :title="item.day" :name="item.date">
+                        <van-row v-if="intervalList && intervalList.length > 0" gutter="15" style="margin: 30px 16px">
+                            <van-col v-for="(item,index)  in intervalList" :key="index" span="8">
+                                <div class="time" :class="{time_disabled: item.type === '1'}">
+                                    {{item.beginHour}}-{{item.endHour}}
+                                </div>
+                            </van-col>
+                        </van-row>
+                        <van-row v-else style="margin: 30px 16px; text-align: center; color: #333333; font-size: 14px;">
+                            {{item.day}}全时段可预定
+                        </van-row>
+                    </van-tab>
+                </van-tabs>
+            </template>
             <van-cell-group>
-                <van-cell title="开放时间: ">
+                <van-cell>
                     <template slot="title">
                         <span>价格</span>
                     </template>
@@ -33,7 +37,7 @@
                         <span style="color: #00B261; font-size: larger;">￥{{productInfo.price}}/{{charge}}</span>
                     </template>
                 </van-cell>
-                <van-cell>
+                <van-cell v-if="this.productInfo.counts >1">
                     <template slot="title">
                         <span>数量</span>
                     </template>
@@ -130,7 +134,7 @@
     import {Component, Vue, Watch} from "vue-property-decorator";
     import {getOrganization, getProductInfo} from '@/api/space';
     import {addOrder, getNextSevenData, getInterval} from '@/api/mine';
-    import {initChargeMethod } from '../../../../utils/zone';
+    import {initChargeMethod} from '../../../../utils/zone';
 
     import {
         Step,
@@ -192,19 +196,21 @@
                 this.productInfo = res.data.data;
                 this.getCharge();
                 if (this.productInfo.timeSection) {
-                  this.selectTime = this.productInfo.timeSection[0];
-                  this.productInfo.price = this.productInfo.timeSection[0].price;
+                    this.selectTime = this.productInfo.timeSection[0];
+                    this.productInfo.price = this.productInfo.timeSection[0].price;
                 }
                 if (this.productInfo.priceStates === '1') {
                     this.productInfo.price = this.productInfo.activityPrice;
                 }
             });
         }
+
         private getCharge() {
             const chargeMethod = this.productInfo.chargeMethod;
             console.log(this.productInfo);
             this.charge = initChargeMethod(chargeMethod);
         }
+
         @Watch("beginTime")
         private onBeginTimeChanged(newVal: boolean, oldVal: boolean) {
             this.onBeginTimeFocusOut();
@@ -363,8 +369,8 @@
         border-radius: 4px;
     }
 
-  .time_disabled {
-    background-color: #969799;
-  }
+    .time_disabled {
+        background-color: #969799;
+    }
 
 </style>
