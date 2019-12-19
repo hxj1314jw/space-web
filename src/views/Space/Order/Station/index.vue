@@ -195,12 +195,12 @@
             getProductInfo({id: this.$route.params.id}).then((res: any) => {
                 this.productInfo = res.data.data;
                 this.getCharge();
+                if (this.productInfo.priceStates === '1') {
+                    this.productInfo.price = this.productInfo.activityPrice;
+                }
                 if (this.productInfo.timeSection) {
                     this.selectTime = this.productInfo.timeSection[0];
                     this.productInfo.price = this.productInfo.timeSection[0].price;
-                }
-                if (this.productInfo.priceStates === '1') {
-                    this.productInfo.price = this.productInfo.activityPrice;
                 }
             });
         }
