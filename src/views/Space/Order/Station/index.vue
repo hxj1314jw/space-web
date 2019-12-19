@@ -8,7 +8,7 @@
                     <van-step>交易完成</van-step>
                 </van-steps>
             </div>
-            <template v-if="productInfo.type ==='2' || productInfo.type ==='3'|| productInfo.type ==='5' ">
+            <template v-if="productInfo.type ==='2' || productInfo.type ==='4'|| productInfo.type ==='5' ">
                 <div style="display: flex; justify-content: flex-end">
                     <van-tag type="success">可预定</van-tag>
                     <van-tag>已预定</van-tag>
