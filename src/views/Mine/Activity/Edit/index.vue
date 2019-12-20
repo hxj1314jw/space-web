@@ -9,7 +9,7 @@
 
       <van-cell-group>
         <van-field label="选择订单" v-model="orderName" placeholder="请选择订单" @click="showOrder = true" required is-link readonly input-align="right" disabled/>
-        <van-field label="标题" required v-model="activityForm.name" placeholder="请输入标题(不超过35字)" input-align="right" rows="1" type="textarea" autosize/>
+        <van-field label="活动名称" required v-model="activityForm.name" placeholder="请输入活动名称(不超过35字)" input-align="right" rows="1" type="textarea" autosize/>
         <van-field label="人数" type="number" required v-model="activityForm.count" placeholder="请输入人数" input-align="right"/>
         <van-field @click="showBeginTime = true" label="开始时间" required v-model="beginTime" placeholder="请选择开始时间" input-align="right" is-link disabled/>
         <van-field @click="showEndTime = true" label="结束时间" required v-model="endTime" placeholder="请选择结束时间" input-align="right" is-link disabled/>
@@ -282,7 +282,7 @@ export default class EditActivity extends Vue {
   }
 
   private async fetchActivityType() {
-    const res = await getActivityTypeList();
+    const res = await getActivityTypeList({type: "1"});
     this.typeList = res.data.data;
     for (const item of res.data.data) {
       this.columns.push(item.name);

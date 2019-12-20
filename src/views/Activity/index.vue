@@ -70,7 +70,7 @@
     }
 
     private async fetchActivityType() {
-      const res = await getActivityTypeList();
+      const res = await getActivityTypeList({});
       for (const item of res.data.data) {
         this.typeOption.push({
           text: item.name,

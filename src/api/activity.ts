@@ -7,11 +7,12 @@ export const getActivityList = (params: any) =>
         params
     });
 
-export const getActivityTypeList = () =>
-  request({
-    url: '/activity/activityType',
-    method: 'get'
-  });
+export const getActivityTypeList = (params: any) =>
+    request({
+        url: '/activity/activityType',
+        method: 'get',
+        params
+    });
 
 export const getActivityDetail = (params: any) =>
   request({

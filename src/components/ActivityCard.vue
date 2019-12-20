@@ -13,8 +13,9 @@
     <div slot="desc">
       <div style="float: right; width: 80%;">
         <span v-if="activityForm.status !== '9'" style="color: #969799;">
-          {{activityForm.publisherName}}<br>
-          {{activityForm.beginTime | dateFmt('YYYY-MM-DD')}} | {{activityForm.tags || '无'}}
+          <span v-if="activityForm.userType === '1'">{{activityForm.publisherName}}</span>
+                    <span v-else>{{activityForm.zoneName}}</span>
+          <br>{{activityForm.beginTime | dateFmt('YYYY-MM-DD')}} | {{activityForm.tags || '无'}}
         </span>
         <span v-else style="color: #969799;">
           说明：{{activityForm.reason}}

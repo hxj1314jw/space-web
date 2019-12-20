@@ -80,8 +80,9 @@
               <div slot="desc">
                 <div style="float: right; width: 80%;">
                   <span style="color: #969799">
-                    {{activity.publisherName}}<br>
-                    {{activity.beginTime | dateFmt('YYYY-MM-DD')}} | {{activity.tags}}
+                    <span v-if="activity.userType === '1'">{{activity.publisherName}}</span>
+                    <span v-else>{{activity.zoneName}}</span>
+                    <br>{{activity.beginTime | dateFmt('YYYY-MM-DD')}} | {{activity.tags}}
                   </span>
                   <div style="font-weight: bold; text-align: right; color: #00B261; padding-right: 3px;">￥{{activity.price}} 起</div>
                   <div style="width: 100%; text-align: right">
@@ -303,7 +304,7 @@
     }
 
     private async fetchActivityType() {
-      const res = await getActivityTypeList();
+      const res = await getActivityTypeList({});
       this.tagList = res.data.data;
     }
 
