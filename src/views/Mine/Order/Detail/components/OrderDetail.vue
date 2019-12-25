@@ -89,22 +89,33 @@
         <div style="font-weight: bold;">发票</div>
         <div style="font-size: smaller; margin-top: 20px;">发票类型</div>
         <van-radio-group v-model="invoiceForm.invoiceType" style="width: 100%;">
-          <van-radio name="1" v-if="invoiceList.indexOf('1') !== -1"  style="margin-right: 7px; height: 37px; float: left">
+          <van-radio name="1" v-if="invoiceList.indexOf('1') !== -1"
+                     style="margin-right: 7px; height: 37px; float: left">
             <template slot="icon">
-              <van-tag v-if="invoiceForm.invoiceType === '1'" color="rgba(193,255,182,.31)" text-color="#07c160" round size="medium">电子普通发票</van-tag>
-              <van-tag v-else color="#f3f3f3" text-color="#999999" round size="medium">电子普通发票</van-tag>
+              <van-tag v-if="invoiceForm.invoiceType === '1'" color="rgba(193,255,182,.31)"
+                       text-color="#07c160" round size="medium">增值税普通发票（电子）
+              </van-tag>
+              <van-tag v-else color="#f3f3f3" text-color="#999999" round size="medium">增值税普通发票（电子）
+              </van-tag>
             </template>
           </van-radio>
-          <van-radio name="2" v-if="invoiceList.indexOf('2') !== -1"  style="margin-right: 7px; height: 37px; float: left">
+          <van-radio name="2" v-if="invoiceList.indexOf('2') !== -1"
+                     style="margin-right: 7px; height: 37px; float: left">
             <template slot="icon">
-              <van-tag v-if="invoiceForm.invoiceType === '2'" color="rgba(193,255,182,.31)" text-color="#07c160" round size="medium">增值税普通发票</van-tag>
-              <van-tag v-else color="#f3f3f3" text-color="#999999" round size="medium">增值税普通发票</van-tag>
+              <van-tag v-if="invoiceForm.invoiceType === '2'" color="rgba(193,255,182,.31)"
+                       text-color="#07c160" round size="medium">增值税普通发票（纸质）
+              </van-tag>
+              <van-tag v-else color="#f3f3f3" text-color="#999999" round size="medium">增值税普通发票（纸质）
+              </van-tag>
             </template>
           </van-radio>
-          <van-radio name="3" v-if="invoiceList.indexOf('3') !== -1" style="margin-right: 7px; height: 37px;">
+          <van-radio name="3" v-if="invoiceList.indexOf('3') !== -1" style="margin-right: 7px; height: 37px; clear:both;">
             <template slot="icon">
-              <van-tag v-if="invoiceForm.invoiceType === '3'" color="rgba(193,255,182,.31)" text-color="#07c160" round size="medium">增值税专用发票</van-tag>
-              <van-tag v-else color="#f3f3f3" text-color="#999999" round size="medium">增值税专用发票</van-tag>
+              <van-tag v-if="invoiceForm.invoiceType === '3'" color="rgba(193,255,182,.31)"
+                       text-color="#07c160" round size="medium">增值税专用发票（纸质）
+              </van-tag>
+              <van-tag v-else color="#f3f3f3" text-color="#999999" round size="medium">增值税专用发票（纸质）
+              </van-tag>
             </template>
           </van-radio>
         </van-radio-group>
@@ -112,7 +123,7 @@
 
         <van-divider style="margin: 10px 0;"/>
 
-        <div style="margin-top: 10px; font-size: smaller;">发票类型</div>
+        <div style="margin-top: 10px; font-size: smaller;">请选择个人或机构</div>
         <van-radio-group v-model="invoiceForm.type" style="width: 100%;">
           <van-radio name="1" style="float: left; margin-right: 7px; height: 37px;">
             <template slot="icon">
@@ -127,10 +138,12 @@
             </template>
           </van-radio>
         </van-radio-group>
-        <van-cell-group v-if="invoiceForm.type == '2'" :border="false" style="margin-top: 5px;">
+        <van-cell-group>
           <van-field v-model="invoiceForm.title" :border="false" style="padding: 0;">
-            <span slot="label" style="font-size: smaller; color: #999999">单位名称：</span>
+            <span slot="label" style="font-size: smaller; color: #999999">发票抬头：</span>
           </van-field>
+        </van-cell-group>
+        <van-cell-group v-if="invoiceForm.type == '2'" :border="false" style="margin-top: 5px;">
           <van-field v-model="invoiceForm.invoiceNum" :border="false" style="padding: 0;">
             <span slot="label" style="font-size: smaller; color: #999999">纳税人识别码：</span>
           </van-field>

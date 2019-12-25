@@ -5,7 +5,7 @@
         <div style="width: 60vw">订单号: {{ orderForm.orderNumber }}</div>
       </template>
       <template slot="default">
-        <span v-if="orderForm.subStatus === '1' && orderForm.repeatType != '2'" class="order-status" style="color: #23B36E; margin-right: 10px;">分期</span>
+        <span v-if="orderForm.subStatus === '1' && orderForm.repeatType != '2' && orderForm.orderType == '1'" class="order-status" style="color: #23B36E; margin-right: 10px;">分期</span>
         <span style="color: #F76C6C">
           <span v-if="orderForm.orderStates === '1'">待支付</span>
           <span v-if="orderForm.orderStates === '2'">待使用</span>
@@ -62,10 +62,10 @@ export default class OrderCard extends Vue {
 
   private toDetail(orderId: any) {
     let subStatus = this.orderForm.subStatus;
-    if (this.orderForm.subStatus === '1' && this.orderForm.repeatType === '2') {
-      subStatus = 0;
+    if (this.orderForm.subStatus === '1' && this.orderForm.repeatType !== '2' && this.orderForm.orderType === '1') {
+      subStatus = 1;
     } else {
-      subStatus = this.orderForm.subStatus;
+      subStatus = 0;
     }
     this.$router.push({
       path: `/mine/order/detail/${orderId}`,

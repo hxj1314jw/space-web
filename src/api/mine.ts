@@ -116,6 +116,12 @@ export const addInvoice = (data: any) =>
     data
   });
 
+export const invoiceList = () =>
+    request({
+        url: '/invoice/list',
+        method: 'get',
+    });
+
 export const getOrderInfo = (params: any) =>
   request({
     url: '/order/info',
@@ -165,3 +171,11 @@ export const orderSubPayEdit = (params: any) =>
         method: 'get',
         params
     });
+
+export const surplus = (params: any) =>
+    request({
+        url: '/order/surplus',
+        method: 'get',
+        params
+    });
+

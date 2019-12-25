@@ -79,10 +79,12 @@
     </div>
 
     <van-popup v-model="showBeginTime" position="bottom">
-      <van-datetime-picker cancel-button-text="重置" @confirm="confirmBeginTime" @cancel="showBeginTime = false; beginTime = today;"
-        v-model="beginTime"
-        type="datetime"
-        :min-date="today"
+      <van-datetime-picker cancel-button-text="重置" @confirm="confirmBeginTime"
+                           @cancel="showBeginTime = false; beginTime = today;"
+                           v-model="beginTime"
+                           type="datetime"
+                           :min-date="today"
+                           :filter="filter"
       />
     </van-popup>
 
@@ -99,7 +101,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { getOrganization, addSpaceReserve, getReserveNum } from '@/api/space';
-
+import moment from "moment";
 import { Step, Steps, Cell, CellGroup, Field, RadioGroup, Radio, Icon, Divider, Button, Popup, DatetimePicker, Toast, Notify, Stepper } from 'vant';
 Vue.use(Step).use(Steps).use(Cell).use(CellGroup).use(RadioGroup).use(Radio).use(Icon).use(Divider).use(Button).use(Popup).use(DatetimePicker).use(Field).use(Toast).use(Notify).use(Stepper);
 
@@ -126,7 +128,17 @@ export default class ActivitySpaceReserve extends Vue {
   public reserveTime: number = 1;
 
   public created() {
+    const date = moment(moment(new Date()).format('YYYY-MM-DD HH')).add(1, "hours").toDate();
+    this.today = date;
+    this.beginTime = date;
     this.fetchOrg();
+  }
+
+  private filter(type: any, options: any) {
+    if (type === 'minute') {
+      return options.filter((option: number) => option % 60 === 0);
+    }
+    return options;
   }
 
   @Watch("beginTime")
@@ -145,7 +157,7 @@ export default class ActivitySpaceReserve extends Vue {
   }
 
   private onEndTimeFocusOut() {
-    if (this.beginTime.getTime() <= this.today.getTime()) {
+    if (this.beginTime.getTime() <= new Date().getTime()) {
       this.beginTimeErrMsg = "起租时间不能早于或等于当前时间";
       return false;
     } else {
@@ -156,7 +168,7 @@ export default class ActivitySpaceReserve extends Vue {
   }
 
   private onAccessTimeFocusOut() {
-    if (this.accessTime.getTime() <= this.today.getTime()) {
+    if (this.accessTime.getTime() <= new Date().getTime()) {
       this.accessTimeErrMsg = "参访时间不能早于或等于当前时间";
       return false;
     } else {

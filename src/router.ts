@@ -52,6 +52,7 @@ export default new Router({
         { path: '/mine/reserve/apply/:id', name: 'applyOrder', component: () => import('./views/Mine/Reserve/Apply/index.vue'), meta: { title: '申请订单', login: 'true' } },
 
         { path: '/mine/Info', name: 'info', component: () => import('./views/Mine/Info/index.vue'), meta: { title: '我的名片', login: 'true' } },
+        { path: '/mine/invoice', name: 'invoice', component: () => import('./views/Mine/Order/invoice/index.vue'), meta: { title: '我要发票', login: 'true' } },
 
         { path: '/mine/order', name: 'order', component: () => import('./views/Mine/Order/index.vue'), meta: { title: '我的订单', login: 'true' } },
         { path: '/mine/order/detail/:id', name: 'orderDetail', component: () => import('./views/Mine/Order/Detail/index.vue'), meta: { title: '订单详情', login: 'true' } },

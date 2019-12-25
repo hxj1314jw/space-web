@@ -24,6 +24,7 @@
       <van-cell title="我的活动" to="/mine/activity" is-link />
       <van-cell title="我的机构" to="/mine/organization" is-link />
       <van-cell title="我的问卷" to="/mine/survey" is-link />
+      <van-cell title="我要发票" to="/mine/invoice" is-link />
     </van-cell-group>
 
     <van-button

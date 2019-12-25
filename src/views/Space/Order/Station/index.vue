@@ -34,7 +34,31 @@
                         <span>价格</span>
                     </template>
                     <template>
-                        <span style="color: #00B261; font-size: larger;">￥{{productInfo.price}}/{{charge}}</span>
+                        <span style="color: #00B261; font-size: larger;">￥{{price}}/{{charge}}</span>
+                    </template>
+                </van-cell>
+                <van-field v-if="productInfo.timeType === '0'" label="起租时间" @click="showBeginTime = true"
+                           :value="beginTime | dateFmt('YYYY-MM-DD HH:mm')" :is-link="true" disabled="true"
+                           input-align="right" error-message-align="right" :error-message="beginTimeErrMsg"/>
+                <van-cell v-if="productInfo.timeType === '0'">
+                    <span slot="title">租用时长（{{charge}}）</span>
+                    <van-stepper v-model="rentNum" min="1" integer @change="countNum()"/>
+                </van-cell>
+                <van-radio-group v-else v-model="radioTime">
+                    <van-cell-group>
+                        <van-cell v-for="(item,index) in productInfo.timeSection" :key=index
+                                  :title="`${item.begin}-${item.end}`" clickable
+                                  @click="selectRadio(item,index)">
+                            <van-radio slot="right-icon" :name="index" checked-color="#07c160"/>
+                        </van-cell>
+                    </van-cell-group>
+                </van-radio-group>
+                <van-cell>
+                    <template slot="title">
+                        <span>剩余数量</span>
+                    </template>
+                    <template>
+                        <span>{{surplusNum}}</span>个可预订
                     </template>
                 </van-cell>
                 <van-cell v-if="this.productInfo.counts >1">
@@ -45,26 +69,6 @@
                         <van-stepper v-model="useNum" min="1" integer/>
                     </template>
                 </van-cell>
-                <van-field v-if="productInfo.timeType === '0'" label="起租时间" @click="showBeginTime = true"
-                           :value="beginTime | dateFmt('YYYY-MM-DD HH:mm')" :is-link="true" disabled="true"
-                           input-align="right" error-message-align="right" :error-message="beginTimeErrMsg"/>
-                <van-cell v-if="productInfo.timeType === '0'">
-                    <template slot="title">
-                        <span>租用时长（{{charge}}）</span>
-                    </template>
-                    <template>
-                        <van-stepper v-model="rentNum" min="1" integer/>
-                    </template>
-                </van-cell>
-                <van-radio-group v-model="radioTime">
-                    <van-cell-group>
-                        <van-cell v-for="(item,index) in productInfo.timeSection" :key=index
-                                  :title="`${item.begin}-${item.end}`" clickable
-                                  @click="selectRadio(item,index)">
-                            <van-radio slot="right-icon" :name="index" checked-color="#07c160"/>
-                        </van-cell>
-                    </van-cell-group>
-                </van-radio-group>
             </van-cell-group>
 
             <div style="margin-top: 10px; text-align: center">
@@ -125,6 +129,7 @@
                                  v-model="beginTime"
                                  type="datetime"
                                  :min-date="today"
+                                 :filter="filter"
             />
         </van-popup>
     </div>
@@ -133,7 +138,7 @@
 <script lang="ts">
     import {Component, Vue, Watch} from "vue-property-decorator";
     import {getOrganization, getProductInfo} from '@/api/space';
-    import {addOrder, getNextSevenData, getInterval} from '@/api/mine';
+    import {addOrder, getNextSevenData, getInterval, surplus} from '@/api/mine';
     import {initChargeMethod} from '../../../../utils/zone';
 
     import {
@@ -184,11 +189,24 @@
         public selectTime: any = {};
         public radioTime: number = 0;
         public charge: string = '';
+        public startDate: number = 0;
+        public surplusNum: number = 0;
+        public price: number = 0;
 
         public created() {
-            this.fetchOrg();
-            this.timeSection();
+            const date = moment(moment(new Date()).format('YYYY-MM-DD HH')).add(1, "hours").toDate();
+            this.today = date;
+            this.beginTime = date;
             this.getProductInfo();
+            this.fetchOrg();
+
+        }
+
+        private filter(type: any, options: any) {
+            if (type === 'minute') {
+                return options.filter((option: number) => option % 60 === 0);
+            }
+            return options;
         }
 
         private getProductInfo() {
@@ -196,18 +214,18 @@
                 this.productInfo = res.data.data;
                 this.getCharge();
                 if (this.productInfo.priceStates === '1') {
-                    this.productInfo.price = this.productInfo.activityPrice;
+                    this.price = this.productInfo.activityPrice;
                 }
                 if (this.productInfo.timeSection) {
                     this.selectTime = this.productInfo.timeSection[0];
-                    this.productInfo.price = this.productInfo.timeSection[0].price;
+                    this.price = this.productInfo.timeSection[0].price;
                 }
+                this.timeSection();
             });
         }
 
         private getCharge() {
             const chargeMethod = this.productInfo.chargeMethod;
-            console.log(this.productInfo);
             this.charge = initChargeMethod(chargeMethod);
         }
 
@@ -218,7 +236,7 @@
 
         private onBeginTimeFocusOut() {
             const beginTime: number = this.productInfo.timeType === '0' ? this.beginTime.getTime() : moment(`${this.queryDate} ${this.selectTime.begin}`).unix() * 1000;
-            if (beginTime <= this.today.getTime()) {
+            if (beginTime <= new Date().getTime()) {
                 this.beginTimeErrMsg = "起租时间不能早于或等于当前时间";
                 this.$notify({type: 'danger', message: '起租时间不能早于或等于当前时间'});
                 return false;
@@ -226,12 +244,19 @@
                 this.beginTimeErrMsg = "";
                 return true;
             }
+
         }
 
         private selectRadio(item: any, index: number) {
             this.radioTime = index;
             this.selectTime = item;
-            this.productInfo.price = item.price;
+            if (item.price) {
+                this.price = item.price;
+            } else {
+                this.price = this.productInfo.price;
+            }
+            this.countNum();
+
         }
 
         private validate() {
@@ -271,7 +296,7 @@
                             consumerPhone: this.phone,
                             productType: this.$route.query.type,
                             purchaseMethod: '1',
-                            timePrice: this.productInfo.price,
+                            timePrice: this.price,
                             rentNum: this.productInfo.timeType === '0' ? this.rentNum : moment.duration(moment(`${this.queryDate} ${this.selectTime.end}`).diff(moment(`${this.queryDate} ${this.selectTime.begin}`))).hours(),
                             startDate: this.productInfo.timeType === '0' ? this.beginTime.getTime() : moment(`${this.queryDate} ${this.selectTime.begin}`).unix() * 1000,
                             useNum: this.useNum,
@@ -293,7 +318,7 @@
                             rentNum: this.productInfo.timeType === '0' ? this.rentNum : moment.duration(moment(`${this.queryDate} ${this.selectTime.end}`).diff(moment(`${this.queryDate} ${this.selectTime.begin}`))).hours(),
                             startDate: this.productInfo.timeType === '0' ? this.beginTime.getTime() : moment(`${this.queryDate} ${this.selectTime.begin}`).unix() * 1000,
                             useNum: this.useNum,
-                            timePrice: this.productInfo.price,
+                            timePrice: this.price,
                             zoneProductId: this.$route.params.id
                         }).then((res: any) => {
                             this.$router.push({
@@ -310,6 +335,26 @@
             }
         }
 
+        /**
+         * 剩余数量
+         */
+        private getSurplus() {
+            surplus({
+                startDate: this.startDate,
+                rentNum: this.rentNum,
+                zoneProductId: this.productInfo.id
+            }).then((res: any) => {
+                console.log(res.data.data);
+                this.surplusNum = res.data.data;
+            });
+        }
+
+        private countNum() {
+            this.rentNum = this.productInfo.timeType === '0' ? this.rentNum : moment.duration(moment(`${this.queryDate} ${this.selectTime.end}`).diff(moment(`${this.queryDate} ${this.selectTime.begin}`))).hours();
+            this.startDate = this.productInfo.timeType === '0' ? this.beginTime.getTime() : moment(`${this.queryDate} ${this.selectTime.begin}`).unix() * 1000;
+            this.getSurplus();
+        }
+
         private onLoad() {
             this.loading = true;
             this.interval("");
@@ -317,6 +362,7 @@
 
         private confirmBeginTime(value: any) {
             this.beginTime = value;
+            this.countNum();
             this.showBeginTime = false;
         }
 
@@ -327,16 +373,17 @@
         }
 
         private async interval(value: any) {
+            this.queryDate = value;
             const res = await getInterval({
                 id: this.$route.params.id,
                 type: this.$route.query.type,
                 date: value
             });
             this.intervalList = res.data.data;
+            this.countNum();
         }
 
         private onClick() {
-            console.log(this.queryDate);
             this.interval(this.queryDate);
         }
     }
