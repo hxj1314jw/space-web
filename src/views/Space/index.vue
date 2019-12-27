@@ -108,6 +108,7 @@
       this.spaceList = [];
       this.loading = true;
       this.finished = false;
+      this.currentPage = 1;
       this.fetchSpace();
     }
   }

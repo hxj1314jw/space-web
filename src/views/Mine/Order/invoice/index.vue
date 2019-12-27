@@ -85,7 +85,7 @@
                         </template>
                     </van-radio>
                 </van-radio-group>
-                <div style="font-size: x-small; color: #999999; margin-top: 10px; float: right">电子普通发票与纸质普通发票具备同等法律效力，可支持报销入账</div>
+                <div style="font-size: x-small; color: #999999; margin-top: 10px;">{{invoiceRemark}}</div>
 
                 <van-divider style="margin: 10px 0;"/>
 
@@ -186,6 +186,7 @@ export default class MineOrder extends Vue {
     public checked: any = [];
     public invoiceForm: any = {};
     public invoiceList: string = '';
+    public invoiceRemark: string = '';
     public invoiceText: string = '请选择发票类型';
     public showInvoice: boolean = false;
     public checkFlag: boolean = true;
@@ -231,6 +232,7 @@ export default class MineOrder extends Vue {
     private getInvoice() {
         getZoneDetail({id: this.$route.params.id}).then((res: any) => {
             this.invoiceList = res.data.data.invoices;
+            this.invoiceRemark = res.data.data.invoiceRemark;
         });
         invoiceList().then((res: any) => {
             this.invoiceForm = res.data.data;

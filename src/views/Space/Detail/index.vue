@@ -16,7 +16,7 @@
                 <van-tag v-if="tag" :key="index" color="rgba(193,255,182,.31)" text-color="#07c160" size="medium" style="margin: 0 3px;">{{ tag }}</van-tag>
                 <span v-else :key="index">无</span>
               </template><br>
-              容纳{{ spaceForm.numberOfPeople}}人 {{ spaceForm.dimensions }}㎡ | {{ spaceForm.counts }}个可预订
+              容纳{{ spaceForm.numberOfPeople}}人 {{ spaceForm.dimensions }}㎡ | {{ spaceForm.counts }}个
             </span>
           </span>
             <div style="float: right; text-align: right">
