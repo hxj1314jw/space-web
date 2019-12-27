@@ -25,9 +25,9 @@
 
       <van-cell-group style="margin-top: 10px;">
         <van-cell title="计划支付时间" :value="orderForm.planDate | dateFmt('YYYY-MM-DD')" />
-        <van-cell title="费用合计" :value="'￥' + orderForm.price" />
+        <van-cell title="费用合计" :value="'￥' + orderForm.purchaseAmount" />
         <van-cell title="实收金额">
-          <span style="color: #F76C6C">￥{{ orderForm.purchaseAmount }}</span>
+          <span style="color: #F76C6C">￥{{ orderForm.amountReceived }}</span>
         </van-cell>
       </van-cell-group>
 

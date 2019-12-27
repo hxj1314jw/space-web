@@ -21,9 +21,9 @@
       </van-cell-group>
 
       <van-cell-group style="margin-top: 10px;">
-        <van-cell title="费用合计" :value="'￥' + orderForm.price" />
+        <van-cell title="费用合计" :value="'￥' + orderForm.amount"/>
         <van-cell title="实收金额">
-          <span style="color: #F76C6C">￥{{ orderForm.amount }}</span>
+          <span style="color: #F76C6C">￥{{ orderForm.amountReceived }}</span>
         </van-cell>
       </van-cell-group>
 
@@ -174,10 +174,10 @@
           <van-field v-model="invoiceForm.email" :border="false" style="padding: 0;">
             <span slot="label" style="font-size: smaller; color: #999999">收票人邮箱：</span>
           </van-field>
-          <van-field v-model="invoiceForm.name" v-if="invoiceForm.invoiceType == '2'" :border="false" style="padding: 0;">
+          <van-field v-model="invoiceForm.name" v-if="invoiceForm.invoiceType == '2' || invoiceForm.invoiceType == '3'" :border="false" style="padding: 0;">
             <span slot="label" style="font-size: smaller; color: #999999">收票人姓名：</span>
           </van-field>
-          <van-field v-model="invoiceForm.address" v-if="invoiceForm.invoiceType == '2'" :border="false" style="padding: 0;">
+          <van-field v-model="invoiceForm.address" v-if="invoiceForm.invoiceType == '2' || invoiceForm.invoiceType == '3'" :border="false" style="padding: 0;">
             <span slot="label" style="font-size: smaller; color: #999999">收票人地址：</span>
           </van-field>
         </van-cell-group>
