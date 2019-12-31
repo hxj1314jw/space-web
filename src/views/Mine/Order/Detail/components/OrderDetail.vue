@@ -84,6 +84,15 @@
       </van-button>
     </div>
 
+    <div v-if="orderForm.orderStates === '2' || orderForm.orderStates === '5'" style="position: fixed; bottom: 0; height: 50px;">
+      <van-button type="default" plain hairline style="width: 50vw; margin: 0; padding: 0; height: 100%;">
+        <span class="center van-icon">使用完毕</span>
+      </van-button>
+      <van-button type="primary" style="width: 50vw; margin: 0; padding: 0; height: 100%;">
+        <span class="center van-icon">客服服务</span>
+      </van-button>
+    </div>
+
     <van-popup v-model="showInvoice" position="bottom" style="max-height: 70%;">
       <div style="padding: 10px 16px;">
         <div style="font-weight: bold;">发票</div>
