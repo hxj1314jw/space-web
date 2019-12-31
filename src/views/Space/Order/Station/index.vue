@@ -213,14 +213,15 @@
             getProductInfo({id: this.$route.params.id}).then((res: any) => {
                 this.productInfo = res.data.data;
                 this.getCharge();
+                this.price = this.productInfo.price;
                 if (this.productInfo.priceStates === '1') {
                     this.price = this.productInfo.activityPrice;
                 }
                 if (this.productInfo.timeSection) {
                     this.selectTime = this.productInfo.timeSection[0];
                     this.price = this.productInfo.timeSection[0].price;
+                    this.timeSection();
                 }
-                this.timeSection();
             });
         }
 

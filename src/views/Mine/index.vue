@@ -24,7 +24,7 @@
       <van-cell title="我的活动" to="/mine/activity" is-link />
       <van-cell title="我的机构" to="/mine/organization" is-link />
       <van-cell title="我的问卷" to="/mine/survey" is-link />
-      <van-cell title="我要发票" to="/mine/invoice" is-link />
+      <van-cell v-if="invoiceList.length >0" title="我要发票" to="/mine/invoice" is-link />
     </van-cell-group>
 
     <van-button
@@ -39,6 +39,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import { UserModule } from '@/store/modules/user';
 import { getUserInfo } from '@/api/user';
+import { getZoneDetail } from '@/api/home';
 import { updateAvatar, editUserInfo, getMsgNum } from '@/api/mine';
 import { Cell, CellGroup, Button, Image, Grid, GridItem, Uploader } from 'vant';
 import {setName} from "@/utils/auth";
@@ -49,7 +50,7 @@ Vue.use(Cell).use(CellGroup).use(Button).use(Image).use(Grid).use(GridItem).use(
 })
 export default class Mine extends Vue {
   public userForm: any = {};
-
+  public invoiceList: string = '';
   public msgNum: string = '';
 
   public created() {
@@ -64,6 +65,7 @@ export default class Mine extends Vue {
       message: "加载中..."
     });
     this.getMsgNum();
+    this.getZoneInfo();
     const res: any = await getUserInfo();
     this.userForm = res.data.data;
     setName(this.userForm.name);
@@ -74,6 +76,12 @@ export default class Mine extends Vue {
     const res: any = await getMsgNum();
     this.msgNum = res.data.data;
     this.$emit('func', this.msgNum);
+  }
+
+  private async getZoneInfo() {
+    getZoneDetail({id: this.$route.params.id}).then((res: any) => {
+      this.invoiceList = res.data.data.invoices;
+    });
   }
 
   private async logout() {

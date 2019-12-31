@@ -85,27 +85,33 @@ export default class ActivityTicketForm extends Vue {
     }
   }
 
-  private async confirmSubmit() {
-    const data: any = {};
-    for (const field of this.fieldList) {
-      data[field.fieldName] = field.textStr;
-      if (field.requireStatus && !field.textStr) {
-        Notify({type: 'danger', message: field.name + '不能为空'});
-        return;
-      }
+    private async confirmSubmit() {
+        const data: any = {};
+        const customFiled: any = [];
+        for (const field of this.fieldList) {
+            data[field.fieldName] = field.textStr;
+            if (field.requireStatus && !field.textStr) {
+                Notify({type: 'danger', message: field.name + '不能为空'});
+                return;
+            }
+            if (field.customFiled === '1') {
+                customFiled.push({name: field.name, value: field.textStr});
+            }
+        }
+        console.log(customFiled);
+        data.activityId = this.activityId;
+        data.ticketId = this.ticketId;
+        data.ticketNum = this.ticketNum;
+        data.otherFields = customFiled;
+        const res = await addTicket(data);
+        if (res.data.code === 200) {
+            if (res.data.data.isFreeFlag === 0) {
+                this.$router.push('/activity/success');
+            } else {
+                this.$router.push(`/activity/order/${res.data.data.id}`);
+            }
+        }
     }
-    data.activityId = this.activityId;
-    data.ticketId = this.ticketId;
-    data.ticketNum = this.ticketNum;
-    const res = await addTicket(data);
-    if (res.data.code === 200) {
-      if (res.data.data.isFreeFlag === 0) {
-        this.$router.push('/activity/success');
-      } else {
-        this.$router.push(`/activity/order/${res.data.data.id}`);
-      }
-    }
-  }
 }
 </script>
 

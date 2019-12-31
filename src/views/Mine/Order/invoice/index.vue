@@ -203,23 +203,31 @@ export default class MineOrder extends Vue {
             forbidClick: true,
             message: "加载中..."
         });
+        let pages = this.page;
+        if (refresh) {
+            this.finished = false;
+            this.orderList = [];
+            pages = 1;
+        }
         const res: any = await getOrderList({
-            page: this.page,
+            page: pages,
             size: this.size,
             payStates: '2',
             amount: 0
         });
         this.loading = false;
         this.total = Number(res.data.data.total);
-        if (refresh) {
-            this.orderList.splice(0, this.total);
-        }
+
         for (const item of res.data.data.rows) {
             this.orderList.push(item);
         }
         if (this.orderList.length < this.size || this.orderList.length === this.total) {
             this.finished = true;
         }
+        console.log(this.orderList.length);
+        console.log(this.size);
+        console.log(this.total);
+        console.log(this.finished);
         vm.$toast.clear();
     }
 
@@ -283,6 +291,7 @@ export default class MineOrder extends Vue {
     private addInvoice() {
         this.invoiceForm.orderId = this.checked.join(',');
         addInvoice(this.invoiceForm).then(() => {
+            this.checked = [];
             this.showInvoice = false;
             this.fetchOrder(true);
         });

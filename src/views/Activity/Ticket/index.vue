@@ -96,6 +96,8 @@ export default class ActivityTicket extends Vue {
   private toTicketForm(ticketId: any) {
     if (this.radio) {
       this.$router.push(`/activity/form/${this.activityId}/${ticketId}`);
+    } else {
+      Toast.fail("请选择票种");
     }
   }
 }
