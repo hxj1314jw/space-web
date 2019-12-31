@@ -8,6 +8,15 @@ import moment from 'moment';
 import { getToken, setToken } from './utils/auth';
 import { UserModule } from '@/store/modules/user';
 import { getToUrl } from './utils/url';
+import VueAMap from 'vue-amap';
+Vue.use(VueAMap);
+
+VueAMap.initAMapApiLoader({
+  key: 'e852c7063fa9387e931ba86d797d3763',
+  plugin: ['Autocomplete', 'PlaceSearch', 'Scale', 'OverView', 'ToolBar', 'MapType', 'PolyEditor', 'AMap.CircleEditor'],
+  v: '1.4.4',
+  uiVersion: '1.0',
+});
 
 Vue.config.productionTip = false;
 
