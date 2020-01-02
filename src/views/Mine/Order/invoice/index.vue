@@ -234,6 +234,9 @@ export default class MineOrder extends Vue {
     private onLoad() {
         this.loading = true;
         this.page++;
+        if (this.page > this.total / this.size) {
+            return;
+        }
         this.fetchOrder();
     }
 

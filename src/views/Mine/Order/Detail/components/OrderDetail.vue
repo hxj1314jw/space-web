@@ -84,11 +84,12 @@
       </van-button>
     </div>
 
-    <div v-if="orderForm.orderStates === '2' || orderForm.orderStates === '5'" style="position: fixed; bottom: 0; height: 50px;">
+      <div v-if="orderForm.orderStates === '2' ||orderForm.orderStates === '3'|| orderForm.orderStates === '5'"
+           style="position: fixed; bottom: 0; height: 50px;">
       <van-button type="default" plain hairline style="width: 50vw; margin: 0; padding: 0; height: 100%;">
         <span class="center van-icon">使用完毕</span>
       </van-button>
-      <van-button type="primary" style="width: 50vw; margin: 0; padding: 0; height: 100%;">
+      <van-button type="primary" style="width: 50vw; margin: 0; padding: 0; height: 100%;" @click="callMe()">
         <span class="center van-icon">客服服务</span>
       </van-button>
     </div>
@@ -244,6 +245,7 @@ export default class OrderDetail extends Vue {
   public amountReceived: any = 0;
   public contactInfo: string = '';
   public orderType: any = '';
+  public phone: string = '';
 
   public created() {
     this.invoiceForm.orderId = this.$route.params.id;
@@ -315,6 +317,7 @@ export default class OrderDetail extends Vue {
     getZoneDetail({id: this.$route.params.id}).then((res: any) => {
       this.invoiceList = res.data.data.invoices;
       this.invoiceRemark = res.data.data.invoiceRemark;
+      this.phone = res.data.data.contactInformation;
       this.agreement = res.data.data.agreement;
       if (this.agreement === '1' && this.amountReceived > 0) {
         this.getOrderContact();
@@ -328,6 +331,9 @@ export default class OrderDetail extends Vue {
     });
   }
 
+  private callMe() {
+    window.location.href = 'tel://' + this.phone;
+  }
   private cancelOrder() {
     Dialog.confirm({
       message: '订单取消后将不可恢复，确认吗？',
