@@ -1,83 +1,94 @@
 <template>
-  <div class="container">
-    <el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :center="center" :zoom="zoom" :plugin="plugin" :events="events" class="amap-demo">
-    </el-amap>
+  <div>
+    <div class="map">
+      <van-row>
+        <template>
+          <span style="font-size: smaller; margin: 10px 10px 7px;"><font color="gray">当前位置</font></span><br>
+          <span style="font-size: small; margin: 5px 10px 5px;">{{ address }}</span>
+        </template>
+        <el-amap vid="amap" :plugin="plugin" class="amap-demo" :center="center" style="margin: 10px 10px 10px; height: 125px;"></el-amap>
 
-    <div class="toolbar">
-      <button @click="getMap()">get map</button>
+        <div class="toolbar">
+          <span v-if="loaded == false">正在定位</span>
+        </div>
+      </van-row>
+    </div>
+    <div class="checkin">
+      <van-row>
+        <van-button
+          v-if="checked == false"
+          type="primary"
+          @click="checkin()"
+          style="margin: 30px 0; width: 90%;">签到</van-button>
+        <van-button
+          v-if="checked == true"
+          type="primary"
+          disabled
+          style="margin: 30px 0; width: 90%;">今日已签到</van-button>
+      </van-row>
     </div>
   </div>
 </template>
 
 <script>
-  import { Vue } from "vue-property-decorator";
-  import VueAMap from 'vue-amap';
-  import { Button } from 'vant';
-  Vue.use(Button).use(VueAMap);
+  import Vue from 'vue';
+  import { checkin } from '@/api/mine';
+  import { Button, Row, Col, Notify } from 'vant';
+  Vue.use(Button).use(Row).use(Col).use(Notify);
 
-  VueAMap.initAMapApiLoader({
-      key: 'e852c7063fa9387e931ba86d797d3763',
-      plugin: ['Autocomplete', 'PlaceSearch', 'Scale', 'OverView', 'ToolBar', 'MapType', 'PolyEditor', 'AMap.CircleEditor'],
-      v: '1.4.4',
-  });
-
-  let amapManager = new VueAMap.AMapManager();
   export default {
-    data: function() {
+    data() {
+      const self = this;
       return {
-        amapManager,
-        zoom: 12,
         center: [121.59996, 31.197646],
-        events: {
-          init: (o) => {
-            console.log(o.getCenter())
-            console.log(this.$refs.map.$$getInstance())
-            o.getCity(result => {
-              console.log(result)
-            })
-          },
-          'moveend': () => {
-          },
-          'zoomchange': () => {
-          },
-          'click': (e) => {
-            alert('map clicked');
-          }
-        },
-        plugin: ['ToolBar', {
-          pName: 'MapType',
-          defaultType: 0,
+        lng: 0,
+        lat: 0,
+        loaded: false,
+        checked: false,
+        address: '',
+        plugin: [{
+          pName: 'Geolocation',
           events: {
             init(o) {
-              console.log(o);
+              o.getCurrentPosition((status, result) => {
+                console.log(result.formattedAddress);
+                if (result && result.position) {
+                  self.lng = result.position.lng;
+                  self.lat = result.position.lat;
+                  self.address = result.formattedAddress;
+                  self.center = [self.lng, self.lat];
+                  self.loaded = true;
+                  self.$nextTick();
+                }
+              });
             }
           }
-        }],
-      }
+        }]
+      };
     },
     methods: {
-      getMap() {
-        // amap vue component
-        console.log(amapManager._componentMap);
-        // gaode map instance
-        console.log(amapManager._map);
-      }
-    },
-
+      checkin() {
+        checkin({address: this.address}).then(() => {
+          console.log(this.address);
+          this.checked = true;
+          Notify({ type: 'success', message: '签到成功' });
+        });
+      },
+    }
   };
 </script>
 
 <style>
-  .amap-demo {
-    height: 300px;
-  }
-  .container {
-    width: 700px;
-    height: 500px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    border: 1px solid #999;
-  }
+.amap-demo {
+  height: 300px;
+}
+.map {
+  background-color: white;
+}
+.checkin {
+  top: 30%;
+  text-align:center;
+  position: absolute;
+  width: 100%;
+}
 </style>

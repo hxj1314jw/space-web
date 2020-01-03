@@ -13,7 +13,7 @@ Vue.use(VueAMap);
 
 VueAMap.initAMapApiLoader({
   key: 'e852c7063fa9387e931ba86d797d3763',
-  plugin: ['Autocomplete', 'PlaceSearch', 'Scale', 'OverView', 'ToolBar', 'MapType', 'PolyEditor', 'AMap.CircleEditor'],
+  plugin: ['Autocomplete', 'PlaceSearch', 'Scale', 'OverView', 'ToolBar', 'MapType', 'PolyEditor', 'AMap.CircleEditor', 'Geolocation'],
   v: '1.4.4',
   uiVersion: '1.0',
 });

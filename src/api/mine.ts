@@ -179,3 +179,10 @@ export const surplus = (params: any) =>
         params
     });
 
+export const checkin = (data: any) =>
+    request({
+      url: 'user/sign',
+      method: 'post',
+      data
+    });
+

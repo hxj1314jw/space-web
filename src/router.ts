@@ -75,7 +75,7 @@ export default new Router({
         { path: '/mine/survey', name: 'mineSurvey', component: () => import('./views/Mine/Survey/index.vue'), meta: { title: '我的问卷', login: 'true' } },
         { path: '/mine/survey/detail/:id', name: 'surveyDetail', component: () => import('./views/Mine/Survey/Detail/index.vue'), meta: { title: '填写问卷', login: 'true' } },
 
-        { path: '/mine/checkin', name: 'checkin', component: () => import('./views/Mine/Checkin/index.vue'), meta: { title: '我的签到', login: 'true' } },
+        { path: '/mine/checkin', name: 'checkin', component: () => import('./views/Mine/Checkin/index.vue'), meta: { title: '签到', login: 'true' } },
       ]
     }
   ],
