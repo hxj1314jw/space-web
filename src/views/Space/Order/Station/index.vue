@@ -220,8 +220,8 @@
                 if (this.productInfo.timeSection) {
                     this.selectTime = this.productInfo.timeSection[0];
                     this.price = this.productInfo.timeSection[0].price;
-                    this.timeSection();
                 }
+                this.timeSection();
             });
         }
 
