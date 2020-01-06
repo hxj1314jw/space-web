@@ -6,7 +6,7 @@
           <span style="font-size: smaller; margin: 10px 10px 7px;"><font color="gray">当前位置</font></span><br>
           <span style="font-size: small; margin: 5px 10px 5px;">{{ address }}</span>
         </template>
-        <el-amap vid="amap" :plugin="plugin" class="amap-demo" :center="center" style="margin: 10px 10px 10px; height: 125px;"></el-amap>
+        <el-amap vid="amap" :plugin="plugin" class="amap-demo" :center="center" style="margin: 10px 10px 10px; height: 100px;"></el-amap>
 
         <div class="toolbar">
           <span v-if="loaded == false">正在定位</span>
@@ -15,16 +15,7 @@
     </div>
     <div class="checkin">
       <van-row>
-        <van-button
-          v-if="checked == false"
-          type="primary"
-          @click="checkin()"
-          style="margin: 30px 0; width: 90%;">签到</van-button>
-        <van-button
-          v-if="checked == true"
-          type="primary"
-          disabled
-          style="margin: 30px 0; width: 90%;">今日已签到</van-button>
+        <button class="button" @click="checkin()">签到<br>{{ currTime }}</button>
       </van-row>
     </div>
   </div>
@@ -32,6 +23,7 @@
 
 <script>
   import Vue from 'vue';
+  import dayjs from 'dayjs';
   import { checkin } from '@/api/mine';
   import { Button, Row, Col, Notify } from 'vant';
   Vue.use(Button).use(Row).use(Col).use(Notify);
@@ -41,6 +33,7 @@
       const self = this;
       return {
         center: [121.59996, 31.197646],
+        currTime: '',
         lng: 0,
         lat: 0,
         loaded: false,
@@ -51,7 +44,6 @@
           events: {
             init(o) {
               o.getCurrentPosition((status, result) => {
-                console.log(result.formattedAddress);
                 if (result && result.position) {
                   self.lng = result.position.lng;
                   self.lat = result.position.lat;
@@ -66,10 +58,19 @@
         }]
       };
     },
+    mounted() {
+      this.getTime();
+      setInterval(() => {
+        this.getTime();
+      }, 1000);
+    },
     methods: {
+      getTime() {
+        this.currTime = dayjs().format('HH:mm');
+        console.log(this.currTime);
+      },
       checkin() {
         checkin({address: this.address}).then(() => {
-          console.log(this.address);
           this.checked = true;
           Notify({ type: 'success', message: '签到成功' });
         });
@@ -90,5 +91,19 @@
   text-align:center;
   position: absolute;
   width: 100%;
+}
+.button {
+  cursor:pointer;
+  position: relative;
+  color: white;
+  width: 110px;
+  height: 110px;
+  line-height: 23px;
+  text-align: center;
+  border-radius: 50%;
+  border:none;
+  box-shadow: 0 2px 5px rgba(0,0,0,.4);
+  background-color: #10b91296;
+  top: 110px;
 }
 </style>
