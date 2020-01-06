@@ -89,6 +89,7 @@
               </span><br>
                         <van-divider dashed :hairline="false" style="margin: 3px;"/>
                         <span style="color: #999999; font-size: x-small;">备注：无</span>
+                        <a size="mini" @click="toMineInfo()" style="float: right;"><span style="color: #07C160; font-size: x-small;">编辑名片</span></a>
                     </van-cell>
                     <div style="float: left; left: -10px;" class="ticket-circle"/>
                     <div style="float: right; right: -10px;" class="ticket-circle"/>
@@ -207,6 +208,10 @@
                 return options.filter((option: number) => option % 60 === 0);
             }
             return options;
+        }
+
+        private toMineInfo() {
+            this.$router.push('/mine/Info');
         }
 
         private getProductInfo() {
