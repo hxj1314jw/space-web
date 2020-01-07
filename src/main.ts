@@ -37,7 +37,12 @@ router.beforeEach((to, from, next) => {
     });
   } else {
     getZoneInfo().then((res: any) => {
-      document.title = res.data.data.homeTitle;
+      const title = res.data.data.homeTitle;
+      if (title) {
+        document.title = title;
+      } else {
+        document.title = res.data.data.name;
+      }
     });
     // document.title = String(to.meta.title);
     setZoneId(String(to.query.zoneId));

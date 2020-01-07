@@ -3,7 +3,7 @@
     <van-nav-bar v-if="!isWeixin" @click-left="onClickLeft" :left-arrow="isArrow"
       style="font-weight: 700; background-color: #F3F3F3; width: 100vw; position: fixed; top: 0;"
       :title="title"/>
-    <van-tabbar v-if="isTabbar" v-model="selected" @change="onSelectChanged" active-color="#23B36E" safe-area-inset-bottom>
+    <van-tabbar v-if="isTabbar" v-model="selected" active-color="#23B36E" safe-area-inset-bottom>
       <van-tabbar-item name="首页" to="/home" icon="home-o" replace>首页</van-tabbar-item>
       <van-tabbar-item name="空间" to="/space" icon="hotel-o" replace>空间</van-tabbar-item>
       <van-tabbar-item name="活动" to="/activity" icon="orders-o" replace>活动</van-tabbar-item>
@@ -51,12 +51,14 @@
       this.selected = String(this.$route.meta.title);
       getZoneInfo().then((res: any) => {
         this.homeTitle = res.data.data.homeTitle;
-        if (this.selected === '首页') {
-          this.title = this.homeTitle;
-          document.title = this.title;
+        if (this.$route.path === '/home') {
+          if (this.homeTitle) {
+            this.title = this.homeTitle;
+          } else {
+            this.title = res.data.data.name;
+          }
         } else {
           this.title = this.selected;
-          document.title = this.homeTitle;
         }
       });
       this.isShow();
@@ -86,16 +88,14 @@
 
     @Watch("$route.path")
     private onRouteChanged(newVal: boolean, oldVal: boolean) {
-
       this.isShow();
-      if (this.$route.path === '/home') {
+      if (this.$route.path !== '/home') {
+        this.selected = String(this.$route.meta.title);
+        this.title = this.selected;
+      } else {
         this.title = this.homeTitle;
         document.title = this.title;
-      } else {
-        this.title = String(this.$route.meta.title);
-        this.selected = String(this.$route.meta.title);
       }
-      console.log(this.title);
     }
 
     private onSelectChanged() {
