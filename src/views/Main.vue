@@ -56,6 +56,7 @@
           document.title = this.title;
         } else {
           this.title = this.selected;
+          document.title = this.homeTitle;
         }
       });
       this.isShow();

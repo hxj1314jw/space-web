@@ -3,6 +3,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import { getZoneId, setZoneId } from './utils/zone';
+import { getZoneInfo } from '@/api/home';
 import service from '@/utils/request';
 import moment from 'moment';
 import { getToken, setToken } from './utils/auth';
@@ -35,7 +36,10 @@ router.beforeEach((to, from, next) => {
       query
     });
   } else {
-    document.title = String(to.meta.title);
+    getZoneInfo().then((res: any) => {
+      document.title = res.data.data.homeTitle;
+    });
+    // document.title = String(to.meta.title);
     setZoneId(String(to.query.zoneId));
     if (to.meta.login) {
       const token = getToken();
