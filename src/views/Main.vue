@@ -49,15 +49,15 @@
 
     public created() {
       this.selected = String(this.$route.meta.title);
-      if (this.selected === '首页') {
-        getZoneInfo().then((res: any) => {
-          this.homeTitle = res.data.data.homeTitle;
+      getZoneInfo().then((res: any) => {
+        this.homeTitle = res.data.data.homeTitle;
+        if (this.selected === '首页') {
           this.title = this.homeTitle;
           document.title = this.title;
-        });
-      } else {
-        this.title = this.selected;
-      }
+        } else {
+          this.title = this.selected;
+        }
+      });
       this.isShow();
       this.fetch();
     }
@@ -85,6 +85,7 @@
 
     @Watch("$route.path")
     private onRouteChanged(newVal: boolean, oldVal: boolean) {
+
       this.isShow();
       if (this.$route.path === '/home') {
         this.title = this.homeTitle;
