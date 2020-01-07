@@ -14,7 +14,8 @@
       </van-row>
     </div>
     <div class="checkin">
-      <button class="button" @click="checkin()">签到<br>{{ currTime }}</button>
+      <button class="button" @click="checkin()" v-if="checked == false">签到<br>{{ currTime }}</button>
+      <button class="button" v-if="checked == true">已签到</button>
     </div>
   </div>
 </template>
