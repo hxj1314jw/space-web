@@ -55,7 +55,8 @@
           if (this.homeTitle) {
             this.title = this.homeTitle;
           } else {
-            this.title = res.data.data.name;
+            this.homeTitle = res.data.data.name;
+            this.title = this.homeTitle;
           }
         } else {
           this.title = this.selected;
