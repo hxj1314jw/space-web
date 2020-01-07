@@ -19,6 +19,7 @@
   import {Component, Vue, Watch} from "vue-property-decorator";
   import { getZoneId } from '@/utils/zone';
   import { getMsgNum } from '@/api/mine';
+  import { getZoneInfo } from '@/api/home';
   import { NavBar, Tabbar, TabbarItem } from 'vant';
   import { getFromUrl, getToUrl } from '../utils/url';
   import {getToken} from "@/utils/auth";
@@ -35,6 +36,7 @@
     public zoneId: string = getZoneId() || '';
     public isTabbar: boolean = true;
     public isArrow: boolean = false;
+    public homeTitle: string = "";
 
     get isWeixin(): boolean {
       const ua = navigator.userAgent.toLowerCase();
@@ -47,7 +49,15 @@
 
     public created() {
       this.selected = String(this.$route.meta.title);
-      this.title = this.selected;
+      if (this.selected === '首页') {
+        getZoneInfo().then((res: any) => {
+          this.homeTitle = res.data.data.homeTitle;
+          this.title = this.homeTitle;
+          document.title = this.title;
+        });
+      } else {
+        this.title = this.selected;
+      }
       this.isShow();
       this.fetch();
     }
@@ -76,8 +86,14 @@
     @Watch("$route.path")
     private onRouteChanged(newVal: boolean, oldVal: boolean) {
       this.isShow();
-      this.title = String(this.$route.meta.title);
-      this.selected = String(this.$route.meta.title);
+      if (this.$route.path === '/home') {
+        this.title = this.homeTitle;
+        document.title = this.title;
+      } else {
+        this.title = String(this.$route.meta.title);
+        this.selected = String(this.$route.meta.title);
+      }
+      console.log(this.title);
     }
 
     private onSelectChanged() {

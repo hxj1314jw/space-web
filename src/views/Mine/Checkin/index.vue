@@ -6,7 +6,7 @@
           <span style="font-size: smaller; margin: 10px 10px 7px;"><font color="gray">当前位置</font></span><br>
           <span style="font-size: small; margin: 5px 10px 5px;">{{ address }}</span>
         </template>
-        <el-amap vid="amap" :plugin="plugin" class="amap-demo" :center="center" style="margin: 10px 10px 10px; height: 100px;"></el-amap>
+        <el-amap vid="amap" :plugin="plugin" class="amap-demo" :center="center" style="margin: 5px 10px 10px; height: 120px;"></el-amap>
 
         <div class="toolbar">
           <span v-if="loaded == false">正在定位</span>
@@ -14,9 +14,7 @@
       </van-row>
     </div>
     <div class="checkin">
-      <van-row>
-        <button class="button" @click="checkin()">签到<br>{{ currTime }}</button>
-      </van-row>
+      <button class="button" @click="checkin()">签到<br>{{ currTime }}</button>
     </div>
   </div>
 </template>
@@ -67,7 +65,6 @@
     methods: {
       getTime() {
         this.currTime = dayjs().format('HH:mm');
-        console.log(this.currTime);
       },
       checkin() {
         checkin({address: this.address}).then(() => {
@@ -81,7 +78,7 @@
 
 <style>
 .amap-demo {
-  height: 300px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,.4);
 }
 .map {
   background-color: white;
@@ -93,17 +90,17 @@
   width: 100%;
 }
 .button {
-  cursor:pointer;
+  cursor: pointer;
   position: relative;
   color: white;
   width: 110px;
   height: 110px;
-  line-height: 23px;
+  top: 110px;
+  line-height: 25px;
   text-align: center;
   border-radius: 50%;
-  border:none;
+  border: none;
   box-shadow: 0 2px 5px rgba(0,0,0,.4);
   background-color: #10b91296;
-  top: 110px;
 }
 </style>
