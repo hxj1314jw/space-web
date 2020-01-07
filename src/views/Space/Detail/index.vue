@@ -213,11 +213,16 @@ export default class SpaceDetail extends Vue {
     const chargeMethod = this.spaceForm.chargeMethod;
     this.charge = initChargeMethod(chargeMethod);
   }
+
   private settingShare() {
+    let tags = '';
+    if (this.spaceForm.tags) {
+      tags = '【' + this.spaceForm.tags + '】';
+    }
     const param = {
       url: window.location.href.split('#')[0], // 当前页面url
       title: this.spaceForm.productName, // 分享数据配置 主标题
-      desc: '【' + this.spaceForm.tags + '】我在有空发现了一个空间，赶紧来看看吧。', // 分享数据配置 副标题
+      desc: tags + '我在' + this.spaceForm.zoneName + '发现了一个空间，赶紧来看看吧。', // 分享数据配置 副标题
       link: process.env.VUE_APP_URL + '/space/detail/' + this.spaceForm.id + '?zoneId=' + getZoneId(), // 分享数据配置
       imgUrl: this.spaceForm.bannerImage, // 分享数据配置 －－ 全路径
       type: "link", // 分享类型,music、video或link，不填默认为link
