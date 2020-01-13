@@ -18,6 +18,7 @@
       <button class="button" v-if="checked == true">已签到</button>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -101,7 +102,27 @@
   text-align: center;
   border-radius: 50%;
   border: none;
-  box-shadow: 0 2px 5px rgba(0,0,0,.4);
+  box-shadow: 0px 2px 5px rgba(0,0,0,.4);
   background-color: #10b91296;
+  -moz-transition-duration: 5s;
+  -webkit-transition-duration: 5s;
+  -o-transition-duration: 5s;
+}
+.button:active {
+  cursor: pointer;
+  position: relative;
+  color: white;
+  width: 150px;
+  height: 150px;
+  top: 110px;
+  line-height: 25px;
+  text-align: center;
+  border-radius: 50%;
+  border: none;
+  box-shadow: 20px 2px 5px rgba(0,0,0,.4);
+  background-color: #10b91296;
+  -moz-transition-duration: 5s;
+  -webkit-transition-duration: 5s;
+  -o-transition-duration: 5s;
 }
 </style>

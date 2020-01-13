@@ -54,12 +54,19 @@
         if (this.$route.path === '/home') {
           if (this.homeTitle) {
             this.title = this.homeTitle;
+            console.log(res.data.data.homeTitle);
           } else {
             this.homeTitle = res.data.data.name;
-            this.title = this.homeTitle;
+            this.title = res.data.data.name;
+            console.log(this.homeTitle);
           }
         } else {
           this.title = this.selected;
+          if (this.homeTitle) {
+            console.log(this.homeTitle);
+          } else {
+            this.homeTitle = res.data.data.name;
+          }
         }
       });
       this.isShow();
@@ -94,6 +101,7 @@
         this.selected = String(this.$route.meta.title);
         this.title = this.selected;
       } else {
+        console.log(this.homeTitle);
         this.title = this.homeTitle;
         document.title = this.title;
       }
